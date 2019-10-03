@@ -556,29 +556,34 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     "sum_Lep_charge", "HadTop_pt",
     "res_HTT", "massL3",
     "nJet", "nBJetLoose", "nBJetMedium", "nJetForward",
-    "nElectron", "has_SFOS"
+    "nElectron", "has_SFOS", "is_2016"
   };
+  //data/NN_for_legacy_opt/test_sig_1_rest_1_th_1.pb --
+  //data/NN_for_legacy_opt/test_sig_1p5_rest_1_th_1.pb	--
+  //data/NN_for_legacy_opt/test_sig_1p5_rest_1p5_th_1.pb --
+  //data/NN_for_legacy_opt/test_sig_1_rest_1p5_th_1.pb
+  //data/NN_for_legacy_opt/test_sig_1p5_rest_1_th_1p5.pb --
   //std::map<std::string, double> mvaInputs_3l_ttH_tH_3cat_v8_TF;
   std::vector<std::string> classes_TensorFlow_3l_ttH_tH_3cat = {"predictions_ttH",  "predictions_rest", "predictions_tH"};
-  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1_1_3jets = "tthAnalysis/HiggsToTauTau/data/NN_legacy_opt_2017_2018/test_model_3l_0tau_ttH_tH_BKG_1p5_1_1_3jets.pb";
+  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1_1_3jets = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/test_sig_1p5_rest_1_th_1.pb";
   TensorFlowInterface mva_3l_ttH_tH_BKG_1p5_1_1_3jets(
     mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1_1_3jets,
     mvaInputVariables_TensorFlow_3l_ttH_tH_BKG_NN_legacy_opt,
     classes_TensorFlow_3l_ttH_tH_3cat
   );
-  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1p5_1_3jets = "tthAnalysis/HiggsToTauTau/data/NN_legacy_opt_2017_2018/test_model_3l_0tau_ttH_tH_BKG_1p5_1p5_1_3jets.pb";
+  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1p5_1_3jets = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/test_sig_1p5_rest_1p5_th_1.pb";
   TensorFlowInterface mva_3l_ttH_tH_BKG_1p5_1p5_1_3jets(
     mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1p5_1_3jets,
     mvaInputVariables_TensorFlow_3l_ttH_tH_BKG_NN_legacy_opt,
     classes_TensorFlow_3l_ttH_tH_3cat
   );
-  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1_1p5_3jets = "tthAnalysis/HiggsToTauTau/data/NN_legacy_opt_2017_2018/test_model_3l_0tau_ttH_tH_BKG_1p5_1_1p5_3jets.pb";
+  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1_1p5_3jets = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/test_sig_1p5_rest_1_th_1p5.pb";
   TensorFlowInterface mva_3l_ttH_tH_BKG_1p5_1_1p5_3jets(
     mvaFileName_TensorFlow_3l_ttH_tH_BKG_1p5_1_1p5_3jets,
     mvaInputVariables_TensorFlow_3l_ttH_tH_BKG_NN_legacy_opt,
     classes_TensorFlow_3l_ttH_tH_3cat
   );
-  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_2_2_2_3jets = "tthAnalysis/HiggsToTauTau/data/NN_legacy_opt_2017_2018/test_model_3l_0tau_ttH_tH_BKG_2_2_2_3jets.pb";
+  std::string mvaFileName_TensorFlow_3l_ttH_tH_BKG_2_2_2_3jets = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/test_sig_1_rest_1_th_1.pb";
   TensorFlowInterface mva_3l_ttH_tH_BKG_2_2_2_3jets(
     mvaFileName_TensorFlow_3l_ttH_tH_BKG_2_2_2_3jets,
     mvaInputVariables_TensorFlow_3l_ttH_tH_BKG_NN_legacy_opt,
@@ -595,10 +600,10 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     "nBJetMedium", "nElectron", "sum_lep_charge"
   };
   std::map<std::string, double> mvaInputs_3l_ttH_tH_3cat_v8_TF;
-  std::string mvaFileName_TensorFlow_3l_ttH_tH_3cat_v8 = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_sync/test_model_3l_ttH_tH_3cat_nottZ_no4mom_noSemi_noStand_v8.pb";
+  std::string mvaFileName_TensorFlow_3l_ttH_tH_3cat_v8 = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/test_sig_1_rest_1p5_th_1.pb";
   TensorFlowInterface mva_3l_ttH_tH_3cat_v8_TF(
     mvaFileName_TensorFlow_3l_ttH_tH_3cat_v8,
-    mvaInputVariables_TensorFlow_3l_ttH_tH_3cat_v8,
+    mvaInputVariables_TensorFlow_3l_ttH_tH_BKG_NN_legacy_opt,
     classes_TensorFlow_3l_ttH_tH_3cat
   );
 
@@ -1062,7 +1067,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     }
     ++analyzedEntries;
     histogram_analyzedEntries->Fill(0.);
-    //if (analyzedEntries >100) break;
+    //if (analyzedEntries >1000) break;
 
     if (run_lumi_eventSelector && !(*run_lumi_eventSelector)(eventInfo))
     {
@@ -2007,7 +2012,8 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
       {"nBJetMedium",     selBJets_medium.size()},
       {"nJetForward",     selJetsForward.size()},
       {"nElectron",       selElectrons.size()},
-      {"has_SFOS",        hasSFOS}
+      {"has_SFOS",        hasSFOS},
+      {"is_2016",         era == 2016 ? 1 : 0}
       };
     std::map<std::string, double> mvaOutput_3l_ttH_tH_BKG_1p5_1_1_3jets_TF = mva_3l_ttH_tH_BKG_1p5_1_1_3jets(mvaInputVariables_NN);
     std::map<std::string, double> mvaOutput_3l_ttH_tH_BKG_1p5_1p5_1_3jets_TF = mva_3l_ttH_tH_BKG_1p5_1p5_1_3jets(mvaInputVariables_NN);
@@ -2032,7 +2038,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
       std::cout << std::endl;
     }
 
-    mvaInputs_3l_ttH_tH_3cat_v8_TF["avg_dr_jet"]                 = avg_dr_jet;
+    /*mvaInputs_3l_ttH_tH_3cat_v8_TF["avg_dr_jet"]                 = avg_dr_jet;
     mvaInputs_3l_ttH_tH_3cat_v8_TF["ptmiss"] = met.pt();
     mvaInputs_3l_ttH_tH_3cat_v8_TF["mbb_medium"] = mbb;
     mvaInputs_3l_ttH_tH_3cat_v8_TF["jet1_pt"] = selJets[0]->pt();
@@ -2056,8 +2062,8 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     mvaInputs_3l_ttH_tH_3cat_v8_TF["nBJetMedium"] = selBJets_medium.size();
     mvaInputs_3l_ttH_tH_3cat_v8_TF["nElectron"] = selElectrons.size();
     mvaInputs_3l_ttH_tH_3cat_v8_TF["sum_lep_charge"] = sumLeptonCharge;
-    //mvaInputs_3l_ttH_tH_3cat_v8_TF["mvaOutput_Hj_tagger"] = Hj_tagger_fromCSVsort4th;
-    std::map<std::string, double> mvaOutput_3l_ttH_tH_3cat_v8_TF = mva_3l_ttH_tH_3cat_v8_TF(mvaInputs_3l_ttH_tH_3cat_v8_TF);
+    //mvaInputs_3l_ttH_tH_3cat_v8_TF["mvaOutput_Hj_tagger"] = Hj_tagger_fromCSVsort4th;*/
+    std::map<std::string, double> mvaOutput_3l_ttH_tH_3cat_v8_TF = mva_3l_ttH_tH_3cat_v8_TF(mvaInputVariables_NN);
     if ( isDebugTF ) {
       std::cout << "result v8 ";
       for (auto elem : classes_TensorFlow_3l_ttH_tH_3cat ) std::cout << elem << " = " << mvaOutput_3l_ttH_tH_3cat_v8_TF[elem] <<" ";
