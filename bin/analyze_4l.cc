@@ -666,7 +666,7 @@ int main(int argc, char* argv[])
       "lep1_genLepPt", "lep2_genLepPt", "lep3_genLepPt", "lep4_genLepPt",
       "lep1_fake_prob", "lep2_fake_prob", "lep3_fake_prob", "lep4_fake_prob",
       "lep1_frWeight", "lep2_frWeight", "lep3_frWeight", "lep4_frWeight",
-      "massL", "massL_FO", "massL4", "massLT", "met_LD",
+      "massL4", "massL_FO", "massLT2", "massLT", "met_LD",
       "mindr_lep_jet",
       "max_Lep_eta", "mbb_loose", "mbb_medium",
       "jet1_pt", "jet1_eta", "jet1_phi", "jet1_E",
@@ -1581,24 +1581,14 @@ int main(int argc, char* argv[])
           ("jet2_eta",            selJets[1]->eta())
           ("jet2_phi",            selJets[1]->phi())
           ("jet2_E",              selJets[1]->p4().energy())
-          ("massLT",              comp_MT_met_lep1(selLeptons[0]->p4() + selLeptons[1]->p4(), met.pt(), met.phi()))
-          ("massL4",              comp_MT_met_lep1(selLeptons[0]->p4() + selLeptons[1]->p4() + selLeptons[2]->p4() + selLeptons[4]->p4(), met.pt(), met.phi()))
+          ("massLT2",              comp_MT_met_lep1(selLeptons[0]->p4() + selLeptons[1]->p4(), met.pt(), met.phi()))
+          ("massLT",              comp_MT_met_lep1(selLeptons[0]->p4() + selLeptons[1]->p4() + selLeptons[2]->p4() + selLeptons[4]->p4(), met.pt(), met.phi()))
           ("massL_FO",           massL(fakeableLeptons))
-          ("massL",           massL(selLeptons))
+          ("massL4",           massL(selLeptons))
           ("mindr_lep_jet",   std::min(comp_mindr_lep1_jet(*selLepton_lead, selJets), std::min(comp_mindr_lep2_jet(*selLepton_sublead, selJets), std::min(comp_mindr_lep3_jet(*selLepton_third, selJets), std::min(comp_mindr_lep3_jet(*selLepton_fourth, selJets), 400.)))))
-          ("max_Lep_eta",     std::max(
-                                selLepton_lead -> eta(),
-                                std::max(
-                                  selLepton_sublead -> eta(),
-                                  std::max(
-                                    selLepton_third -> eta(),
-                                    std::max(selLepton_fourth -> eta(), 0.)
-                                  )
-                                )
-                              )
-                            )
+          ("max_Lep_eta",     std::max({ selLepton_lead->absEta(), selLepton_sublead->absEta(), selLepton_third->absEta(), selLepton_fourth->absEta() }))
           ("sum_Lep_charge",  sumcharge)
-          ("nElectron",                      selElectrons.size())
+          ("nElectron",       selElectrons.size())
           ("has_SFOS",       isSFOS(selLeptons))
           ("nJetForward",    selJetsForward.size())
         .fill()
