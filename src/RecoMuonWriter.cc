@@ -47,7 +47,7 @@ RecoMuonWriter::setBranchNames()
 {
   // Karl: let's write the looseIdPOG branch even though we aren't going to read it
   //       in the first place
-  branchName_looseIdPOG_ = Form("%s_%s", branchName_obj_.data(), "looseIdPOG");
+  branchName_looseIdPOG_ = Form("%s_%s", branchName_obj_.data(), "looseId");
   branchName_mediumIdPOG_ = Form("%s_%s", branchName_obj_.data(), "mediumId");
   branchName_segmentCompatibility_ = Form("%s_%s", branchName_obj_.data(), "segmentComp");
   branchName_ptErr_ = Form("%s_%s", branchName_obj_.data(), "ptErr");

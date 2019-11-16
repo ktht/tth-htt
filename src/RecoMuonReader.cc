@@ -21,6 +21,7 @@ RecoMuonReader::RecoMuonReader(int era,
   , branchName_num_(Form("n%s", branchName_obj.data()))
   , branchName_obj_(branchName_obj)
   , leptonReader_(new RecoLeptonReader(branchName_obj_, isMC, readGenMatching))
+  , looseIdPOG_(nullptr)
   , mediumIdPOG_(nullptr)
   , segmentCompatibility_(nullptr)
   , ptErr_(nullptr)
@@ -39,6 +40,7 @@ RecoMuonReader::~RecoMuonReader()
     RecoMuonReader * gInstance = instances_[branchName_obj_];
     assert(gInstance);
     delete gInstance->leptonReader_;
+    delete[] gInstance->looseIdPOG_;
     delete[] gInstance->mediumIdPOG_;
     delete[] gInstance->segmentCompatibility_;
     delete[] gInstance->ptErr_;
@@ -52,8 +54,8 @@ RecoMuonReader::setBranchNames()
 {
   if(numInstances_[branchName_obj_] == 0)
   {
-    // Karl: already includes HIP mitigation for 2016 B-F
-    branchName_mediumIdPOG_ = Form("%s_%s", branchName_obj_.data(), "mediumId");
+    branchName_looseIdPOG_ = Form("%s_%s", branchName_obj_.data(), "looseId");
+    branchName_mediumIdPOG_ = Form("%s_%s", branchName_obj_.data(), "mediumId"); // Karl: already includes HIP mitigation for 2016 B-F
     branchName_segmentCompatibility_ = Form("%s_%s", branchName_obj_.data(), "segmentComp");
     branchName_ptErr_ = Form("%s_%s", branchName_obj_.data(), "ptErr");
     branchName_pfRelIso04_all_ = Form("%s_%s", branchName_obj_.data(), "pfRelIso04_all");
@@ -82,6 +84,7 @@ RecoMuonReader::setBranchAddresses(TTree * tree)
 
     const unsigned int max_nLeptons = leptonReader_->max_nLeptons_;
     BranchAddressInitializer bai(tree, max_nLeptons);
+    bai.setBranchAddress(looseIdPOG_, branchName_looseIdPOG_);
     bai.setBranchAddress(mediumIdPOG_, branchName_mediumIdPOG_);
     bai.setBranchAddress(segmentCompatibility_, branchName_segmentCompatibility_);
     bai.setBranchAddress(ptErr_, branchName_ptErr_, -1.);
@@ -140,7 +143,7 @@ RecoMuonReader::read() const
             gLeptonReader->genPartFlav_[idxLepton],
             gLeptonReader->genMatchIdx_[idxLepton],
           },
-          true, // Karl: all muon objects pass Muon POG's loose definition at the nanoAOD prodction level
+          gMuonReader->looseIdPOG_[idxLepton],
           gMuonReader->mediumIdPOG_[idxLepton],
           gMuonReader->segmentCompatibility_[idxLepton],
           gMuonReader->ptErr_[idxLepton],
