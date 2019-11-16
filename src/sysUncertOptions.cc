@@ -303,7 +303,7 @@ getBranchName_jetMET(const std::string & default_branchName,
 {
   static std::map<int, std::string> branchNames_sys;
   const bool isJet = default_branchName == "Jet";
-  const bool isMET = default_branchName == "MET";
+  const bool isMET = default_branchName == Form("MET%s", era == kEra_2017 ? "FixEE2017" : "");
   if(! isJet && ! isMET)
   {
     throw cmsException(__func__, __LINE__) << "Invalid branch name provided: " << default_branchName;

@@ -196,6 +196,7 @@ class prodNtupleConfig:
             "process.produceNtuple.useNonNominal              = cms.bool(%s)"     % self.use_nonnominal,
             "process.produceNtuple.genMatchingByIndex         = cms.bool(%s)"     % self.gen_matching_by_index,
             "process.produceNtuple.branchNames_triggers       = cms.vstring(%s)"  % jobOptions['triggers'],
+            "process.produceNtuple.branchName_met             = cms.string('%s')" % ('MET' if self.era != '2017' else 'METFixEE2017'),
             "process.fwliteInput.fileNames                    = cms.vstring(%s)"  % inputFiles_prepended,
             "executable          = 'produceNtuple'",
             "inputFiles          = %s" % jobOptions['inputFiles'],

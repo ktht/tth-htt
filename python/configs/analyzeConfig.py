@@ -690,6 +690,8 @@ class analyzeConfig(object):
 
         if 'hasLHE' not in jobOptions:
             jobOptions['hasLHE'] = sample_info['has_LHE']
+        if self.era == '2017':
+          jobOptions['branchName_met'] = 'METFixEE2017'
 
         jobOptions_local = [
             'process',
@@ -759,6 +761,7 @@ class analyzeConfig(object):
             'hhWeight_cfg.ktScan_file',
             'hhWeight_cfg.apply_rwgt',
             'minNumJets',
+            'branchName_met',
         ]
         jobOptions_typeMapping = {
           'central_or_shifts_local' : 'cms.vstring(%s)',
