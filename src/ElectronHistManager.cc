@@ -45,7 +45,6 @@ ElectronHistManager::ElectronHistManager(const edm::ParameterSet & cfg)
     "sigmaEtaEta",
     "HoE",
     "deltaEta",
-    "deltaPhi",
     "OoEminusOoP",
     "nLostHits",
     "passesConversionVeto",
@@ -82,7 +81,6 @@ ElectronHistManager::bookHistograms(TFileDirectory & dir)
     histogram_sigmaEtaEta_          = book1D(dir, "sigmaEtaEta",          "sigmaEtaEta",          40,  0.,    0.04);
     histogram_HoE_                  = book1D(dir, "HoE",                  "HoE",                  40,  0.,    0.20);
     histogram_deltaEta_             = book1D(dir, "deltaEta",             "deltaEta",             40,  0.,    0.02);
-    histogram_deltaPhi_             = book1D(dir, "deltaPhi",             "deltaPhi",             40,  0.,    0.10);
     histogram_OoEminusOoP_          = book1D(dir, "OoEminusOoP",          "OoEminusOoP",          40, -0.05, +0.01);
     histogram_nLostHits_            = book1D(dir, "nLostHits",            "nLostHits",             2, -0.5,  +1.5);
     histogram_passesConversionVeto_ = book1D(dir, "passesConversionVeto", "passesConversionVeto",  3, -0.5,  +2.5);    
@@ -124,7 +122,6 @@ ElectronHistManager::fillHistograms(const RecoElectron & electron,
     fillWithOverFlow(histogram_sigmaEtaEta_,   electron.sigmaEtaEta(),   evtWeight, evtWeightErr);
     fillWithOverFlow(histogram_HoE_,           electron.HoE(),           evtWeight, evtWeightErr);
     fillWithOverFlow(histogram_deltaEta_,      electron.deltaEta(),      evtWeight, evtWeightErr);
-    fillWithOverFlow(histogram_deltaPhi_,      electron.deltaPhi(),      evtWeight, evtWeightErr);
     fillWithOverFlow(histogram_OoEminusOoP_,   electron.OoEminusOoP(),   evtWeight, evtWeightErr);
     fillWithOverFlow(histogram_nLostHits_,     electron.nLostHits(),     evtWeight, evtWeightErr);    
     const int passesConversionVeto = static_cast<int>(electron.passesConversionVeto());

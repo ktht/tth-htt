@@ -24,6 +24,7 @@ RecoMuonReader::RecoMuonReader(int era,
   , mediumIdPOG_(nullptr)
   , segmentCompatibility_(nullptr)
   , ptErr_(nullptr)
+  , pfRelIso04_all_(nullptr)
 {
   setBranchNames();
 }
@@ -41,6 +42,7 @@ RecoMuonReader::~RecoMuonReader()
     delete[] gInstance->mediumIdPOG_;
     delete[] gInstance->segmentCompatibility_;
     delete[] gInstance->ptErr_;
+    delete[] gInstance->pfRelIso04_all_;
     instances_[branchName_obj_] = nullptr;
   }
 }
@@ -54,6 +56,7 @@ RecoMuonReader::setBranchNames()
     branchName_mediumIdPOG_ = Form("%s_%s", branchName_obj_.data(), "mediumId");
     branchName_segmentCompatibility_ = Form("%s_%s", branchName_obj_.data(), "segmentComp");
     branchName_ptErr_ = Form("%s_%s", branchName_obj_.data(), "ptErr");
+    branchName_pfRelIso04_all_ = Form("%s_%s", branchName_obj_.data(), "pfRelIso04_all");
     instances_[branchName_obj_] = this;
   }
   else
@@ -82,6 +85,7 @@ RecoMuonReader::setBranchAddresses(TTree * tree)
     bai.setBranchAddress(mediumIdPOG_, branchName_mediumIdPOG_);
     bai.setBranchAddress(segmentCompatibility_, branchName_segmentCompatibility_);
     bai.setBranchAddress(ptErr_, branchName_ptErr_, -1.);
+    bai.setBranchAddress(pfRelIso04_all_, branchName_pfRelIso04_all_);
   }
 }
 
@@ -124,14 +128,12 @@ RecoMuonReader::read() const
             gLeptonReader->dxy_[idxLepton],
             gLeptonReader->dz_[idxLepton],
             gLeptonReader->relIso_all_[idxLepton],
-            gLeptonReader->pfRelIso04_all_[idxLepton],
             gLeptonReader->relIso_chg_[idxLepton],
             gLeptonReader->relIso_neu_[idxLepton],
             gLeptonReader->sip3d_[idxLepton],
             gLeptonReader->mvaRawTTH_[idxLepton],
-            gLeptonReader->jetPtRatio_[idxLepton],
+            gLeptonReader->jetRelIso_[idxLepton],
             gLeptonReader->jetPtRel_[idxLepton],
-            gLeptonReader->jetNDauChargedMVASel_[idxLepton],
             gLeptonReader->tightCharge_[idxLepton],
             gLeptonReader->filterBits_[idxLepton],
             gLeptonReader->jetIdx_[idxLepton],
@@ -141,7 +143,8 @@ RecoMuonReader::read() const
           true, // Karl: all muon objects pass Muon POG's loose definition at the nanoAOD prodction level
           gMuonReader->mediumIdPOG_[idxLepton],
           gMuonReader->segmentCompatibility_[idxLepton],
-          gMuonReader->ptErr_[idxLepton]
+          gMuonReader->ptErr_[idxLepton],
+          gMuonReader->pfRelIso04_all_[idxLepton]
         }));
 
         RecoMuon & muon = muons.back();

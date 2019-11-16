@@ -31,14 +31,12 @@ RecoLeptonReader::RecoLeptonReader(const std::string & branchName_obj,
   , dxy_(nullptr)
   , dz_(nullptr)
   , relIso_all_(nullptr)
-  , pfRelIso04_all_(nullptr)
   , relIso_chg_(nullptr)
   , relIso_neu_(nullptr)
   , sip3d_(nullptr)
   , mvaRawTTH_(nullptr)
-  , jetPtRatio_(nullptr)
+  , jetRelIso_(nullptr)
   , jetPtRel_(nullptr)
-  , jetNDauChargedMVASel_(nullptr)
   , tightCharge_(nullptr)
   , charge_(nullptr)
   , filterBits_(nullptr)
@@ -78,14 +76,12 @@ RecoLeptonReader::~RecoLeptonReader()
     delete[] gInstance->dxy_;
     delete[] gInstance->dz_;
     delete[] gInstance->relIso_all_;
-    delete[] gInstance->pfRelIso04_all_;
     delete[] gInstance->relIso_chg_;
     delete[] gInstance->relIso_neu_;
     delete[] gInstance->sip3d_;
     delete[] gInstance->mvaRawTTH_;
-    delete[] gInstance->jetPtRatio_;
+    delete[] gInstance->jetRelIso_;
     delete[] gInstance->jetPtRel_;
-    delete[] gInstance->jetNDauChargedMVASel_;
     delete[] gInstance->tightCharge_;
     delete[] gInstance->charge_;
     delete[] gInstance->filterBits_;
@@ -115,22 +111,20 @@ RecoLeptonReader::setBranchNames()
     branchName_dxy_ = Form("%s_%s", branchName_obj_.data(), "dxy");
     branchName_dz_ = Form("%s_%s", branchName_obj_.data(), "dz");
     branchName_relIso_all_ = Form("%s_%s", branchName_obj_.data(), "miniPFRelIso_all");
-    branchName_pfRelIso04_all_ = Form("%s_%s", branchName_obj_.data(), "pfRelIso04_all");
     branchName_relIso_chg_ = Form("%s_%s", branchName_obj_.data(), "miniPFRelIso_chg");
     branchName_relIso_neu_ = Form("%s_%s", branchName_obj_.data(), "miniPFRelIso_neu");
     branchName_sip3d_ = Form("%s_%s", branchName_obj_.data(), "sip3d");
     branchName_mvaRawTTH_ = Form("%s_%s", branchName_obj_.data(), "mvaTTH");
-    branchName_jetPtRatio_ = Form("%s_%s", branchName_obj_.data(), "jetPtRatio");
+    branchName_jetRelIso_ = Form("%s_%s", branchName_obj_.data(), "jetRelIso");
     branchName_jetPtRel_ = Form("%s_%s", branchName_obj_.data(), "jetPtRelv2");
-    branchName_jetNDauChargedMVASel_ = Form("%s_%s", branchName_obj_.data(), "jetNDauChargedMVASel");
     for(Btag btag: { Btag::kCSVv2, Btag::kDeepCSV, Btag::kDeepJet })
     {
       std::string btag_str = "";
       switch(btag)
       {
-        case Btag::kCSVv2:   btag_str = "CSV"; break;
-        case Btag::kDeepCSV: btag_str = "DeepCSV"; break;
-        case Btag::kDeepJet: btag_str = "DeepJet"; break;
+        case Btag::kCSVv2:   btag_str = "CSVV2";     break;
+        case Btag::kDeepCSV: btag_str = "DeepB";     break;
+        case Btag::kDeepJet: btag_str = "DeepFlavB"; break;
       }
       branchNames_jetBtagCSV_[btag] = Form("%s_jetBTag%s", branchName_obj_.data(), btag_str.data());
     }
@@ -177,19 +171,17 @@ RecoLeptonReader::setBranchAddresses(TTree * tree)
     bai.setBranchAddress(pdgId_, branchName_pdgId_);
     bai.setBranchAddress(dxy_, branchName_dxy_);
     bai.setBranchAddress(dz_, branchName_dz_);
-    bai.setBranchAddress(pfRelIso04_all_, branchName_pfRelIso04_all_);
     bai.setBranchAddress(relIso_all_, branchName_relIso_all_);
     bai.setBranchAddress(relIso_chg_, branchName_relIso_chg_);
     bai.setBranchAddress(relIso_neu_, branchName_relIso_neu_);
     bai.setBranchAddress(sip3d_, branchName_sip3d_);
     bai.setBranchAddress(mvaRawTTH_, branchName_mvaRawTTH_);
-    bai.setBranchAddress(jetPtRatio_, branchName_jetPtRatio_);
+    bai.setBranchAddress(jetRelIso_, branchName_jetRelIso_);
     bai.setBranchAddress(jetPtRel_, branchName_jetPtRel_, -1.);
     for(const auto & kv: branchNames_jetBtagCSV_)
     {
       bai.setBranchAddress(jetBtagCSVs_[kv.first], kv.second);
     }
-    bai.setBranchAddress(jetNDauChargedMVASel_, branchName_jetNDauChargedMVASel_, -1);
     bai.setBranchAddress(tightCharge_, branchName_tightCharge_);
     bai.setBranchAddress(charge_, branchName_charge_);
     bai.setBranchAddress(filterBits_, branchName_filterBits_);

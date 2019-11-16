@@ -54,11 +54,7 @@ RecoJetWriter::~RecoJetWriter()
   delete genJetWriter_;
   delete[] jet_eta_;
   delete[] jet_phi_;
-  delete[] jet_charge_;
   delete[] jet_QGDiscr_;
-  delete[] jet_pullEta_;
-  delete[] jet_pullPhi_;
-  delete[] jet_pullMag_;
   delete[] jet_jetId_;
   delete[] jet_puId_;
   delete[] jet_jetIdx_;
@@ -98,7 +94,6 @@ RecoJetWriter::setBranchNames()
   }
   branchName_eta_ = Form("%s_%s", branchName_obj_.data(), "eta");
   branchName_phi_ = Form("%s_%s", branchName_obj_.data(), "phi");
-  branchName_jetCharge_ = Form("%s_%s", branchName_obj_.data(), "jetCharge");
   for(const auto & kv: BtagWP_map.at(era_))
   {
     std::string btagName;
@@ -113,9 +108,6 @@ RecoJetWriter::setBranchNames()
   }
   assert(! branchNames_btag_.empty());
   branchName_QGDiscr_ = Form("%s_%s", branchName_obj_.data(), "qgl");
-  branchName_pullEta_ = Form("%s_%s", branchName_obj_.data(), "pullEta");
-  branchName_pullPhi_ = Form("%s_%s", branchName_obj_.data(), "pullPhi");
-  branchName_pullMag_ = Form("%s_%s", branchName_obj_.data(), "pullMag");
   branchName_jetId_ = Form("%s_%s", branchName_obj_.data(), "jetId");
   branchName_puId_ = Form("%s_%s", branchName_obj_.data(), "puId");
   branchName_jetIdx_ = Form("%s_%s", branchName_obj_.data(), "jetIdx");
@@ -181,10 +173,6 @@ RecoJetWriter::setBranches(TTree * tree)
   }
   bai.setBranch(jet_eta_, branchName_eta_);
   bai.setBranch(jet_phi_, branchName_phi_);
-  bai.setBranch(jet_charge_, branchName_jetCharge_);
-  bai.setBranch(jet_pullEta_, branchName_pullEta_);
-  bai.setBranch(jet_pullPhi_, branchName_pullPhi_);
-  bai.setBranch(jet_pullMag_, branchName_pullMag_);
   bai.setBranch(jet_jetId_, branchName_jetId_);
   bai.setBranch(jet_puId_, branchName_puId_);
   bai.setBranch(jet_jetIdx_, branchName_jetIdx_);
@@ -275,14 +263,10 @@ RecoJetWriter::write(const std::vector<const RecoJet *> & jets)
     }
     jet_eta_[idxJet] = jet->eta();
     jet_phi_[idxJet] = jet->phi();
-    jet_charge_[idxJet] = jet->charge();
     for(const auto & kv: branchNames_btag_)
     {
       jet_BtagCSVs_[kv.first][idxJet] = jet->BtagCSVs_.count(kv.first) ? jet->BtagCSVs_.at(kv.first) : -1.;
     }
-    jet_pullEta_[idxJet] = jet->pullEta();
-    jet_pullPhi_[idxJet] = jet->pullPhi();
-    jet_pullMag_[idxJet] = jet->pullMag();
     jet_jetId_[idxJet] = jet->jetId();
     jet_puId_[idxJet] = jet->puId();
     jet_jetIdx_[idxJet] = jet->idx();

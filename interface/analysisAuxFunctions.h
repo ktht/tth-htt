@@ -81,14 +81,14 @@ const std::map<int, std::vector<std::string>> TauID_level_strings = {
 };
 
 const std::map<TauID, std::string> TauID_names = {
-  { TauID::MVAnewDM2017v2,     "MVAnewDM2017v2"     },
-  { TauID::MVAoldDM,           "MVAoldDM"           },
-  { TauID::MVAoldDMdR032017v2, "MVAoldDMdR032017v2" },
-  { TauID::MVAoldDM2017v1,     "MVAoldDM2017v1"     },
-  { TauID::MVAoldDM2017v2,     "MVAoldDM2017v2"     },
-  { TauID::DeepTau2017v2VSe,   "DeepTau2017v2VSe"   },
-  { TauID::DeepTau2017v2VSmu,  "DeepTau2017v2VSmu"  },
-  { TauID::DeepTau2017v2VSjet, "DeepTau2017v2VSjet" },
+  { TauID::MVAnewDM2017v2,     "MVAnewDM2017v2"       },
+  { TauID::MVAoldDM,           "MVAoldDM"             },
+  { TauID::MVAoldDMdR032017v2, "MVAoldDMdR032017v2"   },
+  { TauID::MVAoldDM2017v1,     "MVAoldDM2017v1"       },
+  { TauID::MVAoldDM2017v2,     "MVAoldDM2017v2"       },
+  { TauID::DeepTau2017v2VSe,   "DeepTau2017v2p1VSe"   },
+  { TauID::DeepTau2017v2VSmu,  "DeepTau2017v2p1VSmu"  },
+  { TauID::DeepTau2017v2VSjet, "DeepTau2017v2p1VSjet" },
 };
 
 // NB! must be exactly 7 characters!

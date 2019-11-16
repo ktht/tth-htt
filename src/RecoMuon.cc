@@ -4,12 +4,14 @@ RecoMuon::RecoMuon(const RecoLepton & lepton,
                    Bool_t passesLooseIdPOG,
                    Bool_t passesMediumIdPOG,
                    Float_t segmentCompatibility,
-                   Float_t ptErr)
+                   Float_t ptErr,
+                   Float_t pfRelIso04All)
   : RecoLepton(lepton)
   , passesLooseIdPOG_(passesLooseIdPOG)
   , passesMediumIdPOG_(passesMediumIdPOG)
   , segmentCompatibility_(segmentCompatibility)
   , ptErr_(ptErr)
+  , pfRelIso04All_(pfRelIso04All)
 {}
 
 Bool_t
@@ -34,6 +36,12 @@ Float_t
 RecoMuon::ptErr() const
 {
   return ptErr_;
+}
+
+Float_t
+RecoMuon::pfRelIso04All() const
+{
+  return pfRelIso04All_;
 }
 
 Float_t

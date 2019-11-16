@@ -24,7 +24,7 @@ RecoElectronSelectorFakeable::RecoElectronSelectorFakeable(int era,
   , max_HoE_trig_(0.10) // F
   , min_OoEminusOoP_trig_(-0.04) // F
   , wp_mvaTTH_ (0.80) // F
-  , min_jetPtRatio_(1. / 1.7) // F
+  , max_jetRelIso_(0.7) // F
   , max_jetBtagCSV_(get_BtagWP(era_, Btag::kDeepJet, BtagWP::kMedium)) // F
   , apply_conversionVeto_(true) // F
   , max_nLostHits_(0) // F
@@ -170,11 +170,11 @@ RecoElectronSelectorFakeable::operator()(const RecoElectron & electron) const
 
   if(electron.mvaRawTTH() <= wp_mvaTTH_)
   {
-    if(electron.jetPtRatio() < min_jetPtRatio_)
+    if(electron.jetRelIso() > max_jetRelIso_)
     {
       if(debug_)
       {
-        std::cout << "FAILS jetPtRatio = " << electron.jetPtRatio() << " >= " << min_jetPtRatio_ << " fakeable cut\n";
+        std::cout << "FAILS jetRelIso = " << electron.jetRelIso() << " <= " << max_jetRelIso_ << " fakeable cut\n";
       }
       return false;
     }

@@ -12,7 +12,8 @@ public:
            Bool_t passesLooseIdPOG,
            Bool_t passesMediumIdPOG,
            Float_t segmentCompatibility,
-           Float_t ptErr);
+           Float_t ptErr,
+           Float_t pfRelIso04All);
 
   /**
    * @brief Funtions to access data-members
@@ -29,6 +30,9 @@ public:
 
   Float_t
   ptErr() const;
+
+  Float_t
+  pfRelIso04All() const;
 
   Float_t
   dpt_div_pt() const;
@@ -58,6 +62,7 @@ public:
   Bool_t passesMediumIdPOG_;     ///< flag indicating if muon passes (true) or fails (false) medium PFMuon id
   Float_t segmentCompatibility_; ///< muon segment compatibility
   Float_t ptErr_;                ///< pT error of the muon track
+  Float_t pfRelIso04All_;       ///< PF relative isolation dR=0.4, charged component
 };
 
 std::ostream &

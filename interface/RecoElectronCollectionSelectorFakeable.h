@@ -53,7 +53,7 @@ protected:
 //--- define cuts that dependent on lepton MVA of ttH multilepton analysis 
 //    format: electron fails / passes loose cut on lepton MVA value
   Double_t wp_mvaTTH_;                ///< lepton MVA threshold
-  const Double_t min_jetPtRatio_;           ///< lower cut on ratio of lepton pT to pT of nearby jet
+  const Double_t max_jetRelIso_;            ///< upper cut on relative jet isolation variable
   const Double_t max_jetBtagCSV_;           ///< upper cut threshold on CSV b-tagging discriminator value of nearby jet
 //-------------------------------------------------------------------------------
   const bool apply_conversionVeto_;         ///< apply (True) or do not apply (False) conversion veto

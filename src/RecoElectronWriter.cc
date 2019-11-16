@@ -29,7 +29,6 @@ RecoElectronWriter::RecoElectronWriter(int era,
   , sigmaEtaEta_(nullptr)
   , HoE_(nullptr)
   , deltaEta_(nullptr)
-  , deltaPhi_(nullptr)
   , OoEminusOoP_(nullptr)
   , lostHits_(nullptr)
   , conversionVeto_(nullptr)
@@ -46,7 +45,6 @@ RecoElectronWriter::~RecoElectronWriter()
   delete[] sigmaEtaEta_;
   delete[] HoE_;
   delete[] deltaEta_;
-  delete[] deltaPhi_;
   delete[] OoEminusOoP_;
   delete[] lostHits_;
   delete[] conversionVeto_;
@@ -86,7 +84,6 @@ RecoElectronWriter::setBranchNames()
   branchName_sigmaEtaEta_ = Form("%s_%s", branchName_obj_.data(), "sieie");
   branchName_HoE_ = Form("%s_%s", branchName_obj_.data(), "hoe");
   branchName_deltaEta_ = Form("%s_%s", branchName_obj_.data(), "deltaEtaSC");
-  branchName_deltaPhi_ = Form("%s_%s", branchName_obj_.data(), "deltaPhiSC");
   branchName_OoEminusOoP_ = Form("%s_%s", branchName_obj_.data(), "eInvMinusPInv");
   branchName_lostHits_ = Form("%s_%s", branchName_obj_.data(), "lostHits");
   branchName_conversionVeto_ = Form("%s_%s", branchName_obj_.data(), "convVeto");
@@ -115,7 +112,6 @@ RecoElectronWriter::setBranches(TTree * tree)
   bai.setBranch(sigmaEtaEta_, branchName_sigmaEtaEta_);
   bai.setBranch(HoE_, branchName_HoE_);
   bai.setBranch(deltaEta_, branchName_deltaEta_);
-  bai.setBranch(deltaPhi_, branchName_deltaPhi_);
   bai.setBranch(OoEminusOoP_, branchName_OoEminusOoP_);
   bai.setBranch(lostHits_, branchName_lostHits_);
   bai.setBranch(conversionVeto_, branchName_conversionVeto_);
@@ -157,7 +153,6 @@ RecoElectronWriter::write(const std::vector<const RecoElectron *> & leptons)
     sigmaEtaEta_[idxLepton] = lepton->sigmaEtaEta();
     HoE_[idxLepton] = lepton->HoE();
     deltaEta_[idxLepton] = lepton->deltaEta();
-    deltaPhi_[idxLepton] = lepton->deltaPhi();
     OoEminusOoP_[idxLepton] = lepton->OoEminusOoP();
     lostHits_[idxLepton] = lepton->nLostHits(); 
     conversionVeto_[idxLepton] = lepton->passesConversionVeto();

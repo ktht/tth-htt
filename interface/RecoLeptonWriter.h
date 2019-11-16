@@ -51,18 +51,16 @@ public:
       dxy_[idxLepton] = lepton->dxy();
       dz_[idxLepton] = lepton->dz();
       relIso_all_[idxLepton] = lepton->relIso();
-      pfRelIso04_all_[idxLepton] = lepton->pfRelIso04All();
       relIso_chg_[idxLepton] = lepton->miniRelIsoCharged();
       relIso_neu_[idxLepton] = lepton->miniRelIsoNeutral();
       sip3d_[idxLepton] = lepton->sip3d();
       mvaRawTTH_[idxLepton] = lepton->mvaRawTTH();
-      jetPtRatio_[idxLepton] = lepton->jetPtRatio();
+      jetRelIso_[idxLepton] = lepton->jetRelIso();
       jetPtRel_[idxLepton] = lepton->jetPtRel();
       for(const auto & kv: branchNames_jetBtagCSV_)
       {
         jetBtagCSVs_[kv.first][idxLepton] = lepton->jetBtagCSV(kv.first);
       }
-      jetNDauChargedMVASel_[idxLepton] = lepton->jetNDauChargedMVASel();
       tightCharge_[idxLepton] = lepton->tightCharge();
       charge_[idxLepton] = lepton->charge();
       filterBits_[idxLepton] = lepton->filterBits();
@@ -146,14 +144,12 @@ protected:
   std::string branchName_dxy_;
   std::string branchName_dz_;
   std::string branchName_relIso_all_;
-  std::string branchName_pfRelIso04_all_;
   std::string branchName_relIso_chg_;
   std::string branchName_relIso_neu_;
   std::string branchName_sip3d_;
   std::string branchName_mvaRawTTH_;
-  std::string branchName_jetPtRatio_;
+  std::string branchName_jetRelIso_;
   std::string branchName_jetPtRel_;
-  std::string branchName_jetNDauChargedMVASel_;
   std::string branchName_tightCharge_;
   std::string branchName_charge_;
   std::string branchName_filterBits_;
@@ -172,14 +168,12 @@ protected:
   Float_t * dxy_;
   Float_t * dz_;
   Float_t * relIso_all_;
-  Float_t * pfRelIso04_all_;
   Float_t * relIso_chg_;
   Float_t * relIso_neu_;
   Float_t * sip3d_;
   Float_t * mvaRawTTH_;
-  Float_t * jetPtRatio_;
+  Float_t * jetRelIso_;
   Float_t * jetPtRel_;
-  Int_t * jetNDauChargedMVASel_;
   Int_t * tightCharge_;
   Int_t * charge_;
   UInt_t * filterBits_;

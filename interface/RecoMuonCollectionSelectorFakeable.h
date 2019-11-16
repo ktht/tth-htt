@@ -42,7 +42,7 @@ protected:
   const bool apply_mediumIdPOG_;  ///< apply (True) or do not apply (False) medium PFMuon id selection
 
   Double_t wp_mvaTTH_;      ///< lepton MVA threshold
-  const Double_t min_jetPtRatio_; ///< lower cut on ratio of lepton pT to pT of nearby jet
+  const Double_t max_jetRelIso_;  ///< upper cut on relative jet isolation variable
   const Double_t min_jetBtagCSV_; ///< lower cut threshold on b-tagging discriminator value of nearby jet
   const Double_t max_jetBtagCSV_; ///< upper cut threshold on b-tagging discriminator value of nearby jet
 //-------------------------------------------------------------------------------

@@ -9,14 +9,12 @@ RecoLepton::RecoLepton(const ChargedParticle & lepton,
                        Double_t dxy,
                        Double_t dz,
                        Double_t relIso,
-                       Double_t pfRelIso04All,
                        Double_t miniRelIsoCharged,
                        Double_t miniRelIsoNeutral,
                        Double_t sip3d,
                        Double_t mvaRawTTH,
-                       Double_t jetPtRatio,
+                       Double_t jetRelIso,
                        Double_t jetPtRel,
-                       Int_t    jetNDauChargedMVASel,
                        Int_t    tightCharge,
                        UInt_t   filterBits,
                        Int_t    jetIdx,
@@ -26,20 +24,18 @@ RecoLepton::RecoLepton(const ChargedParticle & lepton,
   , dxy_(dxy)
   , dz_(dz)
   , relIso_(relIso)
-  , pfRelIso04All_(pfRelIso04All)
   , miniRelIsoCharged_(miniRelIsoCharged)
   , miniRelIsoNeutral_(miniRelIsoNeutral)
   , sip3d_(sip3d)
   , mvaRawTTH_(mvaRawTTH)
-  , jetPtRatio_(jetPtRatio)
+  , jetRelIso_(jetRelIso)
   , jetPtRel_(jetPtRel)
-  , jetNDauChargedMVASel_(jetNDauChargedMVASel)
   , tightCharge_(tightCharge)
   , filterBits_(filterBits)
   , jetIdx_(jetIdx)
   , genPartFlav_(genPartFlav)
   , genMatchIdx_(genMatchIdx)
-  , assocJet_pt_(jetPtRatio_ > 1.e-3 ? 0.90 * pt_ / jetPtRatio_ : pt_)
+  , assocJet_pt_(0.90 * pt_ * (jetRelIso_ + 1.))
   , assocJet_p4_(assocJet_pt_, eta_, phi_, mass_)
   , genLepton_(nullptr)
   , genHadTau_(nullptr)
@@ -173,12 +169,6 @@ RecoLepton::relIso() const
 }
 
 Double_t
-RecoLepton::pfRelIso04All() const
-{
-  return pfRelIso04All_;
-}
-
-Double_t
 RecoLepton::miniRelIsoCharged() const
 {
   return miniRelIsoCharged_;
@@ -205,13 +195,13 @@ RecoLepton::mvaRawTTH() const
 Double_t
 RecoLepton::jetPtRatio() const
 {
-  return jetPtRatio_;
+  return 1. / (jetRelIso_ + 1.);
 }
 
 Double_t
 RecoLepton::jetRelIso() const
 {
-  return 1. / jetPtRatio_ - 1.;
+  return jetRelIso_;
 }
 
 Double_t
@@ -236,12 +226,6 @@ RecoLepton::jetBtagCSV(Btag btag) const
     ;
   }
   return jetBtagCSVs_.at(btag);
-}
-
-Int_t
-RecoLepton::jetNDauChargedMVASel() const
-{
-  return jetNDauChargedMVASel_;
 }
 
 Int_t
@@ -345,8 +329,7 @@ operator<<(std::ostream & stream,
             " dz = "                  << lepton.dz()                            << ",\n"
             " sip3d = "               << lepton.sip3d()                         << ","
             " relIso = "              << lepton.relIso()                        << ","
-            " pfRelIso04All = "       << lepton.pfRelIso04All()                 << ",\n"
-            " genPartFlav = "         << static_cast<int>(lepton.genPartFlav()) << ", "
+            " genPartFlav = "         << static_cast<int>(lepton.genPartFlav()) << ",\n"
             " tightCharge = "         << lepton.tightCharge()                   << ","
             " jetPtRatio = "          << lepton.jetPtRatio()                    << ","
             " jetPtRel = "            << lepton.jetPtRel()                      << ",\n"

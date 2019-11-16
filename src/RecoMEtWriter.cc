@@ -7,7 +7,7 @@
 
 RecoMEtWriter::RecoMEtWriter(int era,
                              bool isMC)
-  : RecoMEtWriter(era, isMC, "MET")
+  : RecoMEtWriter(era, isMC, Form("MET%s", era == kEra_2017 ? "FixEE2017" : ""))
 {}
 
 RecoMEtWriter::RecoMEtWriter(int era,

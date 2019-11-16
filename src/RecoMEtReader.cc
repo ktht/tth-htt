@@ -10,7 +10,7 @@ std::map<std::string, RecoMEtReader *> RecoMEtReader::instances_;
 
 RecoMEtReader::RecoMEtReader(int era,
                              bool isMC)
-  : RecoMEtReader(era, isMC, "MET")
+  : RecoMEtReader(era, isMC, Form("MET%s", era == kEra_2017 ? "FixEE2017" : ""))
 {}
 
 RecoMEtReader::RecoMEtReader(int era,

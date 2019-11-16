@@ -243,7 +243,6 @@ SyncNtupleManager::initializeBranches()
     mu_miniRelIsoCharged,    "miniIsoCharged",
     mu_miniRelIsoNeutral,    "miniIsoNeutral",
     mu_pfRelIso04All,        "PFRelIso04",
-    mu_jetNDauChargedMVASel, "jetNDauChargedMVASel",
     mu_jetPtRel,             "jetPtRel",
     mu_jetPtRatio,           "jetPtRatio",
     mu_jetCSV,               "jetCSV",
@@ -273,8 +272,6 @@ SyncNtupleManager::initializeBranches()
     ele_miniRelIso,           "miniRelIso",
     ele_miniRelIsoCharged,    "miniIsoCharged",
     ele_miniRelIsoNeutral,    "miniIsoNeutral",
-    ele_pfRelIso04All,        "PFRelIso04",
-    ele_jetNDauChargedMVASel, "jetNDauChargedMVASel",
     ele_jetPtRel,             "jetPtRel",
     ele_jetPtRatio,           "jetPtRatio",
     ele_jetCSV,               "jetCSV",
@@ -292,7 +289,6 @@ SyncNtupleManager::initializeBranches()
     ele_sigmaEtaEta,          "sigmaEtaEta",
     ele_HoE,                  "HoE",
     ele_deltaEta,             "deltaEta",
-    ele_deltaPhi,             "deltaPhi",
     ele_OoEminusOoP,          "OoEminusOoP",
     ele_isfakeablesel,        "isfakeablesel",
     ele_ismvasel,             "ismvasel",
@@ -457,7 +453,6 @@ SyncNtupleManager::read(const std::vector<const RecoMuon *> & muons,
     mu_miniRelIsoCharged[i] = muon -> miniRelIsoCharged();
     mu_miniRelIsoNeutral[i] = muon -> miniRelIsoNeutral();
     mu_pfRelIso04All[i] = muon -> pfRelIso04All();
-    mu_jetNDauChargedMVASel[i] = muon -> jetNDauChargedMVASel();
     mu_jetPtRel[i] = muon -> jetPtRel();
     mu_jetPtRatio[i] = std::min(muon -> jetPtRatio(), 1.5);
     mu_jetCSV[i] = std::max(0., muon -> jetBtagCSV(Btag::kCSVv2));
@@ -517,8 +512,6 @@ SyncNtupleManager::read(const std::vector<const RecoElectron *> & electrons,
     ele_miniRelIso[i] = electron -> relIso();
     ele_miniRelIsoCharged[i] = electron -> miniRelIsoCharged();
     ele_miniRelIsoNeutral[i] = electron -> miniRelIsoNeutral();
-    ele_pfRelIso04All[i] = electron -> pfRelIso04All();
-    ele_jetNDauChargedMVASel[i] = electron -> jetNDauChargedMVASel();
     ele_jetPtRel[i] = electron -> jetPtRel();
     ele_jetPtRatio[i] = std::min(electron -> jetPtRatio(), 1.5);
     ele_jetCSV[i] = std::max(0., electron -> jetBtagCSV(Btag::kCSVv2));
@@ -536,7 +529,6 @@ SyncNtupleManager::read(const std::vector<const RecoElectron *> & electrons,
     ele_sigmaEtaEta[i] = electron -> sigmaEtaEta();
     ele_HoE[i] = electron -> HoE();
     ele_deltaEta[i] = electron -> deltaEta();
-    ele_deltaPhi[i] = electron -> deltaPhi();
     ele_OoEminusOoP[i] = electron -> OoEminusOoP();
 
     ele_isfakeablesel[i] = 0;
@@ -789,7 +781,6 @@ SyncNtupleManager::resetBranches()
     mu_miniRelIsoCharged,
     mu_miniRelIsoNeutral,
     mu_pfRelIso04All,
-    mu_jetNDauChargedMVASel,
     mu_jetPtRel,
     mu_jetPtRatio,
     mu_jetCSV,
@@ -819,8 +810,6 @@ SyncNtupleManager::resetBranches()
     ele_miniRelIso,
     ele_miniRelIsoCharged,
     ele_miniRelIsoNeutral,
-    ele_pfRelIso04All,
-    ele_jetNDauChargedMVASel,
     ele_jetPtRel,
     ele_jetPtRatio,
     ele_jetCSV,
@@ -838,7 +827,6 @@ SyncNtupleManager::resetBranches()
     ele_sigmaEtaEta,
     ele_HoE,
     ele_deltaEta,
-    ele_deltaPhi,
     ele_OoEminusOoP,
     ele_isfakeablesel,
     ele_ismvasel,

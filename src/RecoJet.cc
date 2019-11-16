@@ -6,26 +6,18 @@
 #include "tthAnalysis/HiggsToTauTau/interface/analysisAuxFunctions.h" // as_integer()
 
 RecoJet::RecoJet(const GenJet & jet,
-                 Double_t charge,
                  Double_t BtagCSV,
                  Double_t BtagWeight,
                  Double_t QGDiscr,
-                 Double_t pullEta,
-                 Double_t pullPhi,
-                 Double_t pullMag,
                  Int_t jetId,
                  Int_t puId,
                  Int_t genMatchIdx,
                  Int_t idx,
                  Btag btag)
   : RecoJetBase(jet, idx)
-  , jetCharge_(charge)
   , BtagCSV_(BtagCSV)
   , BtagWeight_(BtagWeight)
   , QGDiscr_(QGDiscr)
-  , pullEta_(pullEta)
-  , pullPhi_(pullPhi)
-  , pullMag_(pullMag)
   , jetId_(jetId)
   , puId_(puId)
   , genMatchIdx_(genMatchIdx)
@@ -34,12 +26,6 @@ RecoJet::RecoJet(const GenJet & jet,
 
 RecoJet::~RecoJet()
 {}
-
-Double_t
-RecoJet::charge() const
-{
-  return jetCharge_;
-}
 
 Double_t
 RecoJet::BtagCSV() const
@@ -82,24 +68,6 @@ Double_t
 RecoJet::QGDiscr() const
 {
   return QGDiscr_;
-}
-
-Double_t
-RecoJet::pullEta() const
-{
-  return pullEta_;
-}
-
-Double_t
-RecoJet::pullPhi() const
-{
-  return pullPhi_;
-}
-
-Double_t
-RecoJet::pullMag() const
-{
-  return pullMag_;
 }
 
 Int_t
@@ -145,7 +113,6 @@ operator<<(std::ostream & stream,
            const RecoJet & jet)
 {
   stream << static_cast<const GenJet &>(jet)         << ","
-            " charge = " << jet.charge()             << ","
             " CSV = "    << jet.BtagCSV()            << ","
             " jet ID = " << jet.jetId()              << ","
             " PU ID = "  << jet.puId()               << ","

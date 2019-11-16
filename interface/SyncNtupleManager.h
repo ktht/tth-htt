@@ -235,7 +235,6 @@ protected:
   Float_t * mu_miniRelIsoCharged;
   Float_t * mu_miniRelIsoNeutral;
   Float_t * mu_pfRelIso04All;
-  Int_t * mu_jetNDauChargedMVASel;
   Float_t * mu_jetPtRel;
   Float_t * mu_jetPtRatio;
   Float_t * mu_jetCSV;
@@ -262,8 +261,6 @@ protected:
   Float_t * ele_miniRelIso;
   Float_t * ele_miniRelIsoCharged;
   Float_t * ele_miniRelIsoNeutral;
-  Float_t * ele_pfRelIso04All;
-  Int_t * ele_jetNDauChargedMVASel;
   Float_t * ele_jetPtRel;
   Float_t * ele_jetPtRatio;
   Float_t * ele_jetCSV;
@@ -281,7 +278,6 @@ protected:
   Float_t * ele_sigmaEtaEta;
   Float_t * ele_HoE;
   Float_t * ele_deltaEta;
-  Float_t * ele_deltaPhi;
   Float_t * ele_OoEminusOoP;
   Int_t * ele_isfakeablesel;
   Int_t * ele_ismvasel;

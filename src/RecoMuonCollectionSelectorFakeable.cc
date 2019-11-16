@@ -20,7 +20,7 @@ RecoMuonSelectorFakeable::RecoMuonSelectorFakeable(int era,
   , apply_looseIdPOG_(true) // L
   , apply_mediumIdPOG_(false) // L
   , wp_mvaTTH_(0.85) // F
-  , min_jetPtRatio_(2. / 3) // F
+  , max_jetRelIso_(0.5) // F
   , min_jetBtagCSV_(get_BtagWP(era_, Btag::kDeepJet, BtagWP::kLoose)) // F
   , max_jetBtagCSV_(get_BtagWP(era_, Btag::kDeepJet, BtagWP::kMedium)) // F
   , smoothBtagCut_minPt_(20.)
@@ -140,11 +140,11 @@ RecoMuonSelectorFakeable::operator()(const RecoMuon & muon) const
 
   if(muon.mvaRawTTH() <= wp_mvaTTH_)
   {
-    if(muon.jetPtRatio() < min_jetPtRatio_)
+    if(muon.jetRelIso() > max_jetRelIso_)
     {
       if(debug_)
       {
-        std::cout << "FAILS jetPtRatio = " << muon.jetPtRatio() << " >= " << min_jetPtRatio_ << " fakeable cut\n";
+        std::cout << "FAILS jetRelIso = " << muon.jetRelIso() << " <= " << max_jetRelIso_ << " fakeable cut\n";
       }
       return false;
     }

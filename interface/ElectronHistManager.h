@@ -57,7 +57,6 @@ private:
   TH1 * histogram_sigmaEtaEta_;
   TH1 * histogram_HoE_;
   TH1 * histogram_deltaEta_;
-  TH1 * histogram_deltaPhi_;
   TH1 * histogram_OoEminusOoP_;
   TH1 * histogram_nLostHits_;
   TH1 * histogram_passesConversionVeto_;  
