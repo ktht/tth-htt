@@ -628,7 +628,7 @@ if __name__ == '__main__':
   data_tier = args.tier
   mc_tier = '{}SIM'.format(data_tier)
   mc_regex = re.compile(r'/[\w\d_-]+/[\w\d_-]+/%s' % mc_tier)
-  DATA_QUERY = "dasgoclient -query='dataset dataset=/*/*%s*/{data_tier}' status=* | grep '{data_str}' | sort".format(
+  DATA_QUERY = "dasgoclient -query='dataset dataset=/*/*%s*/{data_tier} status=*' | grep '{data_str}' | sort".format(
     data_tier = data_tier,
     data_str  = DATA_GREP_STR,
   )
