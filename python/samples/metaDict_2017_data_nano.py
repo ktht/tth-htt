@@ -1,6 +1,6 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-18 00:24:10 with the following command:
+# file generated at 2019-11-18 01:09:53 with the following command:
 # find_samples.py -V -m python/samples/metaDict_2017_data_nano.py -d ../NanoAOD/test/datasets/txt/nano_datasets_data_2017_31Mar18.txt -p SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG Tau -g ../NanoAOD/data/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt -v 10_2_15 -r 2017 -C +Nano25Oct2019 -l -T NANOAOD
 
 meta_dictionary = OD()
@@ -467,5 +467,21 @@ meta_dictionary["/Tau/Run2017E-Nano25Oct2019-v1/NANOAOD"] =  OD([
   ("run_range",             [303824, 304797]),
   ("golden_run_range",      [303825, 304797]),
   ("comment",               "status: VALID; size: 40.77GB; nevents: 44.32M; release: 10_2_18; last modified: 2019-11-03 00:01:11"),
+])
+
+meta_dictionary["/Tau/Run2017F-Nano25Oct2019-v1/NANOAOD"] =  OD([
+  ("crab_string",           ""),
+  ("sample_category",       "data_obs"),
+  ("process_name_specific", "Tau_Run2017F_Nano25Oct2019_v1"),
+  ("nof_db_events",         81084715),
+  ("nof_db_files",          62),
+  ("fsize_db",              75212345877),
+  ("parent_db",             "/Tau/Run2017F-31Mar2018-v1/MINIAOD"),
+  ("xsection",              None),
+  ("use_it",                True),
+  ("genWeight",             False),
+  ("run_range",             [305040, 306460]),
+  ("golden_run_range",      [305044, 306460]),
+  ("comment",               "status: PRODUCTION; size: 75.21GB; nevents: 81.08M; release: 10_2_18; last modified: 2019-11-02 14:42:11"),
 ])
 

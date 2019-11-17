@@ -1,9 +1,25 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-18 00:40:13 with the following command:
-# find_samples.py -V -m python/samples/metaDict_2016_data_nano.py -d ../NanoAOD/test/datasets/txt/nano_datasets_data_2016_17Jul18.txt -p SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG Tau -g ../NanoAOD/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt -v 10_2_15 -r 2016 -C +Nano25Oct2019 -l -T NANOAOD
+# file generated at 2019-11-18 01:23:44 with the following command:
+# find_samples.py -V -m python/samples/metaDict_2016_data_nano.py -d ../NanoAOD/test/datasets/txt/nano_datasets_data_2016_17Jul18.txt -p SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG Tau -g ../NanoAOD/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt -v 10_2_15 -r 2016 -C +Nano25Oct2019 xver1 -l -T NANOAOD
 
 meta_dictionary = OD()
+
+meta_dictionary["/SingleElectron/Run2016B_ver2-Nano25Oct2019_ver2-v1/NANOAOD"] =  OD([
+  ("crab_string",           ""),
+  ("sample_category",       "data_obs"),
+  ("process_name_specific", "SingleElectron_Run2016B_ver2_Nano25Oct2019_ver2_v1"),
+  ("nof_db_events",         246440440),
+  ("nof_db_files",          109),
+  ("fsize_db",              171912722631),
+  ("parent_db",             "/SingleElectron/Run2016B-17Jul2018_ver2-v1/MINIAOD"),
+  ("xsection",              None),
+  ("use_it",                True),
+  ("genWeight",             False),
+  ("run_range",             [273150, 275376]),
+  ("golden_run_range",      [273158, 275376]),
+  ("comment",               "status: VALID; size: 171.91GB; nevents: 246.44M; release: 10_2_18; last modified: 2019-11-03 00:08:12"),
+])
 
 meta_dictionary["/SingleElectron/Run2016C-Nano25Oct2019-v1/NANOAOD"] =  OD([
   ("crab_string",           ""),
@@ -316,7 +332,6 @@ meta_dictionary["/DoubleEG/Run2016H-Nano25Oct2019-v1/NANOAOD"] =  OD([
   ("nof_db_events",         85388734),
   ("nof_db_files",          49),
   ("fsize_db",              69187098320),
-  ("fsize_db",              69187098320),
   ("parent_db",             "/DoubleEG/Run2016H-17Jul2018-v1/MINIAOD"),
   ("xsection",              None),
   ("use_it",                True),
@@ -324,6 +339,22 @@ meta_dictionary["/DoubleEG/Run2016H-Nano25Oct2019-v1/NANOAOD"] =  OD([
   ("run_range",             [281613, 284044]),
   ("golden_run_range",      [281613, 284044]),
   ("comment",               "status: VALID; size: 69.19GB; nevents: 85.39M; release: 10_2_18; last modified: 2019-11-11 20:52:30"),
+])
+
+meta_dictionary["/DoubleMuon/Run2016B_ver2-Nano25Oct2019_ver2-v1/NANOAOD"] =  OD([
+  ("crab_string",           ""),
+  ("sample_category",       "data_obs"),
+  ("process_name_specific", "DoubleMuon_Run2016B_ver2_Nano25Oct2019_ver2_v1"),
+  ("nof_db_events",         82532857),
+  ("nof_db_files",          56),
+  ("fsize_db",              54612951113),
+  ("parent_db",             "/DoubleMuon/Run2016B-17Jul2018_ver2-v1/MINIAOD"),
+  ("xsection",              None),
+  ("use_it",                True),
+  ("genWeight",             False),
+  ("run_range",             [273150, 275376]),
+  ("golden_run_range",      [273158, 275376]),
+  ("comment",               "status: PRODUCTION; size: 54.61GB; nevents: 82.53M; release: 10_2_18; last modified: 2019-11-02 09:56:54"),
 ])
 
 meta_dictionary["/DoubleMuon/Run2016C-Nano25Oct2019-v1/NANOAOD"] =  OD([
@@ -420,6 +451,22 @@ meta_dictionary["/DoubleMuon/Run2016H-Nano25Oct2019-v1/NANOAOD"] =  OD([
   ("run_range",             [281613, 284044]),
   ("golden_run_range",      [281613, 284044]),
   ("comment",               "status: VALID; size: 38.29GB; nevents: 48.91M; release: 10_2_18; last modified: 2019-11-03 07:54:13"),
+])
+
+meta_dictionary["/MuonEG/Run2016B_ver2-Nano25Oct2019_ver2-v1/NANOAOD"] =  OD([
+  ("crab_string",           ""),
+  ("sample_category",       "data_obs"),
+  ("process_name_specific", "MuonEG_Run2016B_ver2_Nano25Oct2019_ver2_v1"),
+  ("nof_db_events",         32727796),
+  ("nof_db_files",          22),
+  ("fsize_db",              27543211272),
+  ("parent_db",             "/MuonEG/Run2016B-17Jul2018_ver2-v1/MINIAOD"),
+  ("xsection",              None),
+  ("use_it",                True),
+  ("genWeight",             False),
+  ("run_range",             [273150, 275376]),
+  ("golden_run_range",      [273158, 275376]),
+  ("comment",               "status: VALID; size: 27.54GB; nevents: 32.73M; release: 10_2_18; last modified: 2019-11-03 00:08:22"),
 ])
 
 meta_dictionary["/MuonEG/Run2016C-Nano25Oct2019-v1/NANOAOD"] =  OD([
@@ -532,6 +579,22 @@ meta_dictionary["/Tau/Run2016B_ver2-Nano25Oct2019_ver2-v1/NANOAOD"] =  OD([
   ("run_range",             [273150, 275376]),
   ("golden_run_range",      [273158, 275376]),
   ("comment",               "status: VALID; size: 54.16GB; nevents: 68.73M; release: 10_2_18; last modified: 2019-11-03 02:39:06"),
+])
+
+meta_dictionary["/Tau/Run2016C-Nano25Oct2019-v1/NANOAOD"] =  OD([
+  ("crab_string",           ""),
+  ("sample_category",       "data_obs"),
+  ("process_name_specific", "Tau_Run2016C_Nano25Oct2019_v1"),
+  ("nof_db_events",         35903771),
+  ("nof_db_files",          20),
+  ("fsize_db",              28769978727),
+  ("parent_db",             "/Tau/Run2016C-17Jul2018-v1/MINIAOD"),
+  ("xsection",              None),
+  ("use_it",                True),
+  ("genWeight",             False),
+  ("run_range",             [275656, 276283]),
+  ("golden_run_range",      [275657, 276283]),
+  ("comment",               "status: PRODUCTION; size: 28.77GB; nevents: 35.90M; release: 10_2_18; last modified: 2019-11-02 13:45:13"),
 ])
 
 meta_dictionary["/Tau/Run2016D-Nano25Oct2019-v1/NANOAOD"] =  OD([
