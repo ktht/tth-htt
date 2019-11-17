@@ -28,9 +28,6 @@
 # ,,certified as good for physics analysis during stable beams'' and ,,the operational losses [..]
 # are accounted separately''.
 
-#TODO: add support for eos and XRD protocols
-#TODO: disentangle the computation of era-based integrated luminosity and DAS queries on data samples
-
 from tthAnalysis.HiggsToTauTau.jobTools import run_cmd, human_size, create_if_not_exists
 from tthAnalysis.HiggsToTauTau.hdfs import hdfs
 from tthAnalysis.HiggsToTauTau.safe_root import ROOT
@@ -182,6 +179,7 @@ METADICT_TEMPLATE_DATA = '''meta_dictionary["{{ dataset_name }}"] =  OD([
   ("nof_db_events",         {{ nof_db_events }}),
   ("nof_db_files",          {{ nof_db_files }}),
   ("fsize_db",              {{ fsize_db }}),
+  ("parent_db",             "{{ parent_db}}"),
   ("xsection",              None),
   ("use_it",                True),
   ("genWeight",             False),
@@ -199,6 +197,7 @@ METADICT_TEMPLATE_MC = '''meta_dictionary["{{ dataset_name }}"] =  OD([
   ("nof_db_events",         {{ nof_db_events }}),
   ("nof_db_files",          {{ nof_db_files }}),
   ("fsize_db",              {{ fsize_db }}),
+  ("parent_db",             "{{ parent_db}}"),
   ("xsection",              {{ xs }}),
   ("use_it",                {{ use_it }}),
   ("genWeight",             True),
@@ -229,6 +228,7 @@ PDS_KEY       = 'data'
 DASGOCLIENT_QUERY_RUNLUMI = "dasgoclient -query='run,lumi dataset=%s' -unique"
 DASGOCLIENT_QUERY         = "dasgoclient -query='dataset dataset=%s status=%s' -json"
 DASGOCLIENT_QUERY_RELEASE = "dasgoclient -query='release dataset=%s' -json"
+DASGOCLIENT_QUERY_PARENT  = "dasgoclient -query='parent dataset=%s' -json"
 
 PRIVATE_REGEX = re.compile(r'/[\w\d_-]+/[\w\d_-]+/%s' % PRIVATE_TIER)
 MC_REGEX      = re.compile(r'/[\w\d_-]+/[\w\d_-]+/%s' % MC_TIER)
@@ -696,6 +696,7 @@ if __name__ == '__main__':
       ('nfiles',                 {'colname' : 'Nof files',       'func' : id_}),
       ('nevents',                {'colname' : 'Nof events',      'func' : id_}),
       ('release',                {'colname' : 'CMSSW release',   'func' : convert_cmssw_versions}),
+      ('parent',                 {'colname' : 'Parent',          'func' : id_}),
     ])
 
     das_query_results = collections.OrderedDict()
@@ -755,6 +756,7 @@ if __name__ == '__main__':
         das_query_results[dataset]['size'] = fs_results['size']
         das_query_results[dataset]['nfiles'] = fs_results['nfiles']
         das_query_results[dataset]['nevents'] = fs_results['nevents']
+        das_query_results[dataset]['parent'] = '' # no parent
         das_query_results[dataset]['release'] = required_cmssw_version_str # [*]
         # [*] Assume that the MINIAODSIM was produced with a CMSSW version that is at least as new
         #     as the required CMSSW version
@@ -779,16 +781,26 @@ if __name__ == '__main__':
             (mc_release.out, mc_release.err)
           )
 
+        mc_parent = Command(DASGOCLIENT_QUERY_PARENT % dataset_q)
+        mc_parent.run()
+        if not mc_parent.out or mc_parent.err:
+          raise ValueError(
+            "Query to DAS resulted in an empty output or an error:\nstdout = '%s'\nstderr = '%s'" % \
+            (mc_parent.out, mc_parent.err)
+          )
+
         mc_query_json = json.loads(mc_query.out)
         mc_release_json = json.loads(mc_release.out)
+        mc_parent_json = json.loads(mc_parent.out)
 
         for das_key in das_keys:
           das_parser = das_keys[das_key]['func']
-          if das_key != 'release':
+          if das_key in [ 'release', 'parent' ]:
+            mc_json = mc_release_json if das_key == 'release' else mc_parent_json
+            das_query_results[dataset][das_key] = das_parser(mc_json[0][das_key][0]['name'])
+          else:
             das_key_idx = find_das_idx(mc_query_json, das_key)
             das_query_results[dataset][das_key] = das_parser(mc_query_json[das_key_idx]['dataset'][0][das_key])
-          else:
-            das_query_results[dataset][das_key] = das_parser(mc_release_json[0][das_key][0]['name'])
 
     col_widths = {
       das_key:
@@ -834,6 +846,7 @@ if __name__ == '__main__':
         nof_db_events   = entry['nevents'],
         nof_db_files    = entry['nfiles'],
         fsize_db        = entry['size'],
+        parent_db       = entry['parent'],
         sample_category = entry['sample_category'],
         xs              = entry['xs'],
         specific_name   = entry['specific_name'],
@@ -941,6 +954,7 @@ if __name__ == '__main__':
       ('size',                   {'colname' : 'Size',            'func' : id_}),
       ('nfiles',                 {'colname' : 'Nof files',       'func' : id_}),
       ('release',                {'colname' : 'CMSSW release',   'func' : convert_cmssw_versions}),
+      ('parent',                 {'colname' : 'Parent',          'func' : id_}),
     ])
 
     data_sample_selection = {}
@@ -975,17 +989,28 @@ if __name__ == '__main__':
               (dasgoclient_release.out, dasgoclient_release.err)
             )
 
+          dasgoclient_parent = Command(DASGOCLIENT_QUERY_PARENT % dataset)
+          dasgoclient_parent.run()
+          if not dasgoclient_parent.out or dasgoclient_parent.err:
+            raise ValueError(
+              "Query to DAS resulted in an empty output or an error:\nstdout = '%s'\nstderr = '%s'" % \
+              (dasgoclient_parent.out, dasgoclient_parent.err)
+            )
+
           dasgoclient_query_json = json.loads(dasgoclient_query.out)
           dasgoclient_release_json = json.loads(dasgoclient_release.out)
+          dasgoclient_parent_json = json.loads(dasgoclient_parent.out)
+
           for das_key in das_keys:
             das_parser = das_keys[das_key]['func']
-            if das_key != 'release':
+            if das_key in [ 'release', 'parent' ]:
+              dasgoclient_json = dasgoclient_release_json if das_key == 'release' else dasgoclient_parent_json
+              das_query_results[dataset][das_key] = das_parser(dasgoclient_json[0][das_key][0]['name'])
+            else:
               das_key_idx = find_das_idx(dasgoclient_query_json, das_key)
               das_query_results[dataset][das_key] = das_parser(
                 dasgoclient_query_json[das_key_idx]['dataset'][0][das_key]
               )
-            else:
-              das_query_results[dataset][das_key] = das_parser(dasgoclient_release_json[0][das_key][0]['name'])
 
         col_widths = {
           das_key :
@@ -1110,6 +1135,7 @@ if __name__ == '__main__':
               nof_db_events         = selection['nevents'],
               nof_db_files          = selection['nfiles'],
               fsize_db              = selection['size'],
+              parent_db             = selection['parent'],
               crab_string           = crab_string_results[0],
               run_range             = minmax_runlumi_data,
               golden_run_range      = minmax_runlumi_data_golden,
