@@ -219,8 +219,6 @@ DATA_SAMPLES_DEFAULT = [ data_sample for data_sample in DATA_SAMPLES_ALL if data
 
 LUMI_UNITS = [ '/fb', '/pb', '/nb', '/ub' ]
 
-DATA_TIER     = 'MINIAOD'
-MC_TIER       = '%sSIM' % DATA_TIER
 PRIVATE_TIER  = 'USER'
 AQC_KEY       = 'cat'
 PDS_KEY       = 'data'
@@ -231,7 +229,6 @@ DASGOCLIENT_QUERY_RELEASE = "dasgoclient -query='release dataset=%s' -json"
 DASGOCLIENT_QUERY_PARENT  = "dasgoclient -query='parent dataset=%s' -json"
 
 PRIVATE_REGEX = re.compile(r'/[\w\d_-]+/[\w\d_-]+/%s' % PRIVATE_TIER)
-MC_REGEX      = re.compile(r'/[\w\d_-]+/[\w\d_-]+/%s' % MC_TIER)
 DATASET_REGEX = re.compile("^/(.*)/(.*)/[0-9A-Za-z]+$")
 
 def find_das_idx(query_json, das_key):
@@ -508,6 +505,11 @@ if __name__ == '__main__':
     type = str, dest = 'sum_events', metavar = 'file', default = '', required = False,
     help = 'R|File containing list of samples that cover the same phase space (one such list per line)',
   )
+  parser.add_argument('-T', '--tier',
+    type = str, dest = 'tier', metavar = 'type', default = 'MINIAOD', required = False,
+    choices = [ 'MINIAOD', 'NANOAOD' ],
+    help = 'R|Data tier',
+  )
   parser.add_argument('-c', '--crab-string',
     type = str, nargs = '+', dest = 'crab_string', metavar = 'path', default = [], required = False,
     help = 'R|Fill CRAB string',
@@ -623,8 +625,11 @@ if __name__ == '__main__':
   DATA_GREP_STR = '\\|'.join(map(lambda sample: '^/%s/' % sample, primary_datasets))
   DATA_PIPED = '|'.join(primary_datasets)
   MAX_DATA_SAMPLE_LEN = max(map(len, primary_datasets))
+  data_tier = args.tier
+  mc_tier = '{}SIM'.format(data_tier)
+  mc_regex = re.compile(r'/[\w\d_-]+/[\w\d_-]+/%s' % mc_tier)
   DATA_QUERY = "dasgoclient -query='dataset dataset=/*/*%s*/{data_tier}' | grep '{data_str}' | sort".format(
-    data_tier = DATA_TIER,
+    data_tier = data_tier,
     data_str  = DATA_GREP_STR,
   )
 
@@ -718,7 +723,7 @@ if __name__ == '__main__':
         xs              = float(fields[4]) # let it fail
         private_path    = fields[5] if len(fields) == 6 else ''
 
-        if not MC_REGEX.match(das_name) and not PRIVATE_REGEX.match(das_name):
+        if not mc_regex.match(das_name) and not PRIVATE_REGEX.match(das_name):
           raise ValueError("Error: line '%s' does not correspond to proper DBS name" % das_name)
 
         if custom_strings and (\
@@ -914,7 +919,7 @@ if __name__ == '__main__':
     data_samples_aggr = {data_sample : {} for data_sample in primary_datasets}
 
     collection_regex = re.compile(r'/(?P<%s>\b(%s)\b)/%s(?P<%s>[A-Z]{1}).+/%s' % \
-                                  (PDS_KEY, DATA_PIPED, era, AQC_KEY, DATA_TIER))
+                                  (PDS_KEY, DATA_PIPED, era, AQC_KEY, data_tier))
     for data_sample in data_samples_list:
       collection_match = collection_regex.match(data_sample)
       if not collection_match:
