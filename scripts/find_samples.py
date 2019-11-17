@@ -978,7 +978,7 @@ if __name__ == '__main__':
         for dataset in datasets:
           das_query_results[dataset] = {}
 
-          dasgoclient_query = Command(DASGOCLIENT_QUERY % (dataset, 'VALID'))
+          dasgoclient_query = Command(DASGOCLIENT_QUERY % (dataset, '*'))
           dasgoclient_query.run()
           if not dasgoclient_query.out or dasgoclient_query.err:
             raise ValueError(
