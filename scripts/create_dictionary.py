@@ -3,7 +3,7 @@
 from tthAnalysis.HiggsToTauTau.jobTools import run_cmd, human_size
 from tthAnalysis.HiggsToTauTau.analysisSettings import Triggers
 from tthAnalysis.HiggsToTauTau.safe_root import ROOT
-from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter
+from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter, load_meta_dict
 from tthAnalysis.HiggsToTauTau.hdfs import hdfs
 
 from tthAnalysis.NanoAODTools.tHweights_cfi import tHweights
@@ -146,19 +146,6 @@ class FileTracker:
     self.zero_file_size  = []
     self.zombie_files    = []
     self.corrupted_files = []
-
-def load_dict(path, name):
-  if not os.path.isfile(path):
-    logging.error("No such dictionary file: {dict_path}".format(dict_path = path))
-    sys.exit(1)
-  imp_dict = imp.load_source('', path)
-  if not hasattr(imp_dict, name):
-    logging.error("No such dictionary in the file '{dict_path}': {dict_name}".format(
-      dict_path = path, dict_name = name,
-    ))
-    sys.exit(1)
-  samples = getattr(imp_dict, name)
-  return samples
 
 header_str = """from collections import OrderedDict as OD
 
@@ -890,8 +877,8 @@ if __name__ == '__main__':
     path.sparent_depth = path.depth
 
   # load the dictionaries
-  meta_dict = load_dict(args.meta_dictionary, "meta_dictionary")
-  sum_events = load_dict(args.meta_dictionary, "sum_events")
+  meta_dict = load_meta_dict(args.meta_dictionary, "meta_dictionary")
+  sum_events = load_meta_dict(args.meta_dictionary, "sum_events")
   process_names = { entry['process_name_specific'] : dbs_name for dbs_name, entry in meta_dict.items() }
   crab_strings  = { entry['crab_string']           : dbs_name for dbs_name, entry in meta_dict.items() if entry['crab_string'] != "" }
   for key, entry in meta_dict.items():

@@ -4,6 +4,10 @@ import psutil
 import signal
 import subprocess
 import shlex
+import os
+import importlib
+import argparse
+import imp
 
 logging.basicConfig(
   stream = sys.stdout,
@@ -11,14 +15,12 @@ logging.basicConfig(
   format = '%(asctime)s - %(levelname)s: %(message)s',
 )
 
-import argparse
 class SmartFormatter(argparse.ArgumentDefaultsHelpFormatter):
   def _split_lines(self, text, width):
     if text.startswith('R|'):
       return text[2:].splitlines()
     return argparse.ArgumentDefaultsHelpFormatter._split_lines(self, text, width)
 
-import importlib
 def load_samples(era, is_postproc = True, base = 'tth', suffix = ''):
   if base == 'tth':
     base_str = 'tthAnalysis.HiggsToTauTau'
@@ -88,6 +90,19 @@ def load_samples_stitched(samples, era, load_dy = True, load_wjets = True):
         ):
       sample_info['use_it'] = sample_info['process_name_specific'] in sample_names
 
+  return samples
+
+def load_meta_dict(path, name):
+  if not os.path.isfile(path):
+    logging.error("No such dictionary file: {dict_path}".format(dict_path = path))
+    sys.exit(1)
+  imp_dict = imp.load_source('', path)
+  if not hasattr(imp_dict, name):
+    logging.error("No such dictionary in the file '{dict_path}': {dict_name}".format(
+      dict_path = path, dict_name = name,
+    ))
+    sys.exit(1)
+  samples = getattr(imp_dict, name)
   return samples
 
 class Alarm(Exception):

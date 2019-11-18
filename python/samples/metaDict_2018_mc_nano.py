@@ -1876,7 +1876,7 @@ meta_dictionary["/QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn1
   ("crab_string",           ""),
   ("sample_category",       "QCD"),
   ("process_name_specific", "QCD_Pt15to20_Mu5"),
-  ("nof_db_events",         4576065),
+  ("nof_db_events",         3690877),
   ("nof_db_files",          10),
   ("fsize_db",              4571527790),
   ("parent_db",             "/QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM"),
