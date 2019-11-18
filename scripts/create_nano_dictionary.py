@@ -2,8 +2,11 @@
 
 from tthAnalysis.HiggsToTauTau.jobTools import human_size
 from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter, load_meta_dict, Command
+from tthAnalysis.HiggsToTauTau.analysisSettings import Triggers
 from tthAnalysis.HiggsToTauTau.safe_root import ROOT
 from tthAnalysis.HiggsToTauTau.hdfs import hdfs
+
+#TODO cleanup
 
 import argparse
 import jinja2
@@ -45,6 +48,28 @@ dictionary_entry_str = """{{ dict_name }}["{{ dbs_name }}"] = OD([
   ("has_LHE",                         {{ has_LHE }}),
   ("LHE_set",                         "{{ LHE_set }}"),
   ("nof_reweighting",                 {{ nof_reweighting }}),
+  ("local_paths",
+    [
+{{ local_paths }}
+    ]
+  ),
+  ("missing_paths",
+    [
+{{ missing_paths }}
+    ]
+  ),
+  ("missing_completely",           [
+{{ missing_completely }}
+  ]),
+  ("missing_from_superset",        [
+{{ missing_from_superset }}
+  ]),
+  ("missing_hlt_paths",            [
+{{ missing_hlt_paths }}
+  ]),
+  ("hlt_paths",                    [
+{{ hlt_paths }}
+  ]),
 ])
 """
 
@@ -54,7 +79,7 @@ dictionary_sum_events_str = """{{ dict_name }}["sum_events"] = [{%- for sample_l
 ]
 """
 
-missing_branches_str = """{%- if is_available -%}
+branches_list_str = """{%- if is_available -%}
   {%- for missing_branch in missing_branches %}
     "{{ missing_branch }}",
   {%- endfor -%}
@@ -139,6 +164,8 @@ if __name__ == '__main__':
 
   meta_dict = load_meta_dict(args.meta_dictionary, "meta_dictionary")
   sum_events = load_meta_dict(args.meta_dictionary, "sum_events")
+  triggerTable = Triggers(str(args.era))
+  required_paths = set.union(*[ triggerTable.triggers_all[trigger_name] for trigger_name in get_triggers('', False) ])
 
   output = jinja2.Template(header_str).render(
     command = ' '.join([os.path.basename(__file__)] + sys.argv[1:]),
@@ -181,19 +208,19 @@ if __name__ == '__main__':
     local_size = sum(map(lambda f: f['size'], files_present))
     local_events = sum(map(lambda f: f['nevents'], files_present))
 
-    branch_names = set()
-
+    branch_names = []
     lhe_doc = ''
     lhe_tried = False
     reweighting_tried = False
     nof_reweighting_weights = 0
-    if not is_data:
-      f = files_present[0]
+    for f in files_present:
       fp = ROOT.TFile.Open(f['name_local'], 'read')
       tree = fp.Get('Events')
       assert(tree.GetEntries() == f['nevents'])
+
       branches = [ br.GetName() for br in tree.GetListOfBranches() ]
-      branch_names.update(branches)
+      branch_names.append(branches)
+
       if not reweighting_tried:
         reweighting_tried = True
         if BRANCH_NLHEREWEIGHTINGWEIGHT in branches:
@@ -201,6 +228,7 @@ if __name__ == '__main__':
           tree.SetBranchAddress(BRANCH_NLHEREWEIGHTINGWEIGHT, nof_reweighting_weights_br)
           tree.GetEntry(0)
           nof_reweighting_weights = nof_reweighting_weights_br[0]
+
       if not lhe_tried:
         lhe_tried = True
         lhe_branch = tree.GetBranch(BRANCH_LHEPDFWEIGHT)
@@ -223,7 +251,44 @@ if __name__ == '__main__':
               lhe_doc += ' -> unrecognizable PDF set'
             lhe_doc += ' (counted {} weights)'.format(lhe_count)
         fp.Close()
-    has_lhe = any(map(lambda br: LHE_REGEX.match(br), branch_names))
+
+    branch_names_union = set.union(*[ set(branch_arr) for branch_arr in branch_names ])
+    branch_names_intersection = set.intersection(*[ set(branch_arr) for branch_arr in branch_names ])
+    has_lhe = any(map(lambda br: LHE_REGEX.match(br), branch_names_union))
+
+    hlt_paths = list(filter(lambda branch_name: branch_name.startswith('HLT_'), list(branch_names_union)))
+    hlt_paths_filled = jinja2.Template(branches_list_str).render(
+      is_available = is_data,
+      missing_branches = sorted(hlt_paths, key = lambda br: br.lower()),
+    ).lstrip('\n')
+
+    missing_hlt_paths = list(sorted(list(required_paths - branch_names_intersection), key = lambda br: br.lower()))
+    missing_hlt_paths_filled = jinja2.Template(branches_list_str).render(
+      is_available = True,
+      missing_branches = sorted(missing_hlt_paths, key = lambda br: br.lower()),
+    ).lstrip('\n')
+
+    missing_from_superset = set()
+    if args.missing_branches:
+      for branch_arr in branch_names:
+        missing_from_superset.update(branch_names_union - set(branch_arr))
+    missing_from_superset_filled = jinja2.Template(branches_list_str).render(
+      is_available = args.missing_branches and is_data,
+      missing_branches = sorted(list(missing_from_superset), key = lambda br: br.lower()),
+    ).lstrip('\n')
+
+    missing_completely = list(triggerTable.triggers_flat & set(missing_from_superset))
+    missing_completely_filled = jinja2.Template(branches_list_str).render(
+      is_available = args.missing_branches and is_data,
+      missing_branches = sorted(list(missing_completely), key = lambda br: br.lower()),
+    ).lstrip('\n')
+    if missing_completely:
+      logging.error(
+        "Found an overlap b/w the list of required triggers and the list of missing branches in "
+        "sample {}: {}".format(dbs_entry['process_name_specific'], ', '.join(missing_completely))
+       )
+    local_paths_str   = ',\n'.join(map(lambda f: '      [ "{name_local}", {nevents} ]'.format(**f), files_present))
+    missing_paths_str = ',\n'.join(map(lambda f: '      [ "{name}", {nevents} ]'.format(**f),        files_missing))
 
     output += jinja2.Template(dictionary_entry_str).render(
           dict_name                       = args.output_dict_name,
@@ -249,11 +314,12 @@ if __name__ == '__main__':
           has_LHE                         = False if is_data else has_lhe,
           LHE_set                         = lhe_doc,
           nof_reweighting                 = nof_reweighting_weights,
-#          missing_from_superset           = missing_branches_template_filled, #TODO
-#          missing_completely              = completely_missing_branches_template_filled, #TODO
-#          missing_hlt_paths               = missing_hlt_paths_filled, #TODO
-#          hlt_paths                       = hlt_paths_filled, #TODO
-#          paths                           = '\n'.join(path_entries_arr), #TODO
+          missing_from_superset           = missing_from_superset_filled,
+          missing_completely              = missing_completely_filled,
+          missing_hlt_paths               = missing_hlt_paths_filled,
+          hlt_paths                       = hlt_paths_filled,
+          local_paths                     = local_paths_str,
+          missing_paths                   = missing_paths_str,
         ) + '\n\n'
 
   output += jinja2.Template(dictionary_sum_events_str).render(

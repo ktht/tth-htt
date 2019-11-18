@@ -210,7 +210,7 @@ path_entry_str = """      OD([
       ]),
 """
 
-missing_branches_str = """{%- if is_available -%}
+branches_list_str = """{%- if is_available -%}
   {%- for missing_branch in missing_branches %}
     "{{ missing_branch }}",
   {%- endfor -%}
@@ -1096,19 +1096,19 @@ if __name__ == '__main__':
             blacklist = path_entry['blacklist'], #TODO: format properly
           ))
         is_mc = meta_dict[key]['type'] == 'mc'
-        missing_branches_template_filled = jinja2.Template(missing_branches_str).render(
+        missing_branches_template_filled = jinja2.Template(branches_list_str).render(
           is_available     = args.missing_branches and not is_mc,
           missing_branches = sorted(meta_dict[key]['missing_from_superset'], key = lambda s: s.lower()),
         ).lstrip('\n')
-        completely_missing_branches_template_filled = jinja2.Template(missing_branches_str).render(
+        completely_missing_branches_template_filled = jinja2.Template(branches_list_str).render(
           is_available     = args.missing_branches and not is_mc,
           missing_branches = sorted(meta_dict[key]['missing_completely'], key = lambda s: s.lower()),
         ).lstrip('\n')
-        missing_hlt_paths_filled = jinja2.Template(missing_branches_str).render(
+        missing_hlt_paths_filled = jinja2.Template(branches_list_str).render(
           is_available     = True,
           missing_branches = sorted(meta_dict[key]['missing_hlt_paths'], key = lambda s: s.lower()),
         ).lstrip('\n')
-        hlt_paths_filled = jinja2.Template(missing_branches_str).render(
+        hlt_paths_filled = jinja2.Template(branches_list_str).render(
           is_available = not is_mc,
           missing_branches = sorted(meta_dict[key]['hlt_paths'], key = lambda  s: s.lower()),
         ).lstrip('\n')
