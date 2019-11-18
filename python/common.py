@@ -1,5 +1,9 @@
 import sys
 import logging
+import psutil
+import signal
+import subprocess
+import shlex
 
 logging.basicConfig(
   stream = sys.stdout,
@@ -85,3 +89,37 @@ def load_samples_stitched(samples, era, load_dy = True, load_wjets = True):
       sample_info['use_it'] = sample_info['process_name_specific'] in sample_names
 
   return samples
+
+class Alarm(Exception):
+  pass
+
+def alarm_handler(signum, frame):
+  raise Alarm
+
+class Command(object):
+  def __init__(self, cmd):
+    self.cmd = cmd
+    self.process = None
+    self.out = None
+    self.err = None
+    self.success = False
+
+  def run(self, max_tries = 20, timeout = 5):
+    ntries = 0
+    while not self.success:
+      if ntries > max_tries:
+        break
+      ntries += 1
+      signal.signal(signal.SIGALRM, alarm_handler)
+      signal.alarm(timeout)
+      self.process = subprocess.Popen(shlex.split(self.cmd), stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+      try:
+        self.out, self.err = self.process.communicate()
+        signal.alarm(0)
+      except Alarm:
+        parent = psutil.Process(self.process.pid)
+        for child in parent.children(recursive = True):
+          child.kill()
+        parent.kill()
+      else:
+        self.success = True

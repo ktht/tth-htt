@@ -31,7 +31,7 @@
 from tthAnalysis.HiggsToTauTau.jobTools import run_cmd, human_size, create_if_not_exists
 from tthAnalysis.HiggsToTauTau.hdfs import hdfs
 from tthAnalysis.HiggsToTauTau.safe_root import ROOT
-from tthAnalysis.HiggsToTauTau.common import SmartFormatter
+from tthAnalysis.HiggsToTauTau.common import SmartFormatter, Command
 
 import re
 import datetime
@@ -46,44 +46,6 @@ import ast
 import getpass
 import multiprocessing
 import signal
-import shutil
-import psutil
-import subprocess
-import shlex
-
-class Alarm(Exception):
-  pass
-
-def alarm_handler(signum, frame):
-  raise Alarm
-
-class Command(object):
-  def __init__(self, cmd):
-    self.cmd = cmd
-    self.process = None
-    self.out = None
-    self.err = None
-    self.success = False
-
-  def run(self, max_tries = 20, timeout = 5):
-    ntries = 0
-    while not self.success:
-      if ntries > max_tries:
-        break
-      ntries += 1
-      signal.signal(signal.SIGALRM, alarm_handler)
-      signal.alarm(timeout)
-      self.process = subprocess.Popen(shlex.split(self.cmd), stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-      try:
-        self.out, self.err = self.process.communicate()
-        signal.alarm(0)
-      except Alarm:
-        parent = psutil.Process(self.process.pid)
-        for child in parent.children(recursive = True):
-          child.kill()
-        parent.kill()
-      else:
-        self.success = True
 
 class Version:
   def __init__(self, version):
