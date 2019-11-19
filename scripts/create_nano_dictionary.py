@@ -66,14 +66,14 @@ DICTIONARY_ENTRY_STR = """{{ dict_name }}["{{ dbs_name }}"] = OD([
 
 def fmt_path(paths, name_str, nevents_str):
   path_arr = [ [ path[name_str], path[nevents_str] ] for path in paths ]
-  max_str = max(map(lambda path: len(path[0]), path_arr))
-  max_int = max(map(lambda path: int(math.ceil(math.log10(path[1]))), path_arr))
-  pads = list(map(lambda path: max_str - len(path[0]) + max_int - int(math.ceil(math.log10(path[1]))), path_arr))
   output = []
-  for path_idx, path in enumerate(path_arr):
-    output.append('{}[ "{}",{} {} ]'.format(' ' * 6, path[0], ' ' * pads[path_idx], path[1]))
+  if path_arr:
+    max_str = max(map(lambda path: len(path[0]), path_arr))
+    max_int = max(map(lambda path: int(math.ceil(math.log10(path[1]))), path_arr))
+    pads = list(map(lambda path: max_str - len(path[0]) + max_int - int(math.ceil(math.log10(path[1]))), path_arr))
+    for path_idx, path in enumerate(path_arr):
+      output.append('{}[ "{}",{} {} ]'.format(' ' * 6, path[0], ' ' * pads[path_idx], path[1]))
   return output
-
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(
