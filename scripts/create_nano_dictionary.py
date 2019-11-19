@@ -274,7 +274,7 @@ if __name__ == '__main__':
           missing_hlt_paths               = missing_hlt_paths_filled,
           hlt_paths                       = hlt_paths_filled,
           local_paths                     = ',\n'.join(fmt_path(files_present, 'name_local', 'nevents')),
-          missing_paths                   = ',\n'.join(fmt_path(files_present, 'name',       'nevents')),
+          missing_paths                   = ',\n'.join(fmt_path(files_missing, 'name',       'nevents')),
         ) + '\n\n'
 
   output += jinja2.Template(SUM_EVENTS_STR).render(
