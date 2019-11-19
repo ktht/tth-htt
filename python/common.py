@@ -4,10 +4,8 @@ import psutil
 import signal
 import subprocess
 import shlex
-import os
 import importlib
 import argparse
-import imp
 
 logging.basicConfig(
   stream = sys.stdout,
@@ -90,19 +88,6 @@ def load_samples_stitched(samples, era, load_dy = True, load_wjets = True):
         ):
       sample_info['use_it'] = sample_info['process_name_specific'] in sample_names
 
-  return samples
-
-def load_meta_dict(path, name):
-  if not os.path.isfile(path):
-    logging.error("No such dictionary file: {dict_path}".format(dict_path = path))
-    sys.exit(1)
-  imp_dict = imp.load_source('', path)
-  if not hasattr(imp_dict, name):
-    logging.error("No such dictionary in the file '{dict_path}': {dict_name}".format(
-      dict_path = path, dict_name = name,
-    ))
-    sys.exit(1)
-  samples = getattr(imp_dict, name)
   return samples
 
 class Alarm(Exception):

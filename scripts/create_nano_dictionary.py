@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 from tthAnalysis.HiggsToTauTau.jobTools import human_size
-from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter, load_meta_dict, Command
+from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter, Command
 from tthAnalysis.HiggsToTauTau.analysisSettings import Triggers
 from tthAnalysis.HiggsToTauTau.safe_root import ROOT
 from tthAnalysis.HiggsToTauTau.hdfs import hdfs
-
-#TODO cleanup
+from tthAnalysis.HiggsToTauTau.dictTools import HEADER_STR, SUM_EVENTS_STR, BRANCHES_LIST_STR, LHE_REGEX, LHE_DOC_REGEX, \
+                                                BRANCH_NLHEREWEIGHTINGWEIGHT, BRANCH_LHEPDFWEIGHT, LHE_DOC, \
+                                                get_triggers, round_sign, load_meta_dict
 
 import argparse
 import jinja2
@@ -14,20 +15,10 @@ import datetime
 import os
 import sys
 import json
-import math
-import re
 import array
+import math
 
-header_str = """from collections import OrderedDict as OD
-
-# file generated at {{ date }} with the following command:
-# {{ command }}
-
-{{ dict_name }} = OD()
-
-"""
-
-dictionary_entry_str = """{{ dict_name }}["{{ dbs_name }}"] = OD([
+DICTIONARY_ENTRY_STR = """{{ dict_name }}["{{ dbs_name }}"] = OD([
   ("type",                            "{{ sample_type }}"),
   ("sample_category",                 "{{ sample_category }}"),
   ("process_name_specific",           "{{ process_name_specific }}"),
@@ -73,57 +64,16 @@ dictionary_entry_str = """{{ dict_name }}["{{ dbs_name }}"] = OD([
 ])
 """
 
-dictionary_sum_events_str = """{{ dict_name }}["sum_events"] = [{%- for sample_list in sample_lists %}
-  [ {% for sample in sample_list %}{{ "%-50s"|format("'%s',"|format(sample)) }} {% endfor %} ],
-{%- endfor %}
-]
-"""
+def fmt_path(paths, name_str, nevents_str):
+  path_arr = [ [ path[name_str], path[nevents_str] ] for path in paths ]
+  max_str = max(map(lambda path: len(path[0]), path_arr))
+  max_int = max(map(lambda path: int(math.ceil(math.log10(path[1]))), path_arr))
+  pads = list(map(lambda path: max_str - len(path[0]) + max_int - int(math.ceil(math.log10(path[1]))), path_arr))
+  output = []
+  for path_idx, path in enumerate(path_arr):
+    output.append('{}[ "{}",{} {} ]'.format(' ' * 6, path[0], ' ' * pads[path_idx], path[1]))
+  return output
 
-branches_list_str = """{%- if is_available -%}
-  {%- for missing_branch in missing_branches %}
-    "{{ missing_branch }}",
-  {%- endfor -%}
-{%- else %}
-    # not computed
-{%- endif -%}
-"""
-
-LHE_REGEX = re.compile('(n|)LHE(Scale|Pdf)Weight')
-BRANCH_NLHEREWEIGHTINGWEIGHT = 'nLHEReweightingWeight'
-LHE_DOC_REGEX = re.compile('LHE pdf variation weights \(w_var \/ w\_nominal\) for LHA IDs (?P<lha_start>[0-9]+) - (?P<lha_end>[0-9]+)')
-BRANCH_LHEPDFWEIGHT = 'LHEPdfWeight'
-LHE_DOC = {
-  91400  : { 'name' : 'PDF4LHC15_nnlo_30_pdfas',    'count' : 33  },
-  306000 : { 'name' : 'NNPDF31_nnlo_hessian_pdfas', 'count' : 103 },
-  260000 : { 'name' : 'NNPDF30_nlo_as_0118',        'count' : 101 },
-  262000 : { 'name' : 'NNPDF30_lo_as_0130',         'count' : 101 },
-  292000 : { 'name' : 'NNPDF30_nlo_nf_4_pdfas',     'count' : 103 },
-  292200 : { 'name' : 'NNPDF30_nlo_nf_5_pdfas',     'count' : 103 },
-}
-
-def get_triggers(process_name_specific, is_data):
-  if 'SingleElec' in process_name_specific:
-    return ['1e', '1e1tau']
-  if 'SingleMuon' in process_name_specific:
-    return ['1mu', '1mu1tau']
-  if 'DoubleEG' in process_name_specific:
-    return ['2e', '3e']
-  if 'DoubleMuon' in process_name_specific:
-    return ['2mu', '3mu']
-  if 'MuonEG' in process_name_specific:
-    return ['1e1mu', '2e1mu', '1e2mu']
-  if 'Tau' in process_name_specific:
-    return ['1e1tau', '1mu1tau', '2tau']
-  if 'EGamma' in process_name_specific: # merge of SingleElectron and DoubleEG PDs
-    return ['1e', '1e1tau', '2e', '3e']
-  if is_data:
-    raise ValueError("Expected MC!")
-  return [
-    '1e', '1mu', '2e', '2mu', '1e1mu', '3e', '3mu', '2e1mu', '1e2mu', '1e1tau', '1mu1tau', '2tau'
-  ]
-
-def round_sign(x, sign_digits = 6):
-  return round(x, max(int(abs(math.floor(math.log10(x)))) + sign_digits, 0))
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(
@@ -167,7 +117,7 @@ if __name__ == '__main__':
   triggerTable = Triggers(str(args.era))
   required_paths = set.union(*[ triggerTable.triggers_all[trigger_name] for trigger_name in get_triggers('', False) ])
 
-  output = jinja2.Template(header_str).render(
+  output = jinja2.Template(HEADER_STR).render(
     command = ' '.join([os.path.basename(__file__)] + sys.argv[1:]),
     date = '{date:%Y-%m-%d %H:%M:%S}'.format(date = datetime.datetime.now()),
     dict_name = args.output_dict_name,
@@ -176,11 +126,13 @@ if __name__ == '__main__':
   for dbs_key, dbs_entry in meta_dict.items():
     logging.info('Creating entry for: {}'.format(dbs_key))
     assert(dbs_key.endswith(('/NANOAOD', '/NANOAODSIM')))
+
     dbs_query_str = "dasgoclient -query='file dataset={}' -json".format(dbs_key)
     dbs_query = Command(dbs_query_str)
     dbs_query.run()
     if not dbs_query.out or dbs_query.err:
       raise RuntimeError("Query %s threw an error: %s" % (dbs_query_str, dbs_query.err))
+
     files_json = json.loads(dbs_query.out)
     files = []
     for entry in files_json:
@@ -196,13 +148,17 @@ if __name__ == '__main__':
         'size'       : file_size,
         'present'    : file_present,
       })
+
     files = sorted(files, key = lambda f: f['name'])
     files_present = list(filter(lambda f: f['present'], files))
     files_missing = list(filter(lambda f: not f['present'], files))
     if 'status: VALID' in dbs_entry['comment']:
       assert(sum(map(lambda f: f['nevents'], files)) == dbs_entry['nof_db_events'])
     if not files_present:
+      logging.info("No files found for dataset {}".format(dbs_key))
       continue
+    if files_missing:
+      logging.info("Missing {} files out of {} files in dataset {}".format(len(files_missing), len(files), dbs_key))
 
     is_data = dbs_entry['sample_category'] == 'data_obs'
     local_size = sum(map(lambda f: f['size'], files_present))
@@ -213,6 +169,7 @@ if __name__ == '__main__':
     lhe_tried = False
     reweighting_tried = False
     nof_reweighting_weights = 0
+
     for f in files_present:
       fp = ROOT.TFile.Open(f['name_local'], 'read')
       tree = fp.Get('Events')
@@ -257,13 +214,13 @@ if __name__ == '__main__':
     has_lhe = any(map(lambda br: LHE_REGEX.match(br), branch_names_union))
 
     hlt_paths = list(filter(lambda branch_name: branch_name.startswith('HLT_'), list(branch_names_union)))
-    hlt_paths_filled = jinja2.Template(branches_list_str).render(
+    hlt_paths_filled = jinja2.Template(BRANCHES_LIST_STR).render(
       is_available = is_data,
       missing_branches = sorted(hlt_paths, key = lambda br: br.lower()),
     ).lstrip('\n')
 
     missing_hlt_paths = list(sorted(list(required_paths - branch_names_intersection), key = lambda br: br.lower()))
-    missing_hlt_paths_filled = jinja2.Template(branches_list_str).render(
+    missing_hlt_paths_filled = jinja2.Template(BRANCHES_LIST_STR).render(
       is_available = True,
       missing_branches = sorted(missing_hlt_paths, key = lambda br: br.lower()),
     ).lstrip('\n')
@@ -272,13 +229,13 @@ if __name__ == '__main__':
     if args.missing_branches:
       for branch_arr in branch_names:
         missing_from_superset.update(branch_names_union - set(branch_arr))
-    missing_from_superset_filled = jinja2.Template(branches_list_str).render(
+    missing_from_superset_filled = jinja2.Template(BRANCHES_LIST_STR).render(
       is_available = args.missing_branches and is_data,
       missing_branches = sorted(list(missing_from_superset), key = lambda br: br.lower()),
     ).lstrip('\n')
 
     missing_completely = list(triggerTable.triggers_flat & set(missing_from_superset))
-    missing_completely_filled = jinja2.Template(branches_list_str).render(
+    missing_completely_filled = jinja2.Template(BRANCHES_LIST_STR).render(
       is_available = args.missing_branches and is_data,
       missing_branches = sorted(list(missing_completely), key = lambda br: br.lower()),
     ).lstrip('\n')
@@ -287,10 +244,8 @@ if __name__ == '__main__':
         "Found an overlap b/w the list of required triggers and the list of missing branches in "
         "sample {}: {}".format(dbs_entry['process_name_specific'], ', '.join(missing_completely))
        )
-    local_paths_str   = ',\n'.join(map(lambda f: '      [ "{name_local}", {nevents} ]'.format(**f), files_present))
-    missing_paths_str = ',\n'.join(map(lambda f: '      [ "{name}", {nevents} ]'.format(**f),        files_missing))
 
-    output += jinja2.Template(dictionary_entry_str).render(
+    output += jinja2.Template(DICTIONARY_ENTRY_STR).render(
           dict_name                       = args.output_dict_name,
           dbs_name                        = dbs_key,
           sample_type                     = 'data' if is_data else 'mc',
@@ -318,11 +273,11 @@ if __name__ == '__main__':
           missing_completely              = missing_completely_filled,
           missing_hlt_paths               = missing_hlt_paths_filled,
           hlt_paths                       = hlt_paths_filled,
-          local_paths                     = local_paths_str,
-          missing_paths                   = missing_paths_str,
+          local_paths                     = ',\n'.join(fmt_path(files_present, 'name_local', 'nevents')),
+          missing_paths                   = ',\n'.join(fmt_path(files_present, 'name',       'nevents')),
         ) + '\n\n'
 
-  output += jinja2.Template(dictionary_sum_events_str).render(
+  output += jinja2.Template(SUM_EVENTS_STR).render(
     dict_name = args.output_dict_name,
     sample_lists = sum_events,
   ) + '\n\n'

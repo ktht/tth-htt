@@ -3,15 +3,16 @@
 from tthAnalysis.HiggsToTauTau.jobTools import run_cmd, human_size
 from tthAnalysis.HiggsToTauTau.analysisSettings import Triggers
 from tthAnalysis.HiggsToTauTau.safe_root import ROOT
-from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter, load_meta_dict
+from tthAnalysis.HiggsToTauTau.common import logging, SmartFormatter
 from tthAnalysis.HiggsToTauTau.hdfs import hdfs
-
 from tthAnalysis.NanoAODTools.tHweights_cfi import tHweights
+from tthAnalysis.HiggsToTauTau.dictTools import HEADER_STR, SUM_EVENTS_STR, BRANCHES_LIST_STR, LHE_REGEX, LHE_DOC_REGEX, \
+                                                BRANCH_NLHEREWEIGHTINGWEIGHT, BRANCH_LHEPDFWEIGHT, LHE_DOC, \
+                                                get_triggers, round_sign, load_meta_dict
 
 import argparse
 import os.path
 import sys
-import imp
 import jinja2
 import re
 import copy
@@ -43,16 +44,11 @@ HISTOGRAM_COUNTWEIGHTED_LHESCALE_L1PREFIRE_NOM          = 'CountWeightedLHEWeigh
 # HISTOGRAM_COUNTFULLWEIGHTED_LHESCALE_NOPU               = 'CountFullWeightedLHEWeightScaleNoPU'
 # HISTOGRAM_COUNTFULLWEIGHTED_LHESCALE_NOPU_L1PREFIRE_NOM = 'CountFullWeightedLHEWeightScaleNoPUL1PrefireNom'
 EVENTS_TREE = 'Events'
-BRANCH_LHEPDFWEIGHT = 'LHEPdfWeight'
-BRANCH_NLHEREWEIGHTINGWEIGHT = 'nLHEReweightingWeight'
 
 HISTOGRAM_COUNT_KEY = 'histogram_count'
 TREE_COUNT_KEY      = 'tree_count'
 FSIZE_KEY           = 'fsize'
 BRANCH_NAMES_KEY    = 'branch_names'
-
-LHE_REGEX     = re.compile('(n|)LHE(Scale|Pdf)Weight')
-LHE_DOC_REGEX = re.compile('LHE pdf variation weights \(w_var \/ w\_nominal\) for LHA IDs (?P<lha_start>[0-9]+) - (?P<lha_end>[0-9]+)')
 
 HISTOGRAM_COUNT_COMMON_MC = [
   HISTOGRAM_COUNTWEIGHTED,
@@ -87,16 +83,6 @@ LHESCALEARR = [
   # HISTOGRAM_COUNTFULLWEIGHTED_LHESCALE_NOPU_L1PREFIRE_NOM,
 ]
 TH_INDICES = [ coupling.idx.value() for coupling in tHweights if coupling.idx.value() >= 0 ]
-
-# see https://github.com/cms-nanoAOD/cmssw/blob/9a2728ac9f44fc45ba1aa56389e28c594207c0fe/PhysicsTools/NanoAOD/python/nano_cff.py#L99-L104
-LHE_DOC = {
-  91400  : { 'name' : 'PDF4LHC15_nnlo_30_pdfas',    'count' : 33  },
-  306000 : { 'name' : 'NNPDF31_nnlo_hessian_pdfas', 'count' : 103 },
-  260000 : { 'name' : 'NNPDF30_nlo_as_0118',        'count' : 101 },
-  262000 : { 'name' : 'NNPDF30_lo_as_0130',         'count' : 101 },
-  292000 : { 'name' : 'NNPDF30_nlo_nf_4_pdfas',     'count' : 103 },
-  292200 : { 'name' : 'NNPDF30_nlo_nf_5_pdfas',     'count' : 103 },
-}
 
 try:
     from urllib.parse import urlparse
@@ -147,16 +133,7 @@ class FileTracker:
     self.zombie_files    = []
     self.corrupted_files = []
 
-header_str = """from collections import OrderedDict as OD
-
-# file generated at {{ date }} with the following command:
-# {{ command }}
-
-{{ dict_name }} = OD()
-
-"""
-
-dictionary_entry_str = """{{ dict_name }}["{{ dbs_name }}"] = OD([
+DICTIONARY_ENTRY_STR = """{{ dict_name }}["{{ dbs_name }}"] = OD([
   ("type",                            "{{ sample_type }}"),
   ("sample_category",                 "{{ sample_category }}"),
   ("process_name_specific",           "{{ process_name_specific }}"),
@@ -197,29 +174,14 @@ dictionary_entry_str = """{{ dict_name }}["{{ dbs_name }}"] = OD([
 ])
 """
 
-dictionary_sum_events_str = """{{ dict_name }}["sum_events"] = [{%- for sample_list in sample_lists %}
-  [ {% for sample in sample_list %}{{ "%-50s"|format("'%s',"|format(sample)) }} {% endfor %} ],
-{%- endfor %}
-]
-"""
-
-path_entry_str = """      OD([
+PATH_ENTRY_STR = """      OD([
         ("path",      "{{ path }}"),
         ("selection", "{{ selection }}"),
         ("blacklist", {{ blacklist }}),
       ]),
 """
 
-branches_list_str = """{%- if is_available -%}
-  {%- for missing_branch in missing_branches %}
-    "{{ missing_branch }}",
-  {%- endfor -%}
-{%- else %}
-    # not computed
-{%- endif -%}
-"""
-
-sh_str = """#!/bin/bash
+SH_STR = """#!/bin/bash
 
 {{ cmd }}
 """
@@ -250,27 +212,6 @@ class PathEntry:
 
   def __repr__(self):
     return self.path
-
-def get_triggers(process_name_specific, is_data, era):
-  if 'SingleElec' in process_name_specific:
-    return ['1e', '1e1tau']
-  if 'SingleMuon' in process_name_specific:
-    return ['1mu', '1mu1tau']
-  if 'DoubleEG' in process_name_specific:
-    return ['2e', '3e']
-  if 'DoubleMuon' in process_name_specific:
-    return ['2mu', '3mu']
-  if 'MuonEG' in process_name_specific:
-    return ['1e1mu', '2e1mu', '1e2mu']
-  if 'Tau' in process_name_specific:
-    return ['1e1tau', '1mu1tau', '2tau']
-  if 'EGamma' in process_name_specific: # merge of SingleElectron and DoubleEG PDs
-    return ['1e', '1e1tau', '2e', '3e']
-  if is_data:
-    raise ValueError("Expected MC!")
-  return [
-    '1e', '1mu', '2e', '2mu', '1e1mu', '3e', '3mu', '2e1mu', '1e2mu', '1e1tau', '1mu1tau', '2tau'
-  ]
 
 def get_array_type(tree, branch_name, array_multiplier = 1):
   branch = tree.GetBranch(branch_name)
@@ -693,10 +634,10 @@ def traverse_single(use_fuse, meta_dict, path_obj, key, check_every_event, missi
         "sample {}: {}".format(meta_dict[key]['process_name_specific'], ', '.join(overlap_with_triggers))
        )
     meta_dict[key]['triggers']                        = get_triggers(
-      meta_dict[key]['process_name_specific'], is_data, era
+      meta_dict[key]['process_name_specific'], is_data
     )
     meta_dict[key]['missing_hlt_paths']               = get_missing_hlt_paths(
-      get_triggers('', False, era), indices, triggerTable.triggers_all
+      get_triggers('', False), indices, triggerTable.triggers_all
     )
     meta_dict[key]['hlt_paths']                       = get_hlt_paths(indices) if is_data else []
     meta_dict[key]['genWeight']                       = not is_data
@@ -772,9 +713,6 @@ def obtain_paths(use_fuse, input_path):
   else:
     paths = input_path
   return paths
-
-def round_sign(x, sign_digits = 6):
-  return round(x, max(int(abs(math.floor(math.log10(x)))) + sign_digits, 0))
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(
@@ -952,7 +890,7 @@ if __name__ == '__main__':
           )
           paths.append(entry)
 
-  output = jinja2.Template(header_str).render(
+  output = jinja2.Template(HEADER_STR).render(
     command   = ' '.join([os.path.basename(__file__)] + sys.argv[1:]),
     date      = '{date:%Y-%m-%d %H:%M:%S}'.format(date = datetime.datetime.now()),
     dict_name = args.output_dict_name,
@@ -1025,7 +963,7 @@ if __name__ == '__main__':
       del commands_cp['-J']
 
       cmd = ' '.join(['python', sys.argv[0]] + [k + ' ' + v for k, v in commands_cp.items()])
-      sh = jinja2.Template(sh_str).render(cmd = cmd)
+      sh = jinja2.Template(SH_STR).render(cmd = cmd)
       sh_file = os.path.join(args.generate_jobs, 'job_%i.sh' % path_idx)
       with open(sh_file, 'w') as f:
         f.write(sh)
@@ -1090,29 +1028,29 @@ if __name__ == '__main__':
       if entry['located']:
         path_entries_arr = []
         for path_entry in meta_dict[key]['local_paths']:
-          path_entries_arr.append(jinja2.Template(path_entry_str).render(
+          path_entries_arr.append(jinja2.Template(PATH_ENTRY_STR).render(
             path      = path_entry['path'],
             selection = path_entry['selection'],
             blacklist = path_entry['blacklist'], #TODO: format properly
           ))
         is_mc = meta_dict[key]['type'] == 'mc'
-        missing_branches_template_filled = jinja2.Template(branches_list_str).render(
+        missing_branches_template_filled = jinja2.Template(BRANCHES_LIST_STR).render(
           is_available     = args.missing_branches and not is_mc,
           missing_branches = sorted(meta_dict[key]['missing_from_superset'], key = lambda s: s.lower()),
         ).lstrip('\n')
-        completely_missing_branches_template_filled = jinja2.Template(branches_list_str).render(
+        completely_missing_branches_template_filled = jinja2.Template(BRANCHES_LIST_STR).render(
           is_available     = args.missing_branches and not is_mc,
           missing_branches = sorted(meta_dict[key]['missing_completely'], key = lambda s: s.lower()),
         ).lstrip('\n')
-        missing_hlt_paths_filled = jinja2.Template(branches_list_str).render(
+        missing_hlt_paths_filled = jinja2.Template(BRANCHES_LIST_STR).render(
           is_available     = True,
           missing_branches = sorted(meta_dict[key]['missing_hlt_paths'], key = lambda s: s.lower()),
         ).lstrip('\n')
-        hlt_paths_filled = jinja2.Template(branches_list_str).render(
+        hlt_paths_filled = jinja2.Template(BRANCHES_LIST_STR).render(
           is_available = not is_mc,
           missing_branches = sorted(meta_dict[key]['hlt_paths'], key = lambda  s: s.lower()),
         ).lstrip('\n')
-        output += jinja2.Template(dictionary_entry_str).render(
+        output += jinja2.Template(DICTIONARY_ENTRY_STR).render(
           dict_name                       = args.output_dict_name,
           dbs_name                        = key,
           sample_type                     = meta_dict[key]['type'],
@@ -1145,7 +1083,7 @@ if __name__ == '__main__':
       else:
         logging.warning("Could not locate paths for {key}".format(key = key))
 
-  output += jinja2.Template(dictionary_sum_events_str).render(
+  output += jinja2.Template(SUM_EVENTS_STR).render(
     dict_name    = args.output_dict_name,
     sample_lists = sum_events,
   ) + '\n\n'
