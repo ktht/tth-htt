@@ -1,12 +1,13 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-19 14:59:44 with the following command:
+# file generated at 2019-11-20 17:51:08 with the following command:
 # create_nano_dictionary.py -m python/samples/metaDict_2018_nano.py -N samples_2018 -E 2018 -o python/samples -g tthAnalyzeSamples_2018_nanoAOD_nano.py -M
 
 samples_2018 = OD()
 samples_2018["/SingleMuon/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2018A-17Sep2018-v2/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2018A_Nano25Oct2019_v1"),
   ("nof_files",                       210),
   ("nof_db_files",                    210),
@@ -1417,6 +1418,7 @@ samples_2018["/SingleMuon/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/SingleMuon/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2018B-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2018B_Nano25Oct2019_v1"),
   ("nof_files",                       81),
   ("nof_db_files",                    81),
@@ -2358,6 +2360,7 @@ samples_2018["/SingleMuon/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/SingleMuon/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2018C-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2018C_Nano25Oct2019_v1"),
   ("nof_files",                       80),
   ("nof_db_files",                    80),
@@ -3144,6 +3147,7 @@ samples_2018["/SingleMuon/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/EGamma/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/EGamma/Run2018A-17Sep2018-v2/MINIAOD"),
   ("process_name_specific",           "EGamma_Run2018A_Nano25Oct2019_v1"),
   ("nof_files",                       240),
   ("nof_db_files",                    241),
@@ -4584,6 +4588,7 @@ samples_2018["/EGamma/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/EGamma/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/EGamma/Run2018B-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "EGamma_Run2018B_Nano25Oct2019_v1"),
   ("nof_files",                       85),
   ("nof_db_files",                    85),
@@ -5529,6 +5534,7 @@ samples_2018["/EGamma/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/EGamma/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/EGamma/Run2018C-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "EGamma_Run2018C_Nano25Oct2019_v1"),
   ("nof_files",                       101),
   ("nof_db_files",                    101),
@@ -6343,6 +6349,7 @@ samples_2018["/EGamma/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/DoubleMuon/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2018A-17Sep2018-v2/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2018A_Nano25Oct2019_v1"),
   ("nof_files",                       83),
   ("nof_db_files",                    83),
@@ -7626,6 +7633,7 @@ samples_2018["/DoubleMuon/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/DoubleMuon/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2018B-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2018B_Nano25Oct2019_v1"),
   ("nof_files",                       26),
   ("nof_db_files",                    26),
@@ -8512,6 +8520,7 @@ samples_2018["/DoubleMuon/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/DoubleMuon/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2018C-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2018C_Nano25Oct2019_v1"),
   ("nof_files",                       25),
   ("nof_db_files",                    25),
@@ -9243,6 +9252,7 @@ samples_2018["/DoubleMuon/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/DoubleMuon/Run2018D-Nano25Oct2019_ver2-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2018D-PromptReco-v2/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2018D_Nano25Oct2019_ver2_v1"),
   ("nof_files",                       76),
   ("nof_db_files",                    76),
@@ -10033,6 +10043,7 @@ samples_2018["/DoubleMuon/Run2018D-Nano25Oct2019_ver2-v1/NANOAOD"] = OD([
 samples_2018["/MuonEG/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2018A-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2018A_Nano25Oct2019_v1"),
   ("nof_files",                       64),
   ("nof_db_files",                    64),
@@ -11297,6 +11308,7 @@ samples_2018["/MuonEG/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/MuonEG/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2018B-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2018B_Nano25Oct2019_v1"),
   ("nof_files",                       20),
   ("nof_db_files",                    20),
@@ -12177,6 +12189,7 @@ samples_2018["/MuonEG/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/MuonEG/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2018C-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2018C_Nano25Oct2019_v1"),
   ("nof_files",                       24),
   ("nof_db_files",                    24),
@@ -12905,6 +12918,7 @@ samples_2018["/MuonEG/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/MuonEG/Run2018D-Nano25Oct2019_ver2-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2018D-PromptReco-v2/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2018D_Nano25Oct2019_ver2_v1"),
   ("nof_files",                       46),
   ("nof_db_files",                    46),
@@ -13659,6 +13673,7 @@ samples_2018["/MuonEG/Run2018D-Nano25Oct2019_ver2-v1/NANOAOD"] = OD([
 samples_2018["/Tau/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2018A-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2018A_Nano25Oct2019_v1"),
   ("nof_files",                       55),
   ("nof_db_files",                    55),
@@ -14673,6 +14688,7 @@ samples_2018["/Tau/Run2018A-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/Tau/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2018B-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2018B_Nano25Oct2019_v1"),
   ("nof_files",                       40),
   ("nof_db_files",                    40),
@@ -15496,6 +15512,7 @@ samples_2018["/Tau/Run2018B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/Tau/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2018C-17Sep2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2018C_Nano25Oct2019_v1"),
   ("nof_files",                       36),
   ("nof_db_files",                    36),
@@ -16220,6 +16237,7 @@ samples_2018["/Tau/Run2018C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2018["/Tau/Run2018D-Nano25Oct2019_ver2-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2018D-PromptReco-v2/MINIAOD"),
   ("process_name_specific",           "Tau_Run2018D_Nano25Oct2019_ver2_v1"),
   ("nof_files",                       90),
   ("nof_db_files",                    90),
@@ -17024,6 +17042,7 @@ samples_2018["/Tau/Run2018D-Nano25Oct2019_ver2-v1/NANOAOD"] = OD([
 samples_2018["/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ttH"),
+  ("parent",                          "/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "ttHJetToNonbb_M125_amcatnlo"),
   ("nof_files",                       14),
   ("nof_db_files",                    14),
@@ -17084,6 +17103,7 @@ samples_2018["/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/Run
 samples_2018["/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ttH"),
+  ("parent",                          "/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "ttHToNonbb_M125_powheg"),
   ("nof_files",                       12),
   ("nof_db_files",                    12),
@@ -17142,6 +17162,7 @@ samples_2018["/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAOD
 samples_2018["/TTH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v2/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ttH_ctcvcp"),
+  ("parent",                          "/TTH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTH_4f_ctcvcp"),
   ("nof_files",                       33),
   ("nof_db_files",                    33),
@@ -17221,6 +17242,7 @@ samples_2018["/TTH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/RunIIAutumn18NanoAOD
 samples_2018["/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "tHq"),
+  ("parent",                          "/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "THQ_ctcvcp"),
   ("nof_files",                       41),
   ("nof_db_files",                    41),
@@ -17308,6 +17330,7 @@ samples_2018["/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/RunIIAutumn18NanoAODv6
 samples_2018["/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "tHW"),
+  ("parent",                          "/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "THW_ctcvcp"),
   ("nof_files",                       22),
   ("nof_db_files",                    22),
@@ -17376,6 +17399,7 @@ samples_2018["/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/RunIIAutumn18NanoAODv6
 samples_2018["/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToZZTo4L"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -17425,6 +17449,7 @@ samples_2018["/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutum
 samples_2018["/GluGluHToZZTo2L2Q_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToZZTo2L2Q_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToZZTo2L2Q_M125"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -17474,6 +17499,7 @@ samples_2018["/GluGluHToZZTo2L2Q_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAut
 samples_2018["/GluGluHToWWToLNuQQ_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToWWToLNuQQ_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToWWToLNuQQ_M125"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -17523,6 +17549,7 @@ samples_2018["/GluGluHToWWToLNuQQ_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAut
 samples_2018["/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToWWTo2L2Nu_M125"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -17571,6 +17598,7 @@ samples_2018["/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAut
 samples_2018["/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToMuMu_M125"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -17618,6 +17646,7 @@ samples_2018["/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIA
 samples_2018["/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v1/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToMuMu_M125_ext1"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -17666,6 +17695,7 @@ samples_2018["/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIA
 samples_2018["/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToBB_M125"),
   ("nof_files",                       16),
   ("nof_db_files",                    16),
@@ -17728,6 +17758,7 @@ samples_2018["/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/RunIIAutumn18NanoAODv
 samples_2018["/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ggH"),
+  ("parent",                          "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "GluGluHToGG_M125"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -17777,6 +17808,7 @@ samples_2018["/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18
 samples_2018["/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "qqH"),
+  ("parent",                          "/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "VBF_HToZZTo4L"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -17824,6 +17856,7 @@ samples_2018["/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/RunIIAutumn1
 samples_2018["/VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGen_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "qqH"),
+  ("parent",                          "/VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGen_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "VBFHToWWToLNuQQ_M125"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -17871,6 +17904,7 @@ samples_2018["/VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGen_pythia8/RunIIAutumn18Nan
 samples_2018["/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "qqH"),
+  ("parent",                          "/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "VBFHToWWTo2L2Nu_M125"),
   ("nof_files",                       4),
   ("nof_db_files",                    4),
@@ -17921,6 +17955,7 @@ samples_2018["/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn
 samples_2018["/VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "qqH"),
+  ("parent",                          "/VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "VBFHToMuMu_M125"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -17969,6 +18004,7 @@ samples_2018["/VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/RunIIAutu
 samples_2018["/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "qqH"),
+  ("parent",                          "/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "VBFHToBB_M125"),
   ("nof_files",                       9),
   ("nof_db_files",                    9),
@@ -18024,6 +18060,7 @@ samples_2018["/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/RunIIAutumn18NanoAO
 samples_2018["/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "qqH"),
+  ("parent",                          "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "VBFHToGG_M125"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -18072,6 +18109,7 @@ samples_2018["/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIIAutumn18NanoAODv6-Nano2
 samples_2018["/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTZ"),
+  ("parent",                          "/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTZToLL_M10_ext1"),
   ("nof_files",                       15),
   ("nof_db_files",                    15),
@@ -18133,6 +18171,7 @@ samples_2018["/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18Nano
 samples_2018["/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTZ"),
+  ("parent",                          "/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTZToLL_M-1to10"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -18181,6 +18220,7 @@ samples_2018["/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoA
 samples_2018["/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTZ"),
+  ("parent",                          "/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTZJets_LO_ext1"),
   ("nof_files",                       27),
   ("nof_db_files",                    27),
@@ -18254,6 +18294,7 @@ samples_2018["/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTW"),
+  ("parent",                          "/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTWJetsToLNu_ext1"),
   ("nof_files",                       7),
   ("nof_db_files",                    7),
@@ -18307,6 +18348,7 @@ samples_2018["/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIAutu
 samples_2018["/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTW"),
+  ("parent",                          "/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTWJets_LO_ext1"),
   ("nof_files",                       19),
   ("nof_db_files",                    19),
@@ -18372,6 +18414,7 @@ samples_2018["/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTWW"),
+  ("parent",                          "/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTWW_ext1"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -18421,6 +18464,7 @@ samples_2018["/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext2-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTWW"),
+  ("parent",                          "/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext2-v1/MINIAODSIM"),
   ("process_name_specific",           "TTWW_ext2"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -18470,6 +18514,7 @@ samples_2018["/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "ST_t-channel_antitop_4f_inclusiveDecays"),
   ("nof_files",                       66),
   ("nof_db_files",                    66),
@@ -18582,6 +18627,7 @@ samples_2018["/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-mads
 samples_2018["/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "ST_t-channel_top_4f_inclusiveDecays"),
   ("nof_files",                       110),
   ("nof_db_files",                    110),
@@ -18738,6 +18784,7 @@ samples_2018["/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-
 samples_2018["/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v1/MINIAODSIM"),
   ("process_name_specific",           "ST_tW_antitop_5f_inclusiveDecays_ext1"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -18795,6 +18842,7 @@ samples_2018["/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/Run
 samples_2018["/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v1/MINIAODSIM"),
   ("process_name_specific",           "ST_tW_top_5f_inclusiveDecays_ext1"),
   ("nof_files",                       12),
   ("nof_db_files",                    12),
@@ -18853,6 +18901,7 @@ samples_2018["/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAu
 samples_2018["/ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v1/MINIAODSIM"),
   ("process_name_specific",           "ST_tWll_PSweights_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -18900,6 +18949,7 @@ samples_2018["/ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-pythia8/RunIIAutum
 samples_2018["/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTTo2L2Nu"),
   ("nof_files",                       59),
   ("nof_db_files",                    59),
@@ -19005,6 +19055,7 @@ samples_2018["/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nan
 samples_2018["/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTToSemiLeptonic"),
   ("nof_files",                       84),
   ("nof_db_files",                    84),
@@ -19135,6 +19186,7 @@ samples_2018["/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAO
 samples_2018["/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v3/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTToHadronic"),
   ("nof_files",                       118),
   ("nof_db_files",                    118),
@@ -19299,6 +19351,7 @@ samples_2018["/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTJets_DiLept"),
   ("nof_files",                       36),
   ("nof_db_files",                    36),
@@ -19381,6 +19434,7 @@ samples_2018["/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18Nano
 samples_2018["/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTJets_SingleLeptFromT"),
   ("nof_files",                       61),
   ("nof_db_files",                    61),
@@ -19488,6 +19542,7 @@ samples_2018["/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAut
 samples_2018["/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTJets_SingleLeptFromTbar"),
   ("nof_files",                       61),
   ("nof_db_files",                    61),
@@ -19595,6 +19650,7 @@ samples_2018["/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/RunII
 samples_2018["/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTJets_amcatnloFXFX_ext1"),
   ("nof_files",                       159),
   ("nof_db_files",                    159),
@@ -19800,6 +19856,7 @@ samples_2018["/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/TTJets_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TT"),
+  ("parent",                          "/TTJets_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTJets_madgraphMLM"),
   ("nof_files",                       13),
   ("nof_db_files",                    13),
@@ -19859,6 +19916,7 @@ samples_2018["/TTJets_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-N
 samples_2018["/TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTWH"),
+  ("parent",                          "/TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTWH_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -19906,6 +19964,7 @@ samples_2018["/TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/TTZH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "TTZH"),
+  ("parent",                          "/TTZH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTZH_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -19953,6 +20012,7 @@ samples_2018["/TTZH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "WWW_ext1"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -20002,6 +20062,7 @@ samples_2018["/WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano
 samples_2018["/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "WWZ_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -20049,6 +20110,7 @@ samples_2018["/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25O
 samples_2018["/WZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "WZZ_ext1"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -20097,6 +20159,7 @@ samples_2018["/WZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25O
 samples_2018["/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "ZZZ_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -20144,6 +20207,7 @@ samples_2018["/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25O
 samples_2018["/WZG_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WZG_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WZG"),
   ("nof_files",                       5),
   ("nof_db_files",                    5),
@@ -20195,6 +20259,7 @@ samples_2018["/WZG_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25O
 samples_2018["/WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WGToLNuG"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -20249,6 +20314,7 @@ samples_2018["/WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6
 samples_2018["/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "ZGTo2LG_01J_ext1"),
   ("nof_files",                       18),
   ("nof_db_files",                    18),
@@ -20313,6 +20379,7 @@ samples_2018["/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18Na
 samples_2018["/TGJets_leptonDecays_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TGJets_leptonDecays_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TGJets"),
   ("nof_files",                       7),
   ("nof_db_files",                    7),
@@ -20366,6 +20433,7 @@ samples_2018["/TGJets_leptonDecays_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18N
 samples_2018["/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "TTGJets"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -20420,6 +20488,7 @@ samples_2018["/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIAutumn18N
 samples_2018["/tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "tZq_ll_4f_ext1"),
   ("nof_files",                       17),
   ("nof_db_files",                    17),
@@ -20483,6 +20552,7 @@ samples_2018["/tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18Nan
 samples_2018["/WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WpWpJJ_EWK_QCD"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -20531,6 +20601,7 @@ samples_2018["/WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAO
 samples_2018["/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WWTo2L2Nu_DoubleScattering"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -20579,6 +20650,7 @@ samples_2018["/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/RunIIAutumn18NanoAODv6-N
 samples_2018["/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTTT_ext1"),
   ("nof_files",                       6),
   ("nof_db_files",                    6),
@@ -20631,6 +20703,7 @@ samples_2018["/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTTW_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -20678,6 +20751,7 @@ samples_2018["/TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTTJ_ext1"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -20726,6 +20800,7 @@ samples_2018["/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/TTWZ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TTWZ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTWZ_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -20773,6 +20848,7 @@ samples_2018["/TTWZ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/TTZZ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "Rares"),
+  ("parent",                          "/TTZZ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "TTZZ_ext1"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -20820,6 +20896,7 @@ samples_2018["/TTZZ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "VH"),
+  ("parent",                          "/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "VHToNonbb_M125"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -20868,6 +20945,7 @@ samples_2018["/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18Na
 samples_2018["/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "VH"),
+  ("parent",                          "/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "ZH_HToBB_ZToLL"),
   ("nof_files",                       7),
   ("nof_db_files",                    7),
@@ -20921,6 +20999,7 @@ samples_2018["/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-N
 samples_2018["/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "VH"),
+  ("parent",                          "/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v1/MINIAODSIM"),
   ("process_name_specific",           "ZH_HToBB_ZToLL_ext1"),
   ("nof_files",                       5),
   ("nof_db_files",                    5),
@@ -20972,6 +21051,7 @@ samples_2018["/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-N
 samples_2018["/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-10to50"),
   ("nof_files",                       29),
   ("nof_db_files",                    29),
@@ -21047,6 +21127,7 @@ samples_2018["/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn
 samples_2018["/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-4to50_HT-70to100_PSweights"),
   ("nof_files",                       16),
   ("nof_db_files",                    16),
@@ -21109,6 +21190,7 @@ samples_2018["/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM
 samples_2018["/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-4to50_HT-100to200_PSweights"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -21166,6 +21248,7 @@ samples_2018["/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphML
 samples_2018["/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-4to50_HT-200to400_PSweights"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -21214,6 +21297,7 @@ samples_2018["/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphML
 samples_2018["/DYJetsToLL_M-4to50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-4to50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-4to50_HT-400to600_PSweights"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -21263,6 +21347,7 @@ samples_2018["/DYJetsToLL_M-4to50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphML
 samples_2018["/DYJetsToLL_M-4to50_HT-600toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-4to50_HT-600toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-4to50_HT-600toInf_PSWeights"),
   ("nof_files",                       5),
   ("nof_db_files",                    5),
@@ -21314,6 +21399,7 @@ samples_2018["/DYJetsToLL_M-4to50_HT-600toInf_TuneCP5_PSWeights_13TeV-madgraphML
 samples_2018["/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-50"),
   ("nof_files",                       58),
   ("nof_db_files",                    58),
@@ -21418,6 +21504,7 @@ samples_2018["/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18Na
 samples_2018["/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-50_amcatnloFXFX"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -21465,6 +21552,7 @@ samples_2018["/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18N
 samples_2018["/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext2-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext2-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M-50_amcatnloFXFX_ext2"),
   ("nof_files",                       143),
   ("nof_db_files",                    143),
@@ -21654,6 +21742,7 @@ samples_2018["/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18N
 samples_2018["/DY1JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DY1JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DY1JetsToLL_M-50"),
   ("nof_files",                       64),
   ("nof_db_files",                    64),
@@ -21764,6 +21853,7 @@ samples_2018["/DY1JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18N
 samples_2018["/DY2JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DY2JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DY2JetsToLL_M-50"),
   ("nof_files",                       15),
   ("nof_db_files",                    15),
@@ -21825,6 +21915,7 @@ samples_2018["/DY2JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18N
 samples_2018["/DY3JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DY3JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DY3JetsToLL_M-50"),
   ("nof_files",                       7),
   ("nof_db_files",                    7),
@@ -21878,6 +21969,7 @@ samples_2018["/DY3JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18N
 samples_2018["/DY4JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DY4JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DY4JetsToLL_M-50"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -21932,6 +22024,7 @@ samples_2018["/DY4JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18N
 samples_2018["/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT70to100_PSweights"),
   ("nof_files",                       16),
   ("nof_db_files",                    16),
@@ -21994,6 +22087,7 @@ samples_2018["/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-py
 samples_2018["/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT100to200_PSweights"),
   ("nof_files",                       12),
   ("nof_db_files",                    12),
@@ -22052,6 +22146,7 @@ samples_2018["/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-p
 samples_2018["/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT200to400_PSweights"),
   ("nof_files",                       12),
   ("nof_db_files",                    12),
@@ -22110,6 +22205,7 @@ samples_2018["/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-p
 samples_2018["/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext2-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext2-v3/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT400to600_PSweights_ext2"),
   ("nof_files",                       15),
   ("nof_db_files",                    15),
@@ -22171,6 +22267,7 @@ samples_2018["/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-p
 samples_2018["/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT600to800_PSweights"),
   ("nof_files",                       13),
   ("nof_db_files",                    13),
@@ -22230,6 +22327,7 @@ samples_2018["/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-p
 samples_2018["/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT800to1200_PSweights"),
   ("nof_files",                       6),
   ("nof_db_files",                    6),
@@ -22282,6 +22380,7 @@ samples_2018["/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-
 samples_2018["/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT1200to2500_PSweights"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -22330,6 +22429,7 @@ samples_2018["/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM
 samples_2018["/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "DYJetsToLL_M50_HT2500toInf_PSweights"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -22378,6 +22478,7 @@ samples_2018["/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-
 samples_2018["/DYBBJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/DYBBJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "DYBBJetsToLL_M-50"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -22435,6 +22536,7 @@ samples_2018["/DYBBJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18
 samples_2018["/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_madgraphMLM"),
   ("nof_files",                       50),
   ("nof_db_files",                    50),
@@ -22531,6 +22633,7 @@ samples_2018["/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAOD
 samples_2018["/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "W1JetsToLNu"),
   ("nof_files",                       39),
   ("nof_db_files",                    39),
@@ -22616,6 +22719,7 @@ samples_2018["/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAO
 samples_2018["/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "W2JetsToLNu"),
   ("nof_files",                       22),
   ("nof_db_files",                    22),
@@ -22684,6 +22788,7 @@ samples_2018["/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAO
 samples_2018["/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "W3JetsToLNu"),
   ("nof_files",                       17),
   ("nof_db_files",                    17),
@@ -22747,6 +22852,7 @@ samples_2018["/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAO
 samples_2018["/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "W4JetsToLNu"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -22804,6 +22910,7 @@ samples_2018["/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAO
 samples_2018["/WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT70To100"),
   ("nof_files",                       27),
   ("nof_db_files",                    27),
@@ -22877,6 +22984,7 @@ samples_2018["/WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutu
 samples_2018["/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT100To200"),
   ("nof_files",                       27),
   ("nof_db_files",                    27),
@@ -22950,6 +23058,7 @@ samples_2018["/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAut
 samples_2018["/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT200To400"),
   ("nof_files",                       36),
   ("nof_db_files",                    36),
@@ -23032,6 +23141,7 @@ samples_2018["/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAut
 samples_2018["/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT400To600"),
   ("nof_files",                       13),
   ("nof_db_files",                    13),
@@ -23091,6 +23201,7 @@ samples_2018["/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAut
 samples_2018["/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT600To800"),
   ("nof_files",                       28),
   ("nof_db_files",                    28),
@@ -23165,6 +23276,7 @@ samples_2018["/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAut
 samples_2018["/WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT800To1200"),
   ("nof_files",                       18),
   ("nof_db_files",                    18),
@@ -23229,6 +23341,7 @@ samples_2018["/WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAu
 samples_2018["/WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT1200To2500"),
   ("nof_files",                       17),
   ("nof_db_files",                    17),
@@ -23292,6 +23405,7 @@ samples_2018["/WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIA
 samples_2018["/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "EWK"),
+  ("parent",                          "/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WJetsToLNu_HT2500ToInf"),
   ("nof_files",                       9),
   ("nof_db_files",                    9),
@@ -23347,6 +23461,7 @@ samples_2018["/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAu
 samples_2018["/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WW"),
+  ("parent",                          "/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WWTo2L2Nu"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -23404,6 +23519,7 @@ samples_2018["/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoA
 samples_2018["/WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WW"),
+  ("parent",                          "/WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WWToLNuQQ"),
   ("nof_files",                       18),
   ("nof_db_files",                    18),
@@ -23468,6 +23584,7 @@ samples_2018["/WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoA
 samples_2018["/WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WW"),
+  ("parent",                          "/WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WWTo1L1Nu2Q"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -23522,6 +23639,7 @@ samples_2018["/WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoA
 samples_2018["/WWTo4Q_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WW"),
+  ("parent",                          "/WWTo4Q_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WWTo4Q"),
   ("nof_files",                       6),
   ("nof_db_files",                    6),
@@ -23574,6 +23692,7 @@ samples_2018["/WWTo4Q_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv
 samples_2018["/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu"),
   ("nof_files",                       16),
   ("nof_db_files",                    16),
@@ -23636,6 +23755,7 @@ samples_2018["/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv
 samples_2018["/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_ext1"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -23693,6 +23813,7 @@ samples_2018["/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv
 samples_2018["/WZTo3LNu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_powheg_ext1"),
   ("nof_files",                       6),
   ("nof_db_files",                    6),
@@ -23745,6 +23866,7 @@ samples_2018["/WZTo3LNu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv6-Nano
 samples_2018["/WZTo3LNu_0Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_0Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_0Jets_MLL-4to50"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -23794,6 +23916,7 @@ samples_2018["/WZTo3LNu_0Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIA
 samples_2018["/WZTo3LNu_0Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_0Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_0Jets_MLL-50"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -23842,6 +23965,7 @@ samples_2018["/WZTo3LNu_0Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutu
 samples_2018["/WZTo3LNu_1Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_1Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_1Jets_MLL-4to50"),
   ("nof_files",                       4),
   ("nof_db_files",                    4),
@@ -23892,6 +24016,7 @@ samples_2018["/WZTo3LNu_1Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIA
 samples_2018["/WZTo3LNu_1Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_1Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_1Jets_MLL-50"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -23940,6 +24065,7 @@ samples_2018["/WZTo3LNu_1Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutu
 samples_2018["/WZTo3LNu_2Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_2Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_2Jets_MLL-4to50"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -23989,6 +24115,7 @@ samples_2018["/WZTo3LNu_2Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIA
 samples_2018["/WZTo3LNu_2Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_2Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_2Jets_MLL-50"),
   ("nof_files",                       5),
   ("nof_db_files",                    5),
@@ -24040,6 +24167,7 @@ samples_2018["/WZTo3LNu_2Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutu
 samples_2018["/WZTo3LNu_3Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_3Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_3Jets_MLL-4to50"),
   ("nof_files",                       5),
   ("nof_db_files",                    5),
@@ -24091,6 +24219,7 @@ samples_2018["/WZTo3LNu_3Jets_MLL-4to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIA
 samples_2018["/WZTo3LNu_3Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo3LNu_3Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "WZTo3LNu_3Jets_MLL-50"),
   ("nof_files",                       5),
   ("nof_db_files",                    5),
@@ -24142,6 +24271,7 @@ samples_2018["/WZTo3LNu_3Jets_MLL-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutu
 samples_2018["/WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WZTo2L2Q"),
   ("nof_files",                       25),
   ("nof_db_files",                    25),
@@ -24213,6 +24343,7 @@ samples_2018["/WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv
 samples_2018["/WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "WZ"),
+  ("parent",                          "/WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "WZTo1L1Nu2Q"),
   ("nof_files",                       22),
   ("nof_db_files",                    22),
@@ -24281,6 +24412,7 @@ samples_2018["/WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoA
 samples_2018["/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ZZ"),
+  ("parent",                          "/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "ZZTo4L_ext1"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -24335,6 +24467,7 @@ samples_2018["/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext2-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ZZ"),
+  ("parent",                          "/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext2-v2/MINIAODSIM"),
   ("process_name_specific",           "ZZTo4L_ext2"),
   ("nof_files",                       71),
   ("nof_db_files",                    71),
@@ -24452,6 +24585,7 @@ samples_2018["/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25
 samples_2018["/ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ZZ"),
+  ("parent",                          "/ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "ZZTo2L2Nu_ext1"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -24509,6 +24643,7 @@ samples_2018["/ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nan
 samples_2018["/ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext2-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ZZ"),
+  ("parent",                          "/ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext2-v2/MINIAODSIM"),
   ("process_name_specific",           "ZZTo2L2Nu_ext2"),
   ("nof_files",                       38),
   ("nof_db_files",                    38),
@@ -24593,6 +24728,7 @@ samples_2018["/ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv6-Nan
 samples_2018["/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ZZ"),
+  ("parent",                          "/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "ZZTo2L2Q"),
   ("nof_files",                       24),
   ("nof_db_files",                    24),
@@ -24663,6 +24799,7 @@ samples_2018["/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIAutumn18NanoAODv
 samples_2018["/QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt15to20_bcToE"),
   ("nof_files",                       4),
   ("nof_db_files",                    4),
@@ -24713,6 +24850,7 @@ samples_2018["/QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt20to30_bcToE"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -24770,6 +24908,7 @@ samples_2018["/QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt30to80_bcToE"),
   ("nof_files",                       19),
   ("nof_db_files",                    19),
@@ -24835,6 +24974,7 @@ samples_2018["/QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-
 samples_2018["/QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt80to170_bcToE"),
   ("nof_files",                       23),
   ("nof_db_files",                    23),
@@ -24904,6 +25044,7 @@ samples_2018["/QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6
 samples_2018["/QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt170to250_bcToE"),
   ("nof_files",                       17),
   ("nof_db_files",                    17),
@@ -24967,6 +25108,7 @@ samples_2018["/QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv
 samples_2018["/QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt250toInf_bcToE"),
   ("nof_files",                       16),
   ("nof_db_files",                    16),
@@ -25029,6 +25171,7 @@ samples_2018["/QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv
 samples_2018["/QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt15to20_EMEnriched_ext1"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -25086,6 +25229,7 @@ samples_2018["/QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoA
 samples_2018["/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt20to30_EMEnriched"),
   ("nof_files",                       9),
   ("nof_db_files",                    9),
@@ -25141,6 +25285,7 @@ samples_2018["/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoA
 samples_2018["/QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt30to50_EMEnriched_ext1"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -25198,6 +25343,7 @@ samples_2018["/QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoA
 samples_2018["/QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt50to80_EMEnriched"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -25252,6 +25398,7 @@ samples_2018["/QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoA
 samples_2018["/QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt80to120_EMEnriched"),
   ("nof_files",                       9),
   ("nof_db_files",                    9),
@@ -25307,6 +25454,7 @@ samples_2018["/QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18Nano
 samples_2018["/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt120to170_EMEnriched"),
   ("nof_files",                       11),
   ("nof_db_files",                    11),
@@ -25364,6 +25512,7 @@ samples_2018["/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18Nan
 samples_2018["/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt170to300_EMEnriched"),
   ("nof_files",                       4),
   ("nof_db_files",                    4),
@@ -25414,6 +25563,7 @@ samples_2018["/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18Nan
 samples_2018["/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt300toInf_EMEnriched"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -25468,6 +25618,7 @@ samples_2018["/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18Nan
 samples_2018["/QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt15to20_Mu5"),
   ("nof_files",                       9),
   ("nof_db_files",                    9),
@@ -25523,6 +25674,7 @@ samples_2018["/QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18Na
 samples_2018["/QCD_Pt-20to30_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-20to30_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v4/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt20to30_Mu5"),
   ("nof_files",                       24),
   ("nof_db_files",                    24),
@@ -25593,14 +25745,15 @@ samples_2018["/QCD_Pt-20to30_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18Na
 samples_2018["/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt30to50_Mu5"),
-  ("nof_files",                       28),
+  ("nof_files",                       29),
   ("nof_db_files",                    29),
   ("nof_events",                      {
   }),
-  ("nof_tree_events",                 29025547),
+  ("nof_tree_events",                 29884616),
   ("nof_db_events",                   29884616),
-  ("fsize_local",                     33614019739), # 33.61GB, avg file size 1.20GB
+  ("fsize_local",                     34609208874), # 34.61GB, avg file size 1.19GB
   ("fsize_db",                        34609208874), # 34.61GB, avg file size 1.19GB
   ("use_it",                          False),
   ("xsection",                        1367000.0),
@@ -25615,6 +25768,7 @@ samples_2018["/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18Na
       [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/06A141F6-4AAC-A848-BB32-AD1B2DBC8B4A.root", 1149333 ],
       [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/171C5F22-0B3B-5F43-A035-F60C484DDBF3.root", 1341692 ],
       [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/1D63360E-8C08-D44B-9A0F-CE6C5B887B9A.root", 1331692 ],
+      [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/1DADB3F0-BAF7-BE48-BD79-DB29D2EBE1D8.root",  859069 ],
       [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/32B770FD-1F5C-6348-AEB4-40A619A10CEA.root", 1139787 ],
       [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/6C4DF8C5-1029-6E45-9DE0-44EC5B6BA3AA.root", 2102542 ],
       [ "/hdfs/cms/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/94880677-4A27-8746-8882-4B7A78FB91A5.root",  191469 ],
@@ -25643,7 +25797,7 @@ samples_2018["/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18Na
   ),
   ("missing_paths",
     [
-      [ "/store/mc/RunIIAutumn18NanoAODv6/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/NANOAODSIM/Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/240000/1DADB3F0-BAF7-BE48-BD79-DB29D2EBE1D8.root", 859069 ]
+
     ]
   ),
   ("missing_completely",           [
@@ -25667,6 +25821,7 @@ samples_2018["/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18Na
 samples_2018["/QCD_Pt-50to80_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-50to80_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt50to80_Mu5"),
   ("nof_files",                       26),
   ("nof_db_files",                    26),
@@ -25739,6 +25894,7 @@ samples_2018["/QCD_Pt-50to80_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18Na
 samples_2018["/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt80to120_Mu5"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -25787,6 +25943,7 @@ samples_2018["/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18N
 samples_2018["/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt80to120_Mu5_ext1"),
   ("nof_files",                       25),
   ("nof_db_files",                    25),
@@ -25858,6 +26015,7 @@ samples_2018["/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18N
 samples_2018["/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt120to170_Mu5"),
   ("nof_files",                       2),
   ("nof_db_files",                    2),
@@ -25906,6 +26064,7 @@ samples_2018["/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt120to170_Mu5_ext1"),
   ("nof_files",                       22),
   ("nof_db_files",                    22),
@@ -25974,6 +26133,7 @@ samples_2018["/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt170to300_Mu5"),
   ("nof_files",                       44),
   ("nof_db_files",                    44),
@@ -26064,6 +26224,7 @@ samples_2018["/QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt300to470_Mu5"),
   ("nof_files",                       3),
   ("nof_db_files",                    3),
@@ -26113,6 +26274,7 @@ samples_2018["/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext3-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext3-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt300to470_Mu5_ext3"),
   ("nof_files",                       40),
   ("nof_db_files",                    40),
@@ -26199,6 +26361,7 @@ samples_2018["/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt470to600_Mu5"),
   ("nof_files",                       1),
   ("nof_db_files",                    1),
@@ -26246,6 +26409,7 @@ samples_2018["/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext1-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt470to600_Mu5_ext1"),
   ("nof_files",                       25),
   ("nof_db_files",                    25),
@@ -26317,6 +26481,7 @@ samples_2018["/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt600to800_Mu5"),
   ("nof_files",                       20),
   ("nof_db_files",                    20),
@@ -26383,6 +26548,7 @@ samples_2018["/QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18
 samples_2018["/QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20_ext3-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext3-v2/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt800to1000_Mu5_ext3"),
   ("nof_files",                       32),
   ("nof_db_files",                    32),
@@ -26461,6 +26627,7 @@ samples_2018["/QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn1
 samples_2018["/QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv6-Nano25Oct2019_102X_upgrade2018_realistic_v20-v1/NANOAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "QCD"),
+  ("parent",                          "/QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"),
   ("process_name_specific",           "QCD_Pt1000toInf_Mu5"),
   ("nof_files",                       25),
   ("nof_db_files",                    25),

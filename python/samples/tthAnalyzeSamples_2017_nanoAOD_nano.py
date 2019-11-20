@@ -1,12 +1,13 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-19 15:28:14 with the following command:
+# file generated at 2019-11-20 18:33:08 with the following command:
 # create_nano_dictionary.py -m python/samples/metaDict_2017_nano.py -N samples_2017 -E 2017 -o python/samples -g tthAnalyzeSamples_2017_nanoAOD_nano.py -M
 
 samples_2017 = OD()
 samples_2017["/SingleElectron/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleElectron/Run2017B-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleElectron_Run2017B_Nano25Oct2019_v1"),
   ("nof_files",                       37),
   ("nof_db_files",                    37),
@@ -379,6 +380,7 @@ samples_2017["/SingleElectron/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleElectron/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleElectron/Run2017C-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleElectron_Run2017C_Nano25Oct2019_v1"),
   ("nof_files",                       90),
   ("nof_db_files",                    90),
@@ -1182,6 +1184,7 @@ samples_2017["/SingleElectron/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleElectron/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleElectron/Run2017D-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleElectron_Run2017D_Nano25Oct2019_v1"),
   ("nof_files",                       28),
   ("nof_db_files",                    28),
@@ -1775,6 +1778,7 @@ samples_2017["/SingleElectron/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleElectron/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleElectron/Run2017E-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleElectron_Run2017E_Nano25Oct2019_v1"),
   ("nof_files",                       56),
   ("nof_db_files",                    56),
@@ -2499,6 +2503,7 @@ samples_2017["/SingleElectron/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleElectron/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleElectron/Run2017F-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleElectron_Run2017F_Nano25Oct2019_v1"),
   ("nof_files",                       92),
   ("nof_db_files",                    92),
@@ -3305,6 +3310,7 @@ samples_2017["/SingleElectron/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleMuon/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2017B-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2017B_Nano25Oct2019_v1"),
   ("nof_files",                       72),
   ("nof_db_files",                    72),
@@ -3712,6 +3718,7 @@ samples_2017["/SingleMuon/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleMuon/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2017C-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2017C_Nano25Oct2019_v1"),
   ("nof_files",                       84),
   ("nof_db_files",                    84),
@@ -4467,6 +4474,7 @@ samples_2017["/SingleMuon/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleMuon/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2017D-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2017D_Nano25Oct2019_v1"),
   ("nof_files",                       51),
   ("nof_db_files",                    51),
@@ -5083,6 +5091,7 @@ samples_2017["/SingleMuon/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleMuon/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2017E-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2017E_Nano25Oct2019_v1"),
   ("nof_files",                       106),
   ("nof_db_files",                    106),
@@ -5795,6 +5804,7 @@ samples_2017["/SingleMuon/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/SingleMuon/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/SingleMuon/Run2017F-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "SingleMuon_Run2017F_Nano25Oct2019_v1"),
   ("nof_files",                       141),
   ("nof_db_files",                    141),
@@ -7025,6 +7035,7 @@ samples_2017["/SingleMuon/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleEG/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleEG/Run2017B-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleEG_Run2017B_Nano25Oct2019_v1"),
   ("nof_files",                       43),
   ("nof_db_files",                    43),
@@ -7403,6 +7414,7 @@ samples_2017["/DoubleEG/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleEG/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleEG/Run2017C-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleEG_Run2017C_Nano25Oct2019_v1"),
   ("nof_files",                       53),
   ("nof_db_files",                    53),
@@ -8153,6 +8165,7 @@ samples_2017["/DoubleEG/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleEG/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleEG/Run2017D-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleEG_Run2017D_Nano25Oct2019_v1"),
   ("nof_files",                       18),
   ("nof_db_files",                    18),
@@ -8736,6 +8749,7 @@ samples_2017["/DoubleEG/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleEG/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleEG/Run2017E-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleEG_Run2017E_Nano25Oct2019_v1"),
   ("nof_files",                       43),
   ("nof_db_files",                    43),
@@ -9531,6 +9545,7 @@ samples_2017["/DoubleEG/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleEG/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleEG/Run2017F-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleEG_Run2017F_Nano25Oct2019_v1"),
   ("nof_files",                       61),
   ("nof_db_files",                    61),
@@ -10348,6 +10363,7 @@ samples_2017["/DoubleEG/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleMuon/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2017B-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2017B_Nano25Oct2019_v1"),
   ("nof_files",                       14),
   ("nof_db_files",                    14),
@@ -10676,6 +10692,7 @@ samples_2017["/DoubleMuon/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleMuon/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2017C-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2017C_Nano25Oct2019_v1"),
   ("nof_files",                       38),
   ("nof_db_files",                    38),
@@ -11389,6 +11406,7 @@ samples_2017["/DoubleMuon/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleMuon/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2017D-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2017D_Nano25Oct2019_v1"),
   ("nof_files",                       20),
   ("nof_db_files",                    20),
@@ -11974,6 +11992,7 @@ samples_2017["/DoubleMuon/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleMuon/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2017E-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2017E_Nano25Oct2019_v1"),
   ("nof_files",                       37),
   ("nof_db_files",                    37),
@@ -12617,6 +12636,7 @@ samples_2017["/DoubleMuon/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/DoubleMuon/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/DoubleMuon/Run2017F-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "DoubleMuon_Run2017F_Nano25Oct2019_v1"),
   ("nof_files",                       69),
   ("nof_db_files",                    69),
@@ -13775,6 +13795,7 @@ samples_2017["/DoubleMuon/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/MuonEG/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2017B-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2017B_Nano25Oct2019_v1"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -14097,6 +14118,7 @@ samples_2017["/MuonEG/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/MuonEG/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2017C-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2017C_Nano25Oct2019_v1"),
   ("nof_files",                       15),
   ("nof_db_files",                    15),
@@ -14774,6 +14796,7 @@ samples_2017["/MuonEG/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/MuonEG/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2017D-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2017D_Nano25Oct2019_v1"),
   ("nof_files",                       8),
   ("nof_db_files",                    8),
@@ -15347,6 +15370,7 @@ samples_2017["/MuonEG/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/MuonEG/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2017E-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2017E_Nano25Oct2019_v1"),
   ("nof_files",                       14),
   ("nof_db_files",                    14),
@@ -15967,6 +15991,7 @@ samples_2017["/MuonEG/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/MuonEG/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/MuonEG/Run2017F-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "MuonEG_Run2017F_Nano25Oct2019_v1"),
   ("nof_files",                       21),
   ("nof_db_files",                    21),
@@ -16786,6 +16811,7 @@ samples_2017["/MuonEG/Run2017F-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/Tau/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2017B-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2017B_Nano25Oct2019_v1"),
   ("nof_files",                       28),
   ("nof_db_files",                    28),
@@ -17149,6 +17175,7 @@ samples_2017["/Tau/Run2017B-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/Tau/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2017C-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2017C_Nano25Oct2019_v1"),
   ("nof_files",                       34),
   ("nof_db_files",                    34),
@@ -17854,6 +17881,7 @@ samples_2017["/Tau/Run2017C-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/Tau/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2017D-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2017D_Nano25Oct2019_v1"),
   ("nof_files",                       15),
   ("nof_db_files",                    15),
@@ -18434,6 +18462,7 @@ samples_2017["/Tau/Run2017D-Nano25Oct2019-v1/NANOAOD"] = OD([
 samples_2017["/Tau/Run2017E-Nano25Oct2019-v1/NANOAOD"] = OD([
   ("type",                            "data"),
   ("sample_category",                 "data_obs"),
+  ("parent",                          "/Tau/Run2017E-31Mar2018-v1/MINIAOD"),
   ("process_name_specific",           "Tau_Run2017E_Nano25Oct2019_v1"),
   ("nof_files",                       35),
   ("nof_db_files",                    35),
