@@ -136,6 +136,7 @@ class FileTracker:
 DICTIONARY_ENTRY_STR = """{{ dict_name }}["{{ dbs_name }}"] = OD([
   ("type",                            "{{ sample_type }}"),
   ("sample_category",                 "{{ sample_category }}"),
+  ("parent",                          "{{ parent }}"),
   ("process_name_specific",           "{{ process_name_specific }}"),
   ("nof_files",                       {{ nof_files }}),
   ("nof_db_files",                    {{ nof_db_files }}),
@@ -1056,6 +1057,7 @@ if __name__ == '__main__':
           sample_type                     = meta_dict[key]['type'],
           sample_category                 = meta_dict[key]['sample_category'],
           process_name_specific           = meta_dict[key]['process_name_specific'],
+          parent                          = meta_dict[key]['parent'],
           nof_files                       = meta_dict[key]['nof_files'],
           nof_events                      = meta_dict[key]['nof_events'],
           nof_tree_events                 = meta_dict[key]['nof_tree_events'],

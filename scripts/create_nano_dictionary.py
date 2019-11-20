@@ -21,6 +21,7 @@ import math
 DICTIONARY_ENTRY_STR = """{{ dict_name }}["{{ dbs_name }}"] = OD([
   ("type",                            "{{ sample_type }}"),
   ("sample_category",                 "{{ sample_category }}"),
+  ("parent",                          "{{ parent }}"),
   ("process_name_specific",           "{{ process_name_specific }}"),
   ("nof_files",                       {{ nof_files }}),
   ("nof_db_files",                    {{ nof_db_files }}),
@@ -251,6 +252,7 @@ if __name__ == '__main__':
           sample_type                     = 'data' if is_data else 'mc',
           sample_category                 = dbs_entry['sample_category'],
           process_name_specific           = dbs_entry['process_name_specific'],
+          parent                          = dbs_entry['parent'],
           nof_files                       = len(files_present),
           nof_events                      = {}, # the vanilla NanoAOD Ntuples don't contain the event histograms
           nof_tree_events                 = local_events,
