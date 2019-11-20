@@ -77,15 +77,25 @@ def initializeInputFileIds(sample_info, max_files_per_job):
     return ( inputFileIds, secondary_files, primary_store, secondary_store )
 
 def generateInputFileList(sample_info, max_files_per_job):
-    ( inputFileIds, secondary_files, primary_store, secondary_store ) = initializeInputFileIds(sample_info, max_files_per_job)
     inputFileList = {}
-    if max_files_per_job > 1:
-        for jobId in range(len(inputFileIds)):
-            inputFileList[jobId + 1] = generate_input_list(inputFileIds[jobId], secondary_files, primary_store, secondary_store)
-    elif max_files_per_job == 1:
-        for jobId_it in range(len(inputFileIds)):
-            jobId = inputFileIds[jobId_it]
-            inputFileList[jobId[0]] = generate_input_list(jobId, secondary_files, primary_store, secondary_store)
+    if sample_info['parent'].endswith(('/MINIAOD', '/MINIAODSIM')):
+        inputFileList = {
+            (jobIdx + 1) : filePaths for jobIdx, filePaths in enumerate(
+                list(map(
+                    lambda sampleEntry: sampleEntry[0],
+                    sample_info['local_paths'][fileIdx:fileIdx + max_files_per_job]
+                )) for fileIdx in range(0, len(sample_info['local_paths']), max_files_per_job)
+            )
+        }
+    else:
+        ( inputFileIds, secondary_files, primary_store, secondary_store ) = initializeInputFileIds(sample_info, max_files_per_job)
+        if max_files_per_job > 1:
+            for jobId in range(len(inputFileIds)):
+                inputFileList[jobId + 1] = generate_input_list(inputFileIds[jobId], secondary_files, primary_store, secondary_store)
+        elif max_files_per_job == 1:
+            for jobId_it in range(len(inputFileIds)):
+                jobId = inputFileIds[jobId_it]
+                inputFileList[jobId[0]] = generate_input_list(jobId, secondary_files, primary_store, secondary_store)
     return inputFileList
 
 def createMakefile(makefileName, targets, lines_makefile, filesToClean = None, isSbatch = False, phoniesToAdd = []):
