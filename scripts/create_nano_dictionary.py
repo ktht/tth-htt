@@ -252,7 +252,7 @@ if __name__ == '__main__':
           sample_type                     = 'data' if is_data else 'mc',
           sample_category                 = dbs_entry['sample_category'],
           process_name_specific           = dbs_entry['process_name_specific'],
-          parent                          = dbs_entry['parent'],
+          parent                          = dbs_entry['parent_db'],
           nof_files                       = len(files_present),
           nof_events                      = {}, # the vanilla NanoAOD Ntuples don't contain the event histograms
           nof_tree_events                 = local_events,

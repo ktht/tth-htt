@@ -1057,7 +1057,7 @@ if __name__ == '__main__':
           sample_type                     = meta_dict[key]['type'],
           sample_category                 = meta_dict[key]['sample_category'],
           process_name_specific           = meta_dict[key]['process_name_specific'],
-          parent                          = meta_dict[key]['parent'],
+          parent                          = meta_dict[key]['parent_db'],
           nof_files                       = meta_dict[key]['nof_files'],
           nof_events                      = meta_dict[key]['nof_events'],
           nof_tree_events                 = meta_dict[key]['nof_tree_events'],
