@@ -9,6 +9,7 @@ from tthAnalysis.HiggsToTauTau.common import logging, load_samples
 import os
 import sys
 import getpass
+import re
 
 # E.g. to run: ./test/tthAnalyzeRun_2lss_1tau.py -v 2017Dec13 -m default -e 2017
 
@@ -99,10 +100,6 @@ MEMsample_base = "addMEM_2lss1tau_{}".format(hadTau_selection)
 
 if mode == "default":
   samples = load_samples(era, suffix = "preselected" if use_preselected else "")
-  for sample_name, sample_info in samples.items():
-    if sample_name == 'sum_events': continue
-    if sample_info["process_name_specific"].startswith("DY"):
-      sample_info["sample_category"] = "ZZ"
 elif mode == "addMEM":
   if not use_preselected:
     raise ValueError("MEM branches can be read only from preselected Ntuples")
@@ -135,6 +132,16 @@ elif mode == "sync":
   samples = load_samples(era, suffix = sample_suffix)
 else:
   raise ValueError("Invalid mode: %s" % mode)
+
+if not mode.startswith("sync"):
+  for sample_name, sample_info in samples.items():
+    if sample_name == 'sum_events':
+      continue
+    if re.match("(^WZTo3LNu$|^WZTo3LNu_ext(\d)?$)", sample_info["process_name_specific"]):
+      sample_info["use_it"] = True
+      sample_info["skipEvery"] = 2
+    if era == "2018" and sample_info["sample_category"] == "tHq" and sample_info["use_it"]:
+      sample_info["skipEvery"] = 3
 
 if __name__ == '__main__':
   logging.info(

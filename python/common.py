@@ -19,7 +19,8 @@ class SmartFormatter(argparse.ArgumentDefaultsHelpFormatter):
       return text[2:].splitlines()
     return argparse.ArgumentDefaultsHelpFormatter._split_lines(self, text, width)
 
-def load_samples(era, is_postproc = True, base = 'tth', suffix = ''):
+def load_samples(era, is_postproc = True, base = 'tth', suffix = '', analysis_type = 'default'):
+  assert(analysis_type in [ 'default', 'aux' ])
   if base == 'tth':
     base_str = 'tthAnalysis.HiggsToTauTau'
     sample_prefix = 'tthAnalyzeSamples'
@@ -35,6 +36,8 @@ def load_samples(era, is_postproc = True, base = 'tth', suffix = ''):
   assert(era in [ "2016", "2017", "2018" ])
 
   sample_name = 'samples_{}'.format(era)
+  if analysis_type != 'default':
+    sample_name = '{}_{}'.format(sample_name, analysis_type)
   sample_location = "{}.samples.{}_{}".format(base_str, sample_prefix, era)
 
   if not is_postproc:
@@ -50,6 +53,9 @@ def load_samples(era, is_postproc = True, base = 'tth', suffix = ''):
   sample = getattr(sample_module, sample_name)
 
   return sample
+
+def load_samples_aux(era, is_postproc = True, base = 'tth', suffix = ''):
+  return load_samples(era, is_postproc, base, suffix, analysis_type = 'aux')
 
 def load_samples_hh_multilepton(era, is_postproc = True, suffix = ''):
   return load_samples(era, is_postproc, "hh_multilepton", suffix)

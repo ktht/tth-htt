@@ -158,8 +158,6 @@ int main(int argc, char* argv[])
   std::string process_string = cfg_analyze.getParameter<std::string>("process");
   const bool isMC_tH = process_string == "tHq" || process_string == "tHW";
   const bool isMC_VH = process_string == "VH";
-  const bool isMC_WZ = process_string == "WZ";
-  const bool isMC_tHq = process_string == "tHq";
   const bool isMC_H  = process_string == "ggH" || process_string == "qqH" || process_string == "TTWH" || process_string == "TTZH";
   const bool isMC_HH = process_string == "HH";
   const bool isMC_signal = process_string == "ttH" || process_string == "ttH_ctcvcp";
@@ -172,6 +170,7 @@ int main(int argc, char* argv[])
   std::string era_string = cfg_analyze.getParameter<std::string>("era");
   const int era = get_era(era_string);
   const bool isControlRegion = cfg_analyze.getParameter<bool>("isControlRegion");
+  const unsigned int skipEvery = cfg_analyze.getParameter<unsigned int>("skipEvery");
 
   // single lepton triggers
   vstring triggerNames_1e = cfg_analyze.getParameter<vstring>("triggers_1e");
@@ -933,7 +932,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
       "jet3_pt", "jet3_eta", "jet3_phi", "jet3_E",
       "jet4_pt", "jet4_eta", "jet4_phi", "jet4_E",
       "sum_Lep_charge", "HadTop_pt", "res_HTT", "max_Lep_eta",
-      "massL", "massL3", "massLT", "min_Deta_mostfwdJet_jet", "min_Deta_leadfwdJet_jet"
+      "massL", "massL_FO", "massL3", "massLT", "min_Deta_mostfwdJet_jet", "min_Deta_leadfwdJet_jet"
     );
     bdt_filler -> register_variable<int_type>(
       "nJet", "nBJetLoose", "nBJetMedium", "lep1_isTight", "lep2_isTight", "lep3_isTight", "hadtruth",
@@ -988,15 +987,42 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     }
     ++analyzedEntries;
     histogram_analyzedEntries->Fill(0.);
-    //if (analyzedEntries > 200) break;
-    if ( (eventInfo.event % 3) && era_string == "2018" && isMC_tHq ) continue;
-    if ( (eventInfo.event % 2) && isMC_WZ ) continue;
 
     if (run_lumi_eventSelector && !(*run_lumi_eventSelector)(eventInfo))
     {
       continue;
     }
     EvtWeightRecorder evtWeightRecorder(central_or_shifts_local, central_or_shift_main, isMC);
+    if(skipEvery > 1)
+    {
+      if(selectBDT)
+      {
+        if(eventInfo.event % skipEvery == 0)
+        {
+          // skip every N-th event when running in BDT mode
+          continue;
+        }
+        else
+        {
+          // rescale event weight by N / (N - 1)
+          evtWeightRecorder.record_rescaling(skipEvery / (skipEvery - 1.));
+        }
+      }
+      else
+      {
+        if(eventInfo.event % skipEvery != 0)
+        {
+          // we enter here (N-1) times -> select every N-th event when running the analysis regularly
+          continue;
+        }
+        else
+        {
+          // rescale event weight by N
+          evtWeightRecorder.record_rescaling(skipEvery);
+        }
+      }
+    }
+
     cutFlowTable.update("run:ls:event selection", evtWeightRecorder.get(central_or_shift_main));
     cutFlowHistManager->fillHistograms("run:ls:event selection", evtWeightRecorder.get(central_or_shift_main));
 
@@ -1671,7 +1697,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     cutFlowTable.update("signal region veto", evtWeightRecorder.get(central_or_shift_main));
     cutFlowHistManager->fillHistograms("signal region veto", evtWeightRecorder.get(central_or_shift_main));
 
-    std::vector<double> WeightBM; // weights to do histograms for BMs 
+    std::vector<double> WeightBM; // weights to do histograms for BMs
     std::map<std::string, double> Weight_ktScan; // weights to do histograms for BMs
     double HHWeight = 1.0; // X: for the SM point -- the point explicited on this code
 
@@ -1766,6 +1792,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
               std::cout
                 << "MEM computation was skipped for event " << eventInfo.str() << " AND "
                    "there were not enough MEM permutations in the first place\n"
+                << memOutput_3l_matched.is_initialized() << " " << memOutput_3l_matched.weight_ttH() << "\n"
               ;
             }
             else if(memOutputs_3l[mem_idx].errorFlag() == ADDMEM_3L_ERROR_JETMULTIPLICITY ||
@@ -1795,7 +1822,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
             }
             else
             {
-              std::cout << "Failed with MEM error: " << memOutput_3l_matched.errorFlag() << '\n';
+              std::cout << "Failed with MEM error: " << memOutput_3l_matched.errorFlag()  << '\n';
             }
           }
         }
@@ -1806,10 +1833,14 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
         }
         if(! ignoreMEMerrors && ! memSkipError)
         {
-          throw cmsException(argv[0], __LINE__) << "No valid MEM output was found";
+          throw cmsException(argv[0], __LINE__) << "No valid MEM output was found: "
+          << " run number: " << eventInfo.run
+          << " | lumi number: " << eventInfo.lumi
+          << " | event number: " << eventInfo.event;
         }
       }
     }
+
     const double memOutput_LR  = memOutput_3l_matched.is_initialized() ? memOutput_3l_matched.LR()         : -1.;
     const double memOutput_ttH = memOutput_3l_matched.is_initialized() ? memOutput_3l_matched.weight_ttH() : -100.;
     const double memOutput_tHq = memOutput_3l_matched.is_initialized() ? memOutput_3l_matched.weight_tHq() : -100.;
@@ -1844,7 +1875,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
 
     //--- compute output of hadronic top tagger BDT
     // it returns the gen-triplets organized in top/anti-top
-    bool calculate_matching = isMC && selectBDT && !applyAdditionalEvtWeight; // DY has not matching info
+    bool calculate_matching = false;//isMC && selectBDT && !applyAdditionalEvtWeight; // DY has not matching info
     std::map<int, Particle::LorentzVector> genVar;
     std::map<int, Particle::LorentzVector> genVarAnti;
     /*
@@ -1868,7 +1899,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     if ( &(*selWJet2) == &(*selWJet1) ) continue;
     bool isGenMatched = false;
     double genTopPt_teste = 0.;
-    const std::map<int, double> bdtResult = (*hadTopTagger)(**selBJet, **selWJet1, **selWJet2, calculate_matching, isGenMatched, genTopPt_teste, genVar, genVarAnti );
+    const std::map<int, double> bdtResult = (*hadTopTagger)(**selBJet, **selWJet1, **selWJet2, calculate_matching, isGenMatched, genTopPt_teste, genVar, genVarAnti, isDebugTF );
     // genTopPt_teste is filled with the result of gen-matching
     if ( isGenMatched ) hadtruth = true;
     // save genpt of all options
@@ -1884,7 +1915,6 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     }
       }
     }
-
 
     const double mT_lep1           = comp_MT_met_lep1(selLepton_lead->p4(), met.pt(), met.phi());
     const double mT_lep2           = comp_MT_met_lep2(selLepton_sublead->p4(), met.pt(), met.phi());
@@ -2234,9 +2264,7 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
     }
     for(const std::string & central_or_shift: central_or_shifts_local)
     {
-      double evtWeight = evtWeightRecorder.get(central_or_shift);
-      if ( era_string == "2018" && isMC_tHq ) evtWeight *=3;
-      if ( isMC_WZ ) evtWeight *=2;
+      const double evtWeight = evtWeightRecorder.get(central_or_shift);
       const bool skipFilling = central_or_shift != central_or_shift_main;
       for (const GenMatchEntry* genMatch : genMatches)
       {
@@ -2488,7 +2516,8 @@ HadTopTagger* hadTopTagger = new HadTopTagger();
           ("max_Lep_eta",    max_lep_eta)
           ("massLT",          selLeptons.size() > 1 ? comp_MT_met_lep1(selLeptons[0]->p4() + selLeptons[1]->p4(), met.pt(), met.phi())  : 0.)
           ("massL3",          selLeptons.size() > 2 ? comp_MT_met_lep1(selLeptons[0]->p4() + selLeptons[1]->p4() + selLeptons[2]->p4(), met.pt(), met.phi())  : 0.)
-          ("massL",           massL(fakeableLeptons))
+          ("massL_FO",           massL(fakeableLeptons))
+          ("massL",           massL(selLeptons))
           ("has_SFOS",       hasSFOS)
           ("min_Deta_mostfwdJet_jet", min_Deta_mostfwdJet_jet)
           ("min_Deta_leadfwdJet_jet", min_Deta_leadfwdJet_jet)

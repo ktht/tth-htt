@@ -9,6 +9,7 @@ from tthAnalysis.HiggsToTauTau.common import logging, load_samples
 import os
 import sys
 import getpass
+import re
 
 # E.g.: ./test/tthAnalyzeRun_3l.py -v 2017Dec13 -m default -e 2017
 
@@ -92,10 +93,6 @@ MEMbranch      = ''
 
 if mode == "default":
   samples = load_samples(era, suffix = "preselected" if use_preselected else "")
-  for sample_name, sample_info in samples.items():
-    if sample_name == 'sum_events': continue
-    if sample_info["process_name_specific"].startswith("DY"):
-      sample_info["sample_category"] = "ZZ"
 elif mode == "addMEM":
   samples = load_samples(era, suffix = MEMsample_base)
   MEMbranch = 'memObjects_3l_lepFakeable'
@@ -119,10 +116,15 @@ elif mode == "sync":
 else:
   raise ValueError("Invalid mode: %s" % mode)
 
-for sample_name, sample_info in samples.items():
-  if sample_name == 'sum_events': continue
-  if sample_name.startswith('/Tau/Run'):
-    sample_info["use_it"] = False
+if not mode.startswith("sync"):
+  for sample_name, sample_info in samples.items():
+    if sample_name == 'sum_events':
+      continue
+    if re.match("(^WZTo3LNu$|^WZTo3LNu_ext(\d)?$)", sample_info["process_name_specific"]):
+      sample_info["use_it"] = True
+      sample_info["skipEvery"] = 2
+    if era == "2018" and sample_info["sample_category"] == "tHq" and sample_info["use_it"]:
+      sample_info["skipEvery"] = 3
 
 if __name__ == '__main__':
   logging.info(

@@ -434,7 +434,7 @@ class analyzeConfig(object):
         self.cfgFile_add_syst_fakerate = os.path.join(self.template_dir, "addSystFakeRates_cfg.py")
         self.jobOptions_add_syst_fakerate = {}
         self.ttHProcs = [ "ttH" ]# , "ttH_ctcvcp" ]
-        self.prep_dcard_processesToCopy = [ "data_obs", "TT", "TTW", "TTZ", "EWK", "Rares" ]
+        self.prep_dcard_processesToCopy = [  ]
         self.decayModes = [ "htt", "hww", "hzz", "hmm", "hzg" ]
         self.decayModes_HH = [ "tttt",  "zzzz",  "wwww",  "ttzz",  "ttww",  "zzww"]
         self.procsWithDecayModes = self.ttHProcs + [ "WH", "ZH", "tHW", "tHq", "ggH", "qqH", "TTWH", "TTZH" ]
@@ -443,7 +443,7 @@ class analyzeConfig(object):
         ] + [
           "HH_{}".format(decMode)  for decMode in self.decayModes_HH + [ 'fake' ]
         ]
-        self.make_plots_backgrounds = [ "TT", "TTW", "TTWW", "TTZ", "EWK", "Rares" ]
+        self.make_plots_backgrounds = [ ]
         self.make_plots_signal = "ttH"
         self.cfgFile_make_plots = os.path.join(self.template_dir, "makePlots_cfg.py")
         self.jobOptions_make_plots = {}
@@ -690,6 +690,9 @@ class analyzeConfig(object):
 
         if 'hasLHE' not in jobOptions:
             jobOptions['hasLHE'] = sample_info['has_LHE']
+        if 'skipEvery' in sample_info:
+            assert('skipEvery' not in jobOptions)
+            jobOptions['skipEvery'] = sample_info['skipEvery']
         if self.era == '2017':
           jobOptions['branchName_met'] = 'METFixEE2017'
 
@@ -761,11 +764,13 @@ class analyzeConfig(object):
             'hhWeight_cfg.ktScan_file',
             'hhWeight_cfg.apply_rwgt',
             'minNumJets',
+            'skipEvery',
             'branchName_met',
         ]
         jobOptions_typeMapping = {
           'central_or_shifts_local' : 'cms.vstring(%s)',
           'evtCategories'           : 'cms.vstring(%s)',
+          'skipEvery'               : 'cms.uint32(%s)',
         }
         jobOptions_keys = jobOptions_local + additionalJobOptions
         max_option_len = max(map(len, [ key for key in jobOptions_keys if key in jobOptions ]))
@@ -1059,6 +1064,7 @@ class analyzeConfig(object):
            Args:
              histogramToFit: name of the histogram used for signal extraction
         """
+        assert(self.prep_dcard_processesToCopy)
         category_output = self.channel
         if 'label' in jobOptions.keys() and jobOptions['label']:
             category_output += "_%s" % jobOptions['label']
@@ -1181,6 +1187,7 @@ class analyzeConfig(object):
            Args:
              histogram_file: name of the input ROOT file
         """
+        assert(jobOptions['make_plots_backgrounds'])
         category_label = self.channel
         if jobOptions['label']:
             category_label += " (%s)" % jobOptions['label']
@@ -1204,6 +1211,7 @@ class analyzeConfig(object):
       Args:
         histogramFile: name of the input ROOT file
       """
+      assert(self.make_plots_backgrounds)
       lines = []
       lines.append("process.fwliteInput.fileNames = cms.vstring('%s')" % jobOptions['inputFile'])
       lines.append("process.makePlots.outputFileName = cms.string('%s')" % jobOptions['outputFile'])

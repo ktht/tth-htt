@@ -104,7 +104,7 @@
 #include "tthAnalysis/HiggsToTauTau/interface/EvtWeightManager.h" // EvtWeightManager
 #include "tthAnalysis/HiggsToTauTau/interface/weightAuxFunctions.h" // get_tH_weight_str()
 #include "tthAnalysis/HiggsToTauTau/interface/EvtWeightRecorder.h" // EvtWeightRecorder
-#include "tthAnalysis/HiggsToTauTau/interface/HHWeightInterface.h" // HHWeightInterface 
+#include "tthAnalysis/HiggsToTauTau/interface/HHWeightInterface.h" // HHWeightInterface
 #include "tthAnalysis/HiggsToTauTau/interface/TensorFlowInterface.h"
 
 #include <boost/algorithm/string/replace.hpp> // boost::replace_all_copy()
@@ -169,7 +169,6 @@ int main(int argc, char* argv[])
   const bool isMC_tH = process_string == "tHq" || process_string == "tHW";
   const bool isMC_VH = process_string == "VH";
   const bool isMC_WZ = process_string == "WZ";
-  const bool isMC_tHq = process_string == "tHq";
   const bool isMC_H  = process_string == "ggH" || process_string == "qqH" || process_string == "TTWH" || process_string == "TTZH";
   const bool isMC_HH = process_string == "HH";
   const bool isMC_signal = process_string == "ttH" || process_string == "ttH_ctcvcp";
@@ -182,6 +181,7 @@ int main(int argc, char* argv[])
 
   std::string era_string = cfg_analyze.getParameter<std::string>("era");
   const int era = get_era(era_string);
+  const unsigned int skipEvery = cfg_analyze.getParameter<unsigned int>("skipEvery");
 
   vstring triggerNames_1e = cfg_analyze.getParameter<vstring>("triggers_1e");
   std::vector<hltPath*> triggers_1e = create_hltPaths(triggerNames_1e, "triggers_1e");
@@ -873,7 +873,7 @@ int main(int argc, char* argv[])
       "lep2_pt", "lep2_conePt", "lep2_eta", "lep2_phi", "max_lep_eta", "avg_dr_lep",
       "lep2_tth_mva", "mT_lep2", "dr_lep2_tau",
       "mindr_tau_jet", "avg_dr_jet",  "nJet25_Recl", "ptmiss", "htmiss",
-      "tau1_mva", "tau1_pt", "tau1_eta", "tau1_phi", "dr_leps",
+      "tau1_mva", "tau1_pt", "tau1_eta", "tau1_phi", "mT_tau1", "dr_leps",
       "mTauTauVis1", "mTauTauVis2",
       "memOutput_isValid",   "memOutput_errorFlag",  "memOutput_LR",
       //"memOutput_tt_LR", "memOutput_ttZ_LR",
@@ -887,7 +887,7 @@ int main(int argc, char* argv[])
       "mbb_loose", "mbb_medium",
       "dr_Lep_lss", "dr_Lep_los1", "dr_Lep_los2", "eta_LepLep_los1", "eta_LepLep_los2", "eta_LepLep_los",
       "res_HTT", "HadTop_pt", "genTopPt_CSVsort4rd",
-      "massL", "min_Deta_mostfwdJet_jet", "min_Deta_leadfwdJet_jet",
+      "min_Deta_mostfwdJet_jet", "min_Deta_leadfwdJet_jet",
       "met_LD",
       "jet1_pt", "jet1_eta", "jet1_phi", "jet1_E",
       "jet2_pt", "jet2_eta", "jet2_phi", "jet2_E",
@@ -960,16 +960,42 @@ int main(int argc, char* argv[])
     }
     ++analyzedEntries;
     histogram_analyzedEntries->Fill(0.);
-    //if (analyzedEntries > 1000) {break;}
 
     if (run_lumi_eventSelector && !(*run_lumi_eventSelector)(eventInfo))
     {
       continue;
     }
-    if ( (eventInfo.event % 3) && era_string == "2018" && isMC_tHq ) continue;
-    if ( (eventInfo.event % 2) && isMC_WZ ) continue;
 
     EvtWeightRecorder evtWeightRecorder(central_or_shifts_local, central_or_shift_main, isMC);
+    if(skipEvery > 1)
+    {
+      if(selectBDT)
+      {
+        if(eventInfo.event % skipEvery == 0)
+        {
+          // skip every N-th event when running in BDT mode
+          continue;
+        }
+        else
+        {
+          // rescale event weight by N / (N - 1)
+          evtWeightRecorder.record_rescaling(skipEvery / (skipEvery - 1.));
+        }
+      }
+      else
+      {
+        if(eventInfo.event % skipEvery != 0)
+        {
+          // we enter here (N-1) times -> select every N-th event when running the analysis regularly
+          continue;
+        }
+        else
+        {
+          // rescale event weight by N
+          evtWeightRecorder.record_rescaling(skipEvery);
+        }
+      }
+    }
     cutFlowTable.update("run:ls:event selection", evtWeightRecorder.get(central_or_shift_main));
     cutFlowHistManager->fillHistograms("run:ls:event selection", evtWeightRecorder.get(central_or_shift_main));
 
@@ -1741,7 +1767,7 @@ int main(int argc, char* argv[])
     cutFlowTable.update("signal region veto", evtWeightRecorder.get(central_or_shift_main));
     cutFlowHistManager->fillHistograms("signal region veto", evtWeightRecorder.get(central_or_shift_main));
 
-    std::vector<double> WeightBM; // weights to do histograms for BMs 
+    std::vector<double> WeightBM; // weights to do histograms for BMs
     std::map<std::string, double> Weight_ktScan; // weights to do histograms for BMs
     double HHWeight = 1.0; // X: for the SM point -- the point explicited on this code
 
@@ -2183,9 +2209,7 @@ int main(int argc, char* argv[])
     std::map<std::string, double> tH_weight_map;
     for(const std::string & central_or_shift: central_or_shifts_local)
     {
-      double evtWeight = evtWeightRecorder.get(central_or_shift);
-      if ( era_string == "2018" && isMC_tHq ) evtWeight *=3;
-      if ( isMC_WZ ) evtWeight *=2;
+      const double evtWeight = evtWeightRecorder.get(central_or_shift);
       const bool skipFilling = central_or_shift != central_or_shift_main;
       for (const GenMatchEntry* genMatch : genMatches)
       {
@@ -2371,6 +2395,7 @@ int main(int argc, char* argv[])
           ("tau1_pt",                         selHadTau->pt())
           ("tau1_eta",                        selHadTau->absEta())
           ("tau1_phi",                        selHadTau->phi())
+          ("mT_tau1",                        comp_MT_met_lep1(*selHadTau,    met.pt(), met.phi()))
           ("dr_leps",                        dr_leps)
           ("mTauTauVis1",                    mTauTauVis1_sel)
           ("mTauTauVis2",                    mTauTauVis2_sel)
