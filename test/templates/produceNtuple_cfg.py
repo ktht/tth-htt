@@ -72,6 +72,7 @@ process.produceNtuple = cms.PSet(
         'CaloMET_*',
         'nPhoton',
         'Photon_*',
+        'L1_*',
     ),
     copy_histograms = cms.vstring('Count.*'),
 
