@@ -109,7 +109,7 @@ def generateInputFileList(sample_info, max_units_per_job, by_file = True):
                             'skip' : splitIdx * max_events_per_job,
                             'max'  : min(max_events_per_job, nof_events - splitIdx * max_events_per_job),
                         }
-                        assert(inputFileList[jobIdx]['skip'] > 0)
+                        assert(inputFileList[jobIdx]['skip'] >= 0)
                         assert(inputFileList[jobIdx]['max'] > 0)
                         jobIdx += 1
     else:
