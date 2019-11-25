@@ -98,7 +98,7 @@ def generateInputFileList(sample_info, max_units_per_job, by_file = True):
                 file_name = sample_info['local_paths'][fileIdx][0]
                 nof_events = sample_info['local_paths'][fileIdx][1]
                 if nof_events < max_events_per_job:
-                    inputFileList[jobIdx] = { 'name' : file_name, 'skip' : -1, 'process' : -1 }
+                    inputFileList[jobIdx] = { 'name' : file_name, 'skip' : -1, 'max' : -1 }
                     jobIdx += 1
                 else:
                     nof_splits = int(math.ceil(float(nof_events) / max_events_per_job))
