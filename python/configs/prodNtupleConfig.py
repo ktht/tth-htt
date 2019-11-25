@@ -79,6 +79,8 @@ class prodNtupleConfig:
         self.max_num_jobs          = 200000
         self.samples               = samples
         self.max_files_per_job     = max_files_per_job
+        self.max_evts_per_data_job = 500000
+        self.max_evts_per_mc_job   = 100000
         self.era                   = era
         self.preselection_cuts     = preselection_cuts
         self.leptonSelection       = leptonSelection
@@ -136,10 +138,11 @@ class prodNtupleConfig:
         self.cfgFiles_prodNtuple_modified = {}
         self.logFiles_prodNtuple          = {}
 
-        self.inputFiles   = {}
-        self.outputFiles  = {}
-        self.filesToClean = []
-        self.dirs         = {}
+        self.inputFiles    = {}
+        self.processRanges = {}
+        self.outputFiles   = {}
+        self.filesToClean  = []
+        self.dirs          = {}
         for sample_name, sample_info in self.samples.items():
             if not sample_info["use_it"]:
                 continue
@@ -200,6 +203,8 @@ class prodNtupleConfig:
             "process.fwliteInput.fileNames                    = cms.vstring(%s)"  % inputFiles_prepended,
             "executable          = 'produceNtuple'",
             "inputFiles          = %s" % jobOptions['inputFiles'],
+            "skip_events         = %s" % jobOptions['skipEvents'],
+            "max_events          = %s" % jobOptions['maxEvents'],
             "isMC                = %s" % str(jobOptions['is_mc']),
             "isHHnonRes          = %s" % str(is_hh_nonres(jobOptions)),
             "era                 = %s" % str(self.era),
@@ -298,7 +303,10 @@ class prodNtupleConfig:
 
             logging.info("Creating configuration files to run '%s' for sample %s" % (self.executable, process_name))
 
-            inputFileList = generateInputFileList(sample_info, self.max_files_per_job)
+            max_units_per_job = self.max_files_per_job
+            if not self.skip_tools_step and sample_name.endswith(('/NANOAOD', '/NANOAODSIM')):
+                max_units_per_job *= self.max_evts_per_mc_job if is_mc else self.max_evts_per_data_job
+            inputFileList = generateInputFileList(sample_info, max_units_per_job, self.skip_tools_step)
             key_dir = getKey(sample_name)
             subDirs = list(map(
                 lambda y: os.path.join(self.dirs[key_dir][DKEY_NTUPLES], '%04d' % y),
@@ -310,7 +318,15 @@ class prodNtupleConfig:
 
                 key_file = getKey(sample_name, jobId)
 
-                self.inputFiles[key_file] = inputFileList[jobId]
+                if type(inputFileList[jobId]) == list:
+                    self.inputFiles[key_file] = inputFileList[jobId]
+                    self.processRanges[key_file] = [ -1, -1 ]
+                else:
+                    self.inputFiles[key_file] = [ inputFileList[jobId]['name'] ]
+                    self.processRanges[key_file] = [ inputFileList[jobId]['skip'], inputFileList[jobId]['max'] ]
+                assert((self.processRanges[key_file][0] >= 0 and self.processRanges[key_file][1] > 0) or \
+                       (self.processRanges[key_file][0] == -1 and self.processRanges[key_file][1] == -1))
+
                 if len(self.inputFiles[key_file]) == 0:
                     logging.warning(
                         "ntupleFiles['%s'] = %s --> skipping job !!" % (key_file, self.inputFiles[key_file])
@@ -329,6 +345,8 @@ class prodNtupleConfig:
                 hlt_cuts = list(Triggers(self.era).triggers_flat) if self.preselection_cuts["applyHLTcut"] else []
                 jobOptions = {
                     'inputFiles'       : self.inputFiles[key_file],
+                    'skipEvents'       : self.processRanges[key_file][0],
+                    'maxEvents'        : self.processRanges[key_file][1],
                     'cfgFile_modified' : self.cfgFiles_prodNtuple_modified[key_file],
                     'outputFile'       : self.outputFiles[key_file],
                     'is_mc'            : is_mc,

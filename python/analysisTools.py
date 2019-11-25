@@ -1,6 +1,8 @@
 
 from tthAnalysis.HiggsToTauTau.jobTools import generate_file_ids, generate_input_list
 
+import math
+
 def initDict(dictionary, keys):
     """Auxiliary function to initialize dictionary for access with multiple keys
     """
@@ -76,18 +78,43 @@ def initializeInputFileIds(sample_info, max_files_per_job):
     inputFileIds = generate_file_ids(nof_inputFiles, max_files_per_job, blacklist)
     return ( inputFileIds, secondary_files, primary_store, secondary_store )
 
-def generateInputFileList(sample_info, max_files_per_job):
+def generateInputFileList(sample_info, max_units_per_job, by_file = True):
     inputFileList = {}
+    max_files_per_job = max_units_per_job if by_file else -1
+    max_events_per_job = max_units_per_job if not by_file else -1
     if sample_info['parent'].endswith(('/MINIAOD', '/MINIAODSIM')):
-        inputFileList = {
-            (jobIdx + 1) : filePaths for jobIdx, filePaths in enumerate(
-                list(map(
-                    lambda sampleEntry: sampleEntry[0],
-                    sample_info['local_paths'][fileIdx:fileIdx + max_files_per_job]
-                )) for fileIdx in range(0, len(sample_info['local_paths']), max_files_per_job)
-            )
-        }
+        if by_file:
+            inputFileList = {
+                (jobIdx + 1) : filePaths for jobIdx, filePaths in enumerate(
+                    list(map(
+                        lambda sampleEntry: sampleEntry[0],
+                        sample_info['local_paths'][fileIdx:fileIdx + max_files_per_job]
+                    )) for fileIdx in range(0, len(sample_info['local_paths']), max_files_per_job)
+                )
+            }
+        else:
+            jobIdx = 1
+            for fileIdx in range(0, len(sample_info['local_paths'])):
+                file_name = sample_info['local_paths'][fileIdx][0]
+                nof_events = sample_info['local_paths'][fileIdx][1]
+                if nof_events < max_events_per_job:
+                    inputFileList[jobIdx] = { 'name' : file_name, 'skip' : -1, 'process' : -1 }
+                    jobIdx += 1
+                else:
+                    nof_splits = int(math.ceil(float(nof_events) / max_events_per_job))
+                    assert(nof_splits > 1)
+                    for splitIdx in range(nof_splits):
+                        inputFileList[jobIdx] = {
+                            'name' : file_name,
+                            'skip' : splitIdx * max_events_per_job,
+                            'max'  : min(max_events_per_job, nof_events - splitIdx * max_events_per_job),
+                        }
+                        assert(inputFileList[jobIdx]['skip'] > 0)
+                        assert(inputFileList[jobIdx]['max'] > 0)
+                        jobIdx += 1
     else:
+        if not by_file:
+            raise RuntimeError("Post-processed Ntuples can only by distributed by files per job")
         ( inputFileIds, secondary_files, primary_store, secondary_store ) = initializeInputFileIds(sample_info, max_files_per_job)
         if max_files_per_job > 1:
             for jobId in range(len(inputFileIds)):

@@ -37,11 +37,15 @@ PROCESS_NAME=$(python -c "execfile('$SCRIPT'); print(process_name)")
 GOLDEN_JSON=$(python -c "execfile('$SCRIPT'); print(golden_json)")
 SKIP_TOOLS_STEP=$(python -c "execfile('$SCRIPT'); print(skip_tools_step)")
 REMOVE_INTERMEDIATE=$(python -c "execfile('$SCRIPT'); print(remove_intermediate)")
+SKIP_EVENTS=$(python -c "execfile('$SCRIPT'); print(skip_events)")
+MAX_EVENTS=$(python -c "execfile('$SCRIPT'); print(max_events)")
 echo "Found the following file(s): '$FILES'"
 echo "Found the following executable: '$EXECUTABLE'"
 echo "Is MC? '$IS_MC'"
 echo "Skip tools step? '$SKIP_TOOLS_STEP'"
 echo "Remove intermediate file? '$REMOVE_INTERMEDIATE'"
+echo "Skip events: '$SKIP_EVENTS'"
+echo "Max events: '$MAX_EVENTS'"
 
 if [[ -z $(which "$EXECUTABLE" 2>/dev/null) ]]; then
   echo "Executable '$EXECUTABLE' not in \$PATH";
@@ -69,8 +73,18 @@ if [ "$SKIP_TOOLS_STEP" == "False" ]; then
     #NB! The various input files cannot have the same basename!
     F_i=$(basename "${F%.*}_i.${F##*.}")
     F_ii=$(basename "${F%.*}_ii.${F##*.}")
+    if [ "$MAX_EVENTS" -gt 0 ]; then
+      F_i=$(basename "${F%.*}_${SKIP_EVENTS}_i.${F##*.}")
+      F_ii=$(basename "${F%.*}_${SKIP_EVENTS}_ii.${F##*.}")
+    fi
+
     echo "Adding new branches: $F -> $F_i"
-    nano_postproc.py -s _i -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F
+    if [ "$MAX_EVENTS" -gt 0 ]; then
+      nano_postproc.py --first-entry=$SKIP_EVENTS --max-entries=$MAX_EVENTS -s _i_${SKIP_EVENTS} \
+                       -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F;
+    else
+      nano_postproc.py -s _i -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F;
+    fi
     test_exit_code $?
     echo "Creating counter histograms: $F_i -> $F_ii"
     if [ "$IS_MC" == "True" ]; then
@@ -85,6 +99,11 @@ if [ "$SKIP_TOOLS_STEP" == "False" ]; then
     if [ "$REMOVE_INTERMEDIATE" == "True" ]; then
       echo "Removing intermediate file $F_i";
       rm -f $F_i;
+    fi
+    if [ "$MAX_EVENTS" -gt 0 ]; then
+      F_ii_target=$(basename "${F%.*}_ii.${F##*.}")
+      echo "Renaming $F_ii to $F_ii_target";
+      mv $F_ii $F_ii_target;
     fi
   done
   echo "Finished nanoAOD pre-processing at `date`"
