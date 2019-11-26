@@ -80,7 +80,7 @@ if [ "$SKIP_TOOLS_STEP" == "False" ]; then
 
     echo "Adding new branches: $F -> $F_i"
     if [ "$MAX_EVENTS" -gt 0 ]; then
-      nano_postproc.py --first-entry=$SKIP_EVENTS --max-entries=$MAX_EVENTS -s _i_${SKIP_EVENTS} \
+      nano_postproc.py --first-entry=$SKIP_EVENTS --max-entries=$MAX_EVENTS -s _${SKIP_EVENTS}_i \
                        -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F;
     else
       nano_postproc.py -s _i -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F;
