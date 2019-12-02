@@ -1,5 +1,5 @@
 from tthAnalysis.HiggsToTauTau.jobTools import create_if_not_exists, run_cmd, generate_file_ids, get_log_version, record_software_state
-from tthAnalysis.HiggsToTauTau.analysisTools import initDict, getKey, create_cfg, createFile, is_dymc_reweighting
+from tthAnalysis.HiggsToTauTau.analysisTools import initDict, getKey, create_cfg, createFile, is_dymc_reweighting, is_dymc_normalization
 from tthAnalysis.HiggsToTauTau.analysisTools import createMakefile as tools_createMakefile, get_tH_weight_str, get_tH_SM_str
 from tthAnalysis.HiggsToTauTau.sbatchManagerTools import createScript_sbatch as tools_createScript_sbatch
 from tthAnalysis.HiggsToTauTau.sbatchManagerTools import createScript_sbatch_hadd as tools_createScript_sbatch_hadd
@@ -529,16 +529,20 @@ class analyzeConfig(object):
         return "central"
 
     def accept_central_or_shift(self, central_or_shift, sample_category, sample_name, has_LHE = False):
+      #TODO use the full sample_info
+      if central_or_shift in systematics.LHE().full           and not has_LHE:                              return False
       if central_or_shift in systematics.LHE().ttH            and sample_category not in self.ttHProcs:     return False
       if central_or_shift in systematics.LHE().tHq            and sample_category not in [ "tHq", "TH" ]:   return False
       if central_or_shift in systematics.LHE().tHW            and sample_category not in [ "tHW", "TH" ]:   return False
       if central_or_shift in systematics.LHE().ttW            and sample_category not in [ "TTW", "TTWW" ]: return False
       if central_or_shift in systematics.LHE().ttZ            and sample_category != "TTZ":                 return False
+      if central_or_shift in systematics.LHE().ttbar          and sample_category != "TT":                  return False
+      if central_or_shift in systematics.LHE().dy             and sample_category != "DY":                  return False
       if central_or_shift in systematics.DYMCReweighting      and not is_dymc_reweighting(sample_name):     return False
-      if central_or_shift in systematics.DYMCNormScaleFactors and not is_dymc_reweighting(sample_name):     return False
+      if central_or_shift in systematics.DYMCNormScaleFactors and not is_dymc_normalization(sample_name):   return False
       if central_or_shift in systematics.tauIDSF              and 'tau' not in self.channel.lower():        return False
       if central_or_shift in systematics.LHE().hh and \
-          not ((sample_category.startswith("signal") or sample_category == "HH") and has_LHE): return False
+          not (sample_category.startswith("signal") or sample_category == "HH"): return False
       return True
 
     def createCfg_analyze(self, jobOptions, sample_info, additionalJobOptions = [], isLeptonFR = False, isHTT = False, dropCtrl = False):
@@ -555,7 +559,7 @@ class analyzeConfig(object):
            sample_info['nof_reweighting'] > 0
 
         is_hh_channel = 'hh' in self.channel
-        if (is_hh_channel and sample_info["sample_category"].startswith('signal_')) or \
+        if (is_hh_channel and sample_info["sample_category"].startswith('signal_') and not "spin" in sample_info["sample_category"]) or \
            (not is_hh_channel and sample_info["sample_category"] == "HH"):
           sample_category_to_check = 'sample_category_hh' if not is_hh_channel else 'sample_category'
           assert(sample_category_to_check in sample_info)
@@ -570,7 +574,7 @@ class analyzeConfig(object):
           jobOptions['hhWeight_cfg.histtitle'] = sample_info["sample_category_hh"]
           jobOptions['hhWeight_cfg.ktScan_file'] = self.kt_scan_file
           jobOptions['hhWeight_cfg.do_ktscan'] = True
-          jobOptions['hhWeight_cfg.apply_rwgt'] = True 
+          jobOptions['hhWeight_cfg.apply_rwgt'] = True
 
         if 'process' not in jobOptions:
           jobOptions['process'] = sample_info["sample_category"]
@@ -585,11 +589,14 @@ class analyzeConfig(object):
         if 'apply_DYMCReweighting' not in jobOptions:
           jobOptions['apply_DYMCReweighting'] = is_dymc_reweighting(sample_info["dbs_name"])
         if 'apply_DYMCNormScaleFactors' not in jobOptions:
-          jobOptions['apply_DYMCNormScaleFactors'] =  is_dymc_reweighting(sample_info["dbs_name"])
+          jobOptions['apply_DYMCNormScaleFactors'] =  is_dymc_normalization(sample_info["dbs_name"])
         if 'apply_l1PreFireWeight' not in jobOptions:
           jobOptions['apply_l1PreFireWeight'] = self.do_l1prefiring if is_mc else False
         if 'central_or_shift' not in jobOptions:
           jobOptions['central_or_shift'] = 'central'
+        if 'apply_topPtReweighting' not in jobOptions:
+          jobOptions['apply_topPtReweighting'] = sample_info['apply_toppt_rwgt'] if 'apply_toppt_rwgt' in sample_info else False
+          jobOptions['read_topPtReweighting'] = False #TODO: until there are samples with the branch available
         if 'lumiScale' not in jobOptions:
 
           nof_reweighting = sample_info['nof_reweighting']
@@ -637,6 +644,16 @@ class analyzeConfig(object):
               elif central_or_shift == jobOptions['central_or_shift']:
                 nof_events_label = 'CountWeighted{}'.format(count_suffix)
                 nof_events_idx = 0 # central
+
+              if jobOptions['apply_topPtReweighting'] and jobOptions['read_topPtReweighting']:
+                assert(is_mc)
+                if central_or_shift not in systematics.topPtReweighting:
+                  nof_events_label += "TopPtRwgtSF"
+                elif central_or_shift == systematics.topPtReweighting_().down:
+                  # no SF is applied
+                  pass
+                elif central_or_shift == systematics.topPtReweighting_().up:
+                  nof_events_label += "TopPtRwgtSFSquared"
 
               if nof_events_idx >= 0 and nof_events_label:
                 nof_events[central_or_shift] = sample_info["nof_events"][nof_events_label][nof_events_idx]
@@ -766,6 +783,8 @@ class analyzeConfig(object):
             'minNumJets',
             'skipEvery',
             'branchName_met',
+            'apply_topPtReweighting',
+            'read_topPtReweighting',
         ]
         jobOptions_typeMapping = {
           'central_or_shifts_local' : 'cms.vstring(%s)',

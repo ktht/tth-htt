@@ -278,6 +278,8 @@ int main(int argc, char* argv[])
   bool apply_genWeight = cfg_analyze.getParameter<bool>("apply_genWeight");
   bool apply_DYMCReweighting = cfg_analyze.getParameter<bool>("apply_DYMCReweighting");
   bool apply_DYMCNormScaleFactors = cfg_analyze.getParameter<bool>("apply_DYMCNormScaleFactors");
+  bool apply_topPtReweighting = cfg_analyze.getParameter<bool>("apply_topPtReweighting");
+  bool read_topPtReweighting = cfg_analyze.getParameter<bool>("read_topPtReweighting");
   bool apply_l1PreFireWeight = cfg_analyze.getParameter<bool>("apply_l1PreFireWeight");
   bool apply_hlt_filter = cfg_analyze.getParameter<bool>("apply_hlt_filter");
   bool apply_met_filters = cfg_analyze.getParameter<bool>("apply_met_filters");
@@ -445,7 +447,7 @@ int main(int argc, char* argv[])
   SyncNtupleManagerWrapper snmw(syncNtuple_cfg, hltPaths, SyncGenMatchCharge::kAll);
 
 //--- declare event-level variables
-  EventInfo eventInfo(isMC, isSignal);
+  EventInfo eventInfo(isMC, isSignal, isMC_HH, read_topPtReweighting);
   const std::string default_cat_str = "default";
   std::vector<std::string> evt_cat_strs = { default_cat_str };
 
@@ -641,13 +643,23 @@ int main(int argc, char* argv[])
   HadTopTagger_semi_boosted_AK8* hadTopTagger_semi_boosted_fromAK8 = new HadTopTagger_semi_boosted_AK8();
 
 //--- initialize eventlevel BDTs
+  /*
+  'lep_conePt', 'avg_dr_jet',
+  'mT_lep', 'mT_tau',
+  'tau_pt', 'dr_lep_tau',
+  'costS', 'mTauTauVis', 'mTauTau',
+  'res_HTT', 'res_HTT_2',
+  'mbb_loose', 'met_LD', 'nJet', 'nBJetLoose',
+  'charge_lep_tau',
+  'max_Lep_eta', 'Lep_min_dr_jet'
+  */
   std::vector<std::string> mvaInputVariables_1l_1tau_opt ={
     "lep_conePt", "avg_dr_jet",
     "mT_lep", "mT_tau",
     "tau_pt", "dr_lep_tau",
     "costS", "mTauTauVis", "mTauTau",
     "res_HTT", "res_HTT_2",
-    "mbb_loose", "met_LD",
+    "mbb_loose", "met_LD", "nJet", "nBJetLoose",
     "charge_lep_tau",
     "max_Lep_eta", "Lep_min_dr_jet"
   };
@@ -1071,6 +1083,11 @@ int main(int argc, char* argv[])
     {
       genTauLeptons = genTauLeptonReader->read();
     }
+    std::vector<GenParticle> genTopQuarks;
+    if(isMC)
+    {
+      genTopQuarks = genTopQuarkReader->read();
+    }
 
     if(isMC)
     {
@@ -1078,6 +1095,17 @@ int main(int argc, char* argv[])
       if(apply_DYMCReweighting)   evtWeightRecorder.record_dy_rwgt(dyReweighting, genTauLeptons);
       if(eventWeightManager)      evtWeightRecorder.record_auxWeight(eventWeightManager);
       if(l1PreFiringWeightReader) evtWeightRecorder.record_l1PrefireWeight(l1PreFiringWeightReader);
+      if(apply_topPtReweighting)
+      {
+        if(read_topPtReweighting)
+        {
+          evtWeightRecorder.record_toppt_rwgt(eventInfo.topPtRwgtSF);
+        }
+        else
+        {
+          evtWeightRecorder.record_toppt_rwgt(genTopQuarks);
+        }
+      }
       lheInfoReader->read();
       evtWeightRecorder.record_lheScaleWeight(lheInfoReader);
       evtWeightRecorder.record_puWeight(&eventInfo);
@@ -1101,13 +1129,11 @@ int main(int argc, char* argv[])
       }
     }
 
-    std::vector<GenParticle> genTopQuarks;
     std::vector<GenParticle> genBJets;
     std::vector<GenParticle> genWBosons;
     std::vector<GenParticle> genWJets;
     std::vector<GenParticle> genQuarkFromTop;
     if ( isMC ) {
-      genTopQuarks = genTopQuarkReader->read();
       genBJets = genBJetReader->read();
       genWBosons = genWBosonReader->read();
       genWJets = genWJetReader->read();
@@ -1258,9 +1284,9 @@ int main(int argc, char* argv[])
     const std::vector<RecoJet> jets = jetReader->read();
     const std::vector<const RecoJet*> jet_ptrs = convert_to_ptrs(jets);
     const std::vector<const RecoJet*> cleanedJets = jetCleaningByIndex ?
-      jetCleanerByIndex(jet_ptrs, selectBDT ? selLeptons_full : fakeableLeptonsFull, selectBDT ? selHadTaus : fakeableHadTaus) :
-      jetCleaner       (jet_ptrs, selectBDT ? selLeptons_full : fakeableLeptonsFull, selectBDT ? selHadTaus : fakeableHadTaus)
-      ;
+      jetCleanerByIndex(jet_ptrs, selectBDT ? selLeptons_full : fakeableLeptonsFull, selectBDT ? selHadTaus : fakeableHadTausFull) :
+      jetCleaner       (jet_ptrs, selectBDT ? selLeptons_full : fakeableLeptonsFull, selectBDT ? selHadTaus : fakeableHadTausFull)
+    ;
     const std::vector<const RecoJet*> selJets = jetSelector(cleanedJets, isHigherPt);
     const std::vector<const RecoJet*> selBJets_loose = jetSelectorBtagLoose(cleanedJets, isHigherPt);
     const std::vector<const RecoJet*> selBJets_medium = jetSelectorBtagMedium(cleanedJets, isHigherPt);
@@ -1861,11 +1887,12 @@ int main(int argc, char* argv[])
        {"dr_lep_tau",       dr_lep_tau},
        {"costS",            costS},
        {"mTauTauVis",       mTauTauVis},
-       {"PzetaComb",        comp_pZetaComb(selLepton->p4(), selHadTau->p4(), met.p4().px(), met.p4().py())},
+       //{"PzetaComb",        comp_pZetaComb(selLepton->p4(), selHadTau->p4(), met.p4().px(), met.p4().py())},
        {"res-HTT_CSVsort4rd",  max_mvaOutput_HTT_CSVsort4rd},
        {"res-HTT_CSVsort4rd_2",  max_mvaOutput_HTT_CSVsort4rd_2},
        {"HadTop_pt_CSVsort4rd",  HadTop_pt_CSVsort4rd},
        {"nBJetMedium",       selBJets_medium.size()},
+       {"nBJetLoose",        selBJets_loose.size()},
        {"HadTop_pt_boosted", 1.0},
        {"mTauTau",		mTauTau},
        {"nJet",		selJets.size()},

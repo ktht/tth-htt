@@ -4,6 +4,7 @@
 #include "tthAnalysis/HiggsToTauTau/interface/RecoLepton.h" // RecoLepton
 #include "tthAnalysis/HiggsToTauTau/interface/RecoHadTau.h" // RecoHadTau
 #include "tthAnalysis/HiggsToTauTau/interface/RecoJet.h" // RecoJet
+#include "tthAnalysis/HiggsToTauTau/interface/cmsException.h" // get_human_line()
 
 #include "ttH_Htautau_MEM_Analysis/MEMAlgo/interface/RunConfig.h" // RunConfig
 #include "ttH_Htautau_MEM_Analysis/MEMAlgo/interface/ThreadScheduler.h" // ThreadScheduler
@@ -48,10 +49,11 @@ MEMInterface_2lss_1tau::operator()(const RecoLepton * selLepton_lead,
                                    const std::vector<const RecoJet *> & selJets) const
 {
   MEMOutput_2lss_1tau result;
+  const std::string func_str = get_human_line(this, __func__);
 
   if(selJets.size() < 3)
   {
-    std::cerr << "Warning in <MEMInterface_2lss_1tau::operator()>: Failed to find three jets !!\n";
+    std::cerr << "Warning in " << func_str << ": Failed to find three jets !!\n";
     result.errorFlag_ = ADDMEM_2LSS1TAU_ERROR_JETMULTIPLICITY;
     return result;
   }
@@ -193,34 +195,37 @@ MEMInterface_2lss_1tau::operator()(const RecoLepton * selLepton_lead,
   }
   else
   {
-    std::cerr << "Warning in <MEMInterface_2lss_1tau::operator(): "
+    std::cerr << "Warning in " << func_str << ": "
                  "Failed to invert MET covariance matrix (det=0) !!\n";
     result.errorFlag_ = ADDMEM_2LSS1TAU_ERROR_MATRIXINVERSION;
     return result;
   }
 
   inputs[0].weight_ttH_ = 0.;
-//  inputs[0].weight_ttH_ = 1.;
   inputs[0].weight_ttZ_ = 0.;
   inputs[0].weight_ttZ_Zll_ = 0.;
   inputs[0].weight_ttbar_DL_fakelep_ = 0.;
 
   clock_->Reset();
-  clock_->Start("<MEMInterface_2lss_1tau::operator()>");
+  clock_->Start(func_str.data());
 
   ThreadScheduler scheduler;
   scheduler.initNodeScheduler(config_, 0);
   scheduler.runNodeScheduler(inputs, 1);
 
-  clock_->Stop("<MEMInterface_2lss_1tau::operator()>");
-  clock_->Show("<MEMInterface_2lss_1tau::operator()>");
+  clock_->Stop(func_str.data());
+  clock_->Show(func_str.data());
 
   result.fillInputs(selLepton_lead, selLepton_sublead, selHadTau);
-  result.type_              = inputs[0].integration_type_;
-  result.weight_ttH_        = inputs[0].weight_ttH_;
-  result.weight_ttZ_        = inputs[0].weight_ttZ_;
-  result.weight_ttZ_Zll_    = inputs[0].weight_ttZ_Zll_;
-  result.weight_tt_         = inputs[0].weight_ttbar_DL_fakelep_;
+  result.type_                 = inputs[0].integration_type_;
+  result.weight_ttH_           = inputs[0].weight_ttH_;
+  result.weight_ttH_error_     = inputs[0].weight_error_ttH_;
+  result.weight_ttZ_           = inputs[0].weight_ttZ_;
+  result.weight_ttZ_error_     = inputs[0].weight_error_ttZ_;
+  result.weight_ttZ_Zll_       = inputs[0].weight_ttZ_Zll_;
+  result.weight_ttZ_Zll_error_ = inputs[0].weight_error_ttZ_Zll_;
+  result.weight_tt_            = inputs[0].weight_ttbar_DL_fakelep_;
+  result.weight_tt_error_      = inputs[0].weight_error_ttbar_DL_fakelep_;
 
   // compute MEM likelihood ratio
   // (kappa coefficients taken from Table 7 in AN-2016/363 v2)
@@ -243,45 +248,100 @@ MEMInterface_2lss_1tau::operator()(const RecoLepton * selLepton_lead,
       assert(0);
   }
 
-  const double numerator = result.weight_ttH_;
-  const double denominator = result.weight_ttH_ + k_ttZ*result.weight_ttZ_ + k_ttZ_Zll*result.weight_ttZ_Zll_ + k_tt*result.weight_tt_;
+  const double numerator      =          result.weight_ttH_;
+  const double numerator_up   =          result.weight_ttH_ + result.weight_ttH_error_;
+  const double numerator_down = std::max(result.weight_ttH_ - result.weight_ttH_error_, 0.f);
+  const double denominator =
+    numerator +
+    k_ttZ     * result.weight_ttZ_ +
+    k_ttZ_Zll * result.weight_ttZ_Zll_ +
+    k_tt      * result.weight_tt_
+  ;
+  const double denominator_up =
+    numerator_up +
+    k_ttZ     * std::max(result.weight_ttZ_     - result.weight_ttZ_error_,     0.f) +
+    k_ttZ_Zll * std::max(result.weight_ttZ_Zll_ - result.weight_ttZ_Zll_error_, 0.f) +
+    k_tt      * std::max(result.weight_tt_      - result.weight_tt_error_,      0.f)
+  ;
+  const double denominator_down =
+    numerator_down +
+    k_ttZ     * (result.weight_ttZ_     + result.weight_ttZ_error_) +
+    k_ttZ_Zll * (result.weight_ttZ_Zll_ + result.weight_ttZ_Zll_error_) +
+    k_tt      * (result.weight_tt_      + result.weight_tt_error_)
+  ;
   if(denominator > 0.)
   {
     result.isValid_ = 1;
-    result.LR_      = numerator / denominator;
+    result.LR_      =                         numerator      / denominator;
+    result.LR_up_   = denominator_up   > 0. ? numerator_up   / denominator_up   : 0.;
+    result.LR_down_ = denominator_down > 0. ? numerator_down / denominator_down : 0.;
+    // If the denominator is > 0, but the weight and error of signal hypothesis are 0, then it can be that
+    // denominator_up can go to 0 if the errors on the background hypotheses are large enough; but in that case
+    // denominator_down > denominator_up >= 0; LR remains 0 for all of these cases.
+    // If the numerator is > 0 and the weights and errors on background hypotheses are all 0, then
+    // denominator_down can go to 0 as well if the errors on the signal hypothesis are large enough; but in that case
+    // denominator_up > denominator_down >= 0 => 0 <= LR(down) < LR(nominal) < LR(up).
+    // Therefore, it's not possible that both denominator_up and denominator_down go to 0 at the same
+    // time if the nominal denominator is > 0.
   }
   else
   {
     result.errorFlag_ = ADDMEM_2LSS1TAU_ERROR;
-    result.LR_        = -1.;
+    result.LR_      = -1.;
+    result.LR_up_   = -1.;
+    result.LR_down_ = -1.;
   }
 
-  const double denominator_ttZ_LR = result.weight_ttH_ + k_ttZ*result.weight_ttZ_ + k_ttZ_Zll*result.weight_ttZ_Zll_;
+  const double denominator_ttZ_LR =
+    numerator +
+    k_ttZ     * result.weight_ttZ_ +
+    k_ttZ_Zll * result.weight_ttZ_Zll_
+  ;
+  const double denominator_ttZ_LR_up =
+    numerator_up +
+    k_ttZ     * std::max(result.weight_ttZ_     - result.weight_ttZ_error_,     0.f) +
+    k_ttZ_Zll * std::max(result.weight_ttZ_Zll_ - result.weight_ttZ_Zll_error_, 0.f)
+  ;
+  const double denominator_ttZ_LR_down =
+    numerator_down +
+    k_ttZ     * std::max(result.weight_ttZ_     + result.weight_ttZ_error_,     0.f) +
+    k_ttZ_Zll * std::max(result.weight_ttZ_Zll_ + result.weight_ttZ_Zll_error_, 0.f)
+  ;
   if(denominator_ttZ_LR > 0.)
   {
     result.isValid_ttZ_LR_ = 1;
-    result.ttZ_LR_         = numerator / denominator_ttZ_LR;
+    result.ttZ_LR_      =                                numerator      / denominator_ttZ_LR;
+    result.ttZ_LR_up_   = denominator_ttZ_LR_up   > 0. ? numerator_up   / denominator_ttZ_LR_up   : 0.;
+    result.ttZ_LR_down_ = denominator_ttZ_LR_down > 0. ? numerator_down / denominator_ttZ_LR_down : 0.;
   }
   else
   {
-    result.errorFlag_ttZ_LR_ = ADDMEM_2LSS1TAU_ERROR;
-    result.ttZ_LR_           = -1.;
+    result.errorFlag_ttZ_LR_  = ADDMEM_2LSS1TAU_ERROR;
+    result.ttZ_LR_      = -1.;
+    result.ttZ_LR_up_   = -1.;
+    result.ttZ_LR_down_ = -1.;
   }
 
-  const double denominator_ttbar_LR = result.weight_ttH_ + k_tt*result.weight_tt_;
+  const double denominator_ttbar_LR      = numerator      + k_tt *          result.weight_tt_;
+  const double denominator_ttbar_LR_up   = numerator_up   + k_tt * std::max(result.weight_tt_ - result.weight_tt_error_, 0.f);
+  const double denominator_ttbar_LR_down = numerator_down + k_tt * std::max(result.weight_tt_ + result.weight_tt_error_, 0.f);
   if(denominator_ttbar_LR > 0.)
   {
     result.isValid_ttbar_LR_ = 1;
-    result.ttbar_LR_         = numerator / denominator_ttbar_LR;
+    result.ttbar_LR_      =                                  numerator      / denominator_ttbar_LR;
+    result.ttbar_LR_up_   = denominator_ttbar_LR_up   > 0. ? numerator_up   / denominator_ttbar_LR_up   : 0.;
+    result.ttbar_LR_down_ = denominator_ttbar_LR_down > 0. ? numerator_down / denominator_ttbar_LR_down : 0.;
   }
   else
   {
     result.errorFlag_ttbar_LR_ = ADDMEM_2LSS1TAU_ERROR;
-    result.ttbar_LR_           = -1.;
+    result.ttbar_LR_      = -1.;
+    result.ttbar_LR_up_   = -1.;
+    result.ttbar_LR_down_ = -1.;
   }
 
-  result.cpuTime_  = clock_->GetCpuTime("<MEMInterface_2lss_1tau::operator()>");
-  result.realTime_ = clock_->GetRealTime("<MEMInterface_2lss_1tau::operator()>");
+  result.cpuTime_  = clock_->GetCpuTime(func_str.data());
+  result.realTime_ = clock_->GetRealTime(func_str.data());
 
   return result;
 }

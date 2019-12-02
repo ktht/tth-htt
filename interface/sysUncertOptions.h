@@ -147,6 +147,12 @@ enum
 
 enum
 {
+  kTopPtReweighting_central,
+  kTopPtReweighting_shiftUp, kTopPtReweighting_shiftDown,
+};
+
+enum
+{
   kElectronPt_central,
   kElectronPt_scaleUp_barrel, kElectronPt_scaleDown_barrel,
   kElectronPt_scaleUp_endcap, kElectronPt_scaleDown_endcap,
@@ -195,6 +201,11 @@ enum
 {
   kDYMCNormScaleFactors_central,
   kDYMCNormScaleFactors_shiftUp, kDYMCNormScaleFactors_shiftDown
+};
+
+enum class MEMsys
+{
+  nominal, up, down
 };
 
 bool
@@ -260,6 +271,12 @@ getDYMCReweighting_option(const std::string & central_or_shift);
 
 int
 getDYMCNormScaleFactors_option(const std::string & central_or_shift);
+
+int
+getTopPtReweighting_option(const std::string & central_or_shift);
+
+MEMsys
+getMEMsys_option(const std::string & central_or_shift);
 
 void
 checkOptionValidity(const std::string & central_or_shift,

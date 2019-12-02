@@ -182,7 +182,6 @@ int main(int argc, char* argv[])
   const bool isMC_VH = process_string == "VH";
   const bool isMC_H  = process_string == "ggH" || process_string == "qqH" || process_string == "TTWH" || process_string == "TTZH";
   const bool isMC_HH = process_string == "HH";
-  bool isMC_HH_nonres = boost::starts_with(process_string, "HH");
   const bool isMC_signal = process_string == "ttH" || process_string == "ttH_ctcvcp";
   const bool isSignal = isMC_signal || isMC_tH || isMC_VH || isMC_HH || isMC_H ;
 
@@ -232,6 +231,8 @@ int main(int argc, char* argv[])
   bool apply_genWeight = cfg_analyze.getParameter<bool>("apply_genWeight");
   bool apply_DYMCReweighting = cfg_analyze.getParameter<bool>("apply_DYMCReweighting");
   bool apply_DYMCNormScaleFactors = cfg_analyze.getParameter<bool>("apply_DYMCNormScaleFactors");
+  bool apply_topPtReweighting = cfg_analyze.getParameter<bool>("apply_topPtReweighting");
+  bool read_topPtReweighting = cfg_analyze.getParameter<bool>("read_topPtReweighting");
   bool apply_l1PreFireWeight = cfg_analyze.getParameter<bool>("apply_l1PreFireWeight");
   bool apply_hlt_filter = cfg_analyze.getParameter<bool>("apply_hlt_filter");
   bool apply_met_filters = cfg_analyze.getParameter<bool>("apply_met_filters");
@@ -395,7 +396,7 @@ int main(int argc, char* argv[])
   }
 
 //--- declare event-level variables
-  EventInfo eventInfo(isMC, isSignal, isMC_HH_nonres);
+  EventInfo eventInfo(isMC, isSignal, isMC_HH, read_topPtReweighting);
   const std::string default_cat_str = "default";
   std::vector<std::string> evt_cat_strs = { default_cat_str };
 
@@ -588,12 +589,21 @@ int main(int argc, char* argv[])
   HadTopTagger_semi_boosted_AK8* hadTopTagger_semi_boosted_fromAK8 = new HadTopTagger_semi_boosted_AK8();
 
   //--- initialize BDTs
-  std::string mvaFileName_0l_2tau_deeptauLoose_2 = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/0l_2tau_DeepTauLoose_4.xml";
+  std::string mvaFileName_0l_2tau_deeptauLoose_2 = "tthAnalysis/HiggsToTauTau/data/NN_for_legacy_opt/0l_2tau_DeepTauMedium_4.xml";
+  /*
+  'dr_taus', 'mTauTauVis', 'mTauTau', 'cosThetaS_hadTau',
+  'tau1_pt', 'tau2_pt',
+  'mbb_loose', 'avg_dr_jet', 'mindr_tau1_jet', 'mindr_tau2_jet', 'met_LD',
+  'nJet', 'nBJetLoose',
+  'mT_tau1', 'mT_tau2',
+  'res_HTT', 'HadTop_pt', 'HadTop_pt_2', 'max_Lep_eta'
+  */
   std::vector<std::string> mvaInputVariables_0l_2tau_deeptau_4 = {
     "dr_taus", "mTauTauVis", "mTauTau", "cosThetaS_hadTau",
     "tau1_pt", "tau2_pt",
     "mbb_loose", "avg_dr_jet", "mindr_tau1_jet", "mindr_tau2_jet", "met_LD",
-    "mT_tau1", "mT_tau2", "nBJetMedium",
+    "nJet", "nBJetLoose",
+    "mT_tau1", "mT_tau2",
     "res_HTT", "HadTop_pt", "HadTop_pt_2", "max_Lep_eta"
   };
   TMVAInterface mva_xgb_Legacy(
@@ -930,8 +940,6 @@ int main(int argc, char* argv[])
                 << ") file (" << selectedEntries << " Entries selected)\n";
     }
     ++analyzedEntries;
-    //if (!( eventInfo.event == 2983422 )) continue;
-    //if (analyzedEntries > 1000) break;
     histogram_analyzedEntries->Fill(0.);
 
     if ( isDEBUG ) {
@@ -1010,6 +1018,11 @@ int main(int argc, char* argv[])
     {
       genTauLeptons = genTauLeptonReader->read();
     }
+    std::vector<GenParticle> genTopQuarks;
+    if(isMC)
+    {
+      genTopQuarks = genTopQuarkReader->read();
+    }
 
     if(isMC)
     {
@@ -1017,6 +1030,17 @@ int main(int argc, char* argv[])
       if(apply_DYMCReweighting)   evtWeightRecorder.record_dy_rwgt(dyReweighting, genTauLeptons);
       if(eventWeightManager)      evtWeightRecorder.record_auxWeight(eventWeightManager);
       if(l1PreFiringWeightReader) evtWeightRecorder.record_l1PrefireWeight(l1PreFiringWeightReader);
+      if(apply_topPtReweighting)
+      {
+        if(read_topPtReweighting)
+        {
+          evtWeightRecorder.record_toppt_rwgt(eventInfo.topPtRwgtSF);
+        }
+        else
+        {
+          evtWeightRecorder.record_toppt_rwgt(genTopQuarks);
+        }
+      }
       lheInfoReader->read();
       evtWeightRecorder.record_lheScaleWeight(lheInfoReader);
       evtWeightRecorder.record_puWeight(&eventInfo);
@@ -1040,13 +1064,11 @@ int main(int argc, char* argv[])
       }
     }
 
-    std::vector<GenParticle> genTopQuarks;
     std::vector<GenParticle> genBJets;
     std::vector<GenParticle> genWBosons;
     std::vector<GenParticle> genWJets;
     std::vector<GenParticle> genQuarkFromTop;
     if ( isMC ) {
-      genTopQuarks = genTopQuarkReader->read();
       genBJets = genBJetReader->read();
       genWBosons = genWBosonReader->read();
       genWJets = genWJetReader->read();
@@ -1638,7 +1660,8 @@ int main(int argc, char* argv[])
       {"cosThetaS_hadTau", cosThetaS_hadTau },
       {"mbb_loose",        mbb_loose},
       {"met_LD",           met_LD},
-      {"nBJetMedium",      selBJets_medium.size()},
+      {"nBJetLoose",        selBJets_loose.size()},
+      {"nJet",		selJets.size()},
       {"mindr_tau1_jet",   TMath::Min(10., comp_mindr_hadTau1_jet(*selHadTau_lead, selJets))},
       {"mindr_tau2_jet",   TMath::Min(10., comp_mindr_hadTau2_jet(*selHadTau_sublead, selJets))},
       {"mT_tau1",          comp_MT_met_hadTau1(*selHadTau_lead, met.pt(), met.phi())},

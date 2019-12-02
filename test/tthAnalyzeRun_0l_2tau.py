@@ -14,8 +14,8 @@ import re
 # E.g.: ./test/tthAnalyzeRun_0l_2tau.py -v 2017Dec13 -m default -e 2017
 
 mode_choices     = [ 'default', 'forBDTtraining', 'sync' ]
-sys_choices      = [ 'full' ] + systematics.an_common_opts
-systematics.full = systematics.an_common
+sys_choices      = [ 'full' ] + systematics.an_common_opts + [ 'topPtReweighting' ]
+systematics.full = systematics.an_common + systematics.topPtReweighting
 
 parser = tthAnalyzeParser()
 parser.add_modes(mode_choices)
@@ -31,6 +31,7 @@ parser.add_use_home()
 parser.add_jet_cleaning()
 parser.add_gen_matching()
 parser.add_sideband()
+parser.do_MC_only()
 args = parser.parse_args()
 
 # Common arguments
@@ -58,6 +59,7 @@ jet_cleaning      = args.jet_cleaning
 gen_matching      = args.gen_matching
 sideband          = args.sideband
 tau_id            = args.tau_id
+MC_only           = args.MC_only
 
 # Use the arguments
 central_or_shifts = []
@@ -126,8 +128,18 @@ for sample_name, sample_info in samples.items():
     sample_info["triggers"] = [ "2tau" ]
   if sample_info["type"] == "data":
     sample_info["use_it"] = sample_name.startswith("/Tau/") and mode == "default"
-  if re.match("/DY(\d)?Jets", sample_name):
+  elif re.match("/DY(\d)?Jets", sample_name):
     sample_info["sample_category"] = "DY"
+  elif sample_name.startswith('/TTJets'):
+    sample_info["use_it"] = mode == "forBDTtraining"
+    sample_info["sample_category"] = "TT"
+  elif sample_name.startswith('/TTTo'):
+    sample_info["use_it"] = mode == "default"
+    sample_info["sample_category"] = "TT"
+    sample_info["apply_toppt_rwgt"] = True
+  if MC_only :
+    if sample_info["type"] == "data" :
+      sample_info["use_it"] = False
 
 if __name__ == '__main__':
   logging.info(

@@ -37,6 +37,7 @@ PROCESS_NAME=$(python -c "execfile('$SCRIPT'); print(process_name)")
 GOLDEN_JSON=$(python -c "execfile('$SCRIPT'); print(golden_json)")
 SKIP_TOOLS_STEP=$(python -c "execfile('$SCRIPT'); print(skip_tools_step)")
 REMOVE_INTERMEDIATE=$(python -c "execfile('$SCRIPT'); print(remove_intermediate)")
+COMP_TOP_RWGT=$(python -c "execfile('$SCRIPT'); print(compTopRwgt)")
 SKIP_EVENTS=$(python -c "execfile('$SCRIPT'); print(skip_events)")
 MAX_EVENTS=$(python -c "execfile('$SCRIPT'); print(max_events)")
 echo "Found the following file(s): '$FILES'"
@@ -44,6 +45,7 @@ echo "Found the following executable: '$EXECUTABLE'"
 echo "Is MC? '$IS_MC'"
 echo "Skip tools step? '$SKIP_TOOLS_STEP'"
 echo "Remove intermediate file? '$REMOVE_INTERMEDIATE'"
+echo "Compute SFs for top reweighting? '$COMP_TOP_RWGT'"
 echo "Skip events: '$SKIP_EVENTS'"
 echo "Max events: '$MAX_EVENTS'"
 
@@ -79,6 +81,7 @@ if [ "$SKIP_TOOLS_STEP" == "False" ]; then
     fi
 
     echo "Adding new branches: $F -> $F_i"
+    nano_postproc.py -s _i -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F
     if [ "$MAX_EVENTS" -gt 0 ]; then
       nano_postproc.py --first-entry=$SKIP_EVENTS --max-entries=$MAX_EVENTS -s _${SKIP_EVENTS}_i \
                        -I tthAnalysis.NanoAODTools.postprocessing.tthModules $NANO_MODULES . $F;
@@ -87,12 +90,16 @@ if [ "$SKIP_TOOLS_STEP" == "False" ]; then
     fi
     test_exit_code $?
     echo "Creating counter histograms: $F_i -> $F_ii"
+    COUNTHISTOGRAM_MODULE="countHistogramAll"
     if [ "$IS_MC" == "True" ]; then
-      nano_postproc.py -s i -I tthAnalysis.NanoAODTools.postprocessing.tthModules countHistogramAll \
+      if [ "$COMP_TOP_RWGT" == "True" ]; then
+        COUNTHISTOGRAM_MODULE="${COUNTHISTOGRAM_MODULE}CompTopRwgt"
+      fi
+      nano_postproc.py -s i -I tthAnalysis.NanoAODTools.postprocessing.tthModules $COUNTHISTOGRAM_MODULE \
                        . $F_i
     else
-      nano_postproc.py -s i -I tthAnalysis.NanoAODTools.postprocessing.tthModules countHistogramAll \
-                       -J $GOLDEN_JSON                                                              \
+      nano_postproc.py -s i -I tthAnalysis.NanoAODTools.postprocessing.tthModules $COUNTHISTOGRAM_MODULE \
+                       -J $GOLDEN_JSON                                                                   \
                        . $F_i
     fi
     test_exit_code $?
