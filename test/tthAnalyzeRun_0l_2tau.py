@@ -99,8 +99,8 @@ if mode == "default":
   for sample_name, sample_info in samples.items():
     if sample_name == 'sum_events':
       continue
-    if sample_info["process_name_specific"].startswith("DYBBJetsToLL_M-50"):
-      sample_info["use_it"] = True
+    #if sample_info["process_name_specific"].startswith("DYBBJetsToLL_M-50"):
+    #sample_info["use_it"] = True
 elif mode == "forBDTtraining":
   if use_preselected:
     raise ValueError("Makes no sense to use preselected samples w/ BDT training mode")
@@ -188,7 +188,6 @@ if __name__ == '__main__':
       "EventCounter"                 : {},
       "numJets"                      : {},
       "mvaOutput_Legacy"             : {},
-      "mva_Updated"                  : {},
       "mTauTauVis"                   : {},
       "mTauTau"                      : {},
     },
