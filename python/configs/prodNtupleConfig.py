@@ -307,7 +307,7 @@ class prodNtupleConfig:
             max_units_per_job = self.max_files_per_job
             if not self.skip_tools_step and sample_name.endswith(('/NANOAOD', '/NANOAODSIM')):
                 max_units_per_job *= self.max_evts_per_mc_job if is_mc else self.max_evts_per_data_job
-            inputFileList = generateInputFileList(sample_info, max_units_per_job, self.skip_tools_step)
+            inputFileList = generateInputFileList(sample_info, max_units_per_job, self.skip_tools_step or self.do_sync)
             key_dir = getKey(sample_name)
             subDirs = list(map(
                 lambda y: os.path.join(self.dirs[key_dir][DKEY_NTUPLES], '%04d' % y),
