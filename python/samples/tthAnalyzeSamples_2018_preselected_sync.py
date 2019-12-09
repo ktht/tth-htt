@@ -1,12 +1,13 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-16 16:35:51 with the following command:
-# create_dictionary.py -m python/samples/metaDict_2018_sync.py -p /hdfs/local/karl/ttHNtupleProduction/2018/2019Nov16_wPresel_nonNom_sync/ntuples -N samples_2018 -E 2018 -o python/samples -g tthAnalyzeSamples_2018_preselected_sync.py -M
+# file generated at 2019-12-09 15:28:10 with the following command:
+# create_dictionary.py -m python/samples/metaDict_2018_sync.py -p /hdfs/local/karl/ttHNtupleProduction/2018/2019Dec09_nano_wPresel_nonNom_sync/ntuples -N samples_2018 -E 2018 -o python/samples -g tthAnalyzeSamples_2018_preselected_sync.py -M
 
 samples_2018 = OD()
 samples_2018["/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ttH"),
+  ("parent",                          "/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18DRPremix-102X_upgrade2018_realistic_v15-v2/AODSIM"),
   ("process_name_specific",           "ttHToNonbb_M125_powheg"),
   ("nof_files",                       1),
   ("nof_db_files",                    224),
@@ -15,9 +16,9 @@ samples_2018["/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD
     'CountWeighted'                                              : [        61655,        61672,        61641, ],
     'CountWeightedLHEWeightScale'                                : [        89708,        87079,        85066,        63180,        61655,        60535,        51752,        50390,        49352, ],
   }),
-  ("nof_tree_events",                 13748),
+  ("nof_tree_events",                 13739),
   ("nof_db_events",                   7525991),
-  ("fsize_local",                     131890941), # 131.89MB, avg file size 131.89MB
+  ("fsize_local",                     62851708), # 62.85MB, avg file size 62.85MB
   ("fsize_db",                        469867184231), # 469.87GB, avg file size 2.10GB
   ("use_it",                          True),
   ("xsection",                        0.2118),
@@ -29,7 +30,7 @@ samples_2018["/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD
   ("local_paths",
     [
       OD([
-        ("path",      "/hdfs/local/karl/ttHNtupleProduction/2018/2019Nov16_wPresel_nonNom_sync/ntuples/ttHToNonbb_M125_powheg"),
+        ("path",      "/hdfs/local/karl/ttHNtupleProduction/2018/2019Dec09_nano_wPresel_nonNom_sync/ntuples/ttHToNonbb_M125_powheg"),
         ("selection", "*"),
         ("blacklist", []),
       ]),

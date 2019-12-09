@@ -1,12 +1,13 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-16 22:04:24 with the following command:
-# create_dictionary.py -m python/samples/metaDict_2016_sync.py -p /hdfs/local/karl/ttHNtupleProduction/2016/2019Nov16_wPresel_nonNom_sync/ntuples -N samples_2016 -E 2016 -o python/samples -g tthAnalyzeSamples_2016_preselected_sync.py -M
+# file generated at 2019-12-09 15:27:01 with the following command:
+# create_dictionary.py -m python/samples/metaDict_2016_sync.py -p /hdfs/local/karl/ttHNtupleProduction/2016/2019Dec09_nano_wPresel_nonNom_sync/ntuples -N samples_2016 -E 2016 -o python/samples -g tthAnalyzeSamples_2016_preselected_sync.py -M
 
 samples_2016 = OD()
 samples_2016["/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ttH"),
+  ("parent",                          "/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/AODSIM"),
   ("process_name_specific",           "ttHToNonbb_M125_powheg"),
   ("nof_files",                       1),
   ("nof_db_files",                    35),
@@ -20,7 +21,7 @@ samples_2016["/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/Run
   }),
   ("nof_tree_events",                 16282),
   ("nof_db_events",                   3981250),
-  ("fsize_local",                     162405331), # 162.41MB, avg file size 162.41MB
+  ("fsize_local",                     77401078), # 77.40MB, avg file size 77.40MB
   ("fsize_db",                        208884155497), # 208.88GB, avg file size 5.97GB
   ("use_it",                          True),
   ("xsection",                        0.2118),
@@ -32,7 +33,7 @@ samples_2016["/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/Run
   ("local_paths",
     [
       OD([
-        ("path",      "/hdfs/local/karl/ttHNtupleProduction/2016/2019Nov16_wPresel_nonNom_sync/ntuples/ttHToNonbb_M125_powheg"),
+        ("path",      "/hdfs/local/karl/ttHNtupleProduction/2016/2019Dec09_nano_wPresel_nonNom_sync/ntuples/ttHToNonbb_M125_powheg"),
         ("selection", "*"),
         ("blacklist", []),
       ]),

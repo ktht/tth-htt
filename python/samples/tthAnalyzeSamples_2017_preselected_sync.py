@@ -1,12 +1,13 @@
 from collections import OrderedDict as OD
 
-# file generated at 2019-11-17 00:22:46 with the following command:
-# create_dictionary.py -m python/samples/metaDict_2017_sync.py -p /hdfs/local/karl/ttHNtupleProduction/2017/2019Nov16_wPresel_nonNom_sync/ntuples -N samples_2017 -E 2017 -o python/samples -g tthAnalyzeSamples_2017_preselected_sync.py -M
+# file generated at 2019-12-09 15:27:28 with the following command:
+# create_dictionary.py -m python/samples/metaDict_2017_sync.py -p /hdfs/local/karl/ttHNtupleProduction/2017/2019Dec09_nano_wPresel_nonNom_sync/ntuples -N samples_2017 -E 2017 -o python/samples -g tthAnalyzeSamples_2017_preselected_sync.py -M
 
 samples_2017 = OD()
 samples_2017["/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM"] = OD([
   ("type",                            "mc"),
   ("sample_category",                 "ttH"),
+  ("parent",                          "/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17DRPremix-PU2017_94X_mc2017_realistic_v11-v1/AODSIM"),
   ("process_name_specific",           "ttHJetToNonbb_M125_amcatnlo"),
   ("nof_files",                       1),
   ("nof_db_files",                    208),
@@ -20,7 +21,7 @@ samples_2017["/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/Run
   }),
   ("nof_tree_events",                 14793),
   ("nof_db_events",                   9779592),
-  ("fsize_local",                     153703451), # 153.70MB, avg file size 153.70MB
+  ("fsize_local",                     70029223), # 70.03MB, avg file size 70.03MB
   ("fsize_db",                        625507074411), # 625.51GB, avg file size 3.01GB
   ("use_it",                          True),
   ("xsection",                        0.2118),
@@ -32,7 +33,7 @@ samples_2017["/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/Run
   ("local_paths",
     [
       OD([
-        ("path",      "/hdfs/local/karl/ttHNtupleProduction/2017/2019Nov16_wPresel_nonNom_sync/ntuples/ttHJetToNonbb_M125_amcatnlo"),
+        ("path",      "/hdfs/local/karl/ttHNtupleProduction/2017/2019Dec09_nano_wPresel_nonNom_sync/ntuples/ttHJetToNonbb_M125_amcatnlo"),
         ("selection", "*"),
         ("blacklist", []),
       ]),
