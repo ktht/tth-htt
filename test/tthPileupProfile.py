@@ -59,9 +59,9 @@ if mode == 'sync':
 elif mode == 'all':
   samples = load_samples(era, False, suffix = 'nano')
 elif mode == 'hh':
-  samples = load_samples(era, False, base = 'hh_multilepton', suffix = 'DeepTauIDv2p1')
+  samples = load_samples(era, False, base = 'hh_multilepton')
 elif mode == 'hh_bbww':
-  samples = load_samples(era, False, base = 'hh_bbww', suffix = 'DeepTauIDv2p1')
+  samples = load_samples(era, False, base = 'hh_bbww')
 elif mode == 'hh_bbww_sync':
   samples = load_samples(era, False, base = 'hh_bbww', suffix = 'sync')
 else:

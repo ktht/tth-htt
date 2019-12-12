@@ -241,12 +241,10 @@ RecoJetReader::setBranchAddresses(TTree * tree)
     bai.setBranchAddress(nJets_, branchName_num_);
     bai.setBranchAddress(jet_eta_, branchName_eta_);
     bai.setBranchAddress(jet_phi_, branchName_phi_);
-    bai.ignoreErrors(true);
     for(const auto & kv: branchNames_btag_)
     {
       bai.setBranchAddress(jet_BtagCSVs_[kv.first], kv.second, -3.);
     }
-    bai.ignoreErrors(false);
 
     for(const auto & kv: branchNames_BtagWeight_systematics_)
     {
