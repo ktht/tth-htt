@@ -9,7 +9,6 @@ from tthAnalysis.HiggsToTauTau.common import logging, load_samples
 import os
 import sys
 import getpass
-import re
 
 # E.g.: ./test/tthAnalyzeRun_4l.py -v 2017Dec13 -m default -e 2017
 
@@ -118,6 +117,20 @@ if __name__ == '__main__':
   if sample_filter:
     samples = filter_samples(samples, sample_filter)
 
+  original_histos = {
+    "EventCounter" : {},
+    "numJets"      : {},
+  }
+  if control_region :
+      sig_extraction_histos = {
+      "control" : {}
+      }
+  else :
+      sig_extraction_histos = {
+      "mass_4L"      : {},
+      "mva_4l"       : {},
+      }
+  original_histos.update(sig_extraction_histos)
   analysis = analyzeConfig_4l(
     configDir = os.path.join("/home",       getpass.getuser(), "ttHAnalysis", era, version),
     outputDir = os.path.join("/hdfs/local", getpass.getuser(), "ttHAnalysis", era, version),
@@ -140,12 +153,7 @@ if __name__ == '__main__':
     num_parallel_jobs                     = num_parallel_jobs,
     executable_addBackgrounds             = "addBackgrounds",
     executable_addBackgroundJetToTauFakes = "addBackgroundLeptonFakes",
-    histograms_to_fit                     = {
-      "EventCounter" : {},
-      "numJets"      : {},
-      "massL"        : {},
-      "mva_4l"       : {},
-    },
+    histograms_to_fit                     = original_histos,
     select_rle_output                     = True,
     select_root_output                    = False,
     dry_run                               = dry_run,
@@ -155,6 +163,7 @@ if __name__ == '__main__':
     use_nonnominal                        = use_nonnominal,
     hlt_filter                            = hlt_filter,
     use_home                              = use_home,
+    submission_cmd                        = sys.argv,
   )
 
   job_statistics = analysis.create()

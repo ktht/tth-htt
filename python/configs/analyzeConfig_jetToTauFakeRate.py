@@ -44,11 +44,13 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
         running_method,
         num_parallel_jobs,
         executable_comp_jetToTauFakeRate,
-        verbose    = False,
-        hlt_filter = False,
-        dry_run    = False,
-        isDebug    = False,
-        use_home   = False,
+        verbose           = False,
+        hlt_filter        = False,
+        select_rle_output = False,
+        dry_run           = False,
+        isDebug           = False,
+        use_home          = False,
+        submission_cmd    = None,
       ):
     analyzeConfig.__init__(self,
       configDir             = configDir,
@@ -72,6 +74,7 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
       dry_run               = dry_run,
       isDebug               = isDebug,
       use_home              = use_home,
+      submission_cmd        = submission_cmd,
     )
 
     self.charge_selections = charge_selections
@@ -100,6 +103,7 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
 
     self.make_plots_backgrounds = [ "TT", "TTW", "TTWW", "TTZ", "EWK", "Rares" ]
     self.processes_to_comp = self.make_plots_backgrounds + [ "ttH" ]
+    self.select_rle_output = select_rle_output
 
   def createCfg_analyze(self, jobOptions, sample_info):
     """Create python configuration file for the analyze_jetToTauFakeRate executable (analysis code)
@@ -204,10 +208,10 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
                   "_".join([ charge_selection ]), process_name_or_dummy, central_or_shift_or_dummy)
               else:
                 self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel,
-                  "_".join([ charge_selection ]), process_name_or_dummy, central_or_shift_or_dummy)
+                  "_".join([ charge_selection ]), process_name_or_dummy)
     for subdirectory in [ "comp_jetToTauFakeRate", "makePlots" ]:
       key_dir = getKey(subdirectory)
-      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_ROOT, DKEY_DCRD, DKEY_PLOT ]:
+      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
         initDict(self.dirs, [ key_dir, dir_type ])
         if dir_type in [ DKEY_CFGS, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
           self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel, subdirectory)
@@ -285,6 +289,8 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
             cfgFile_modified_path = os.path.join(self.dirs[key_analyze_dir][DKEY_CFGS], "analyze_%s_%s_%s_%i_cfg.py" % analyze_job_tuple)
             logFile_path = os.path.join(self.dirs[key_analyze_dir][DKEY_LOGS], "analyze_%s_%s_%s_%i.log" % analyze_job_tuple)
             histogramFile_path = os.path.join(self.dirs[key_analyze_dir][DKEY_HIST], "analyze_%s_%s_%s_%i.root" % analyze_job_tuple)
+            rleOutputFile_path = os.path.join(self.dirs[key_analyze_dir][DKEY_RLES], "rle_%s_%s_%s_%i.txt" % analyze_job_tuple) \
+              if self.select_rle_output else ""
 
             self.jobOptions_analyze[key_analyze_job] = {
               'ntupleFiles'                 : ntupleFiles,
@@ -299,10 +305,10 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
               'hadTau_selection_tight'      : self.hadTau_selection_tight,
               'hadTauSelection_denominator' : self.hadTau_selection_denominator,
               'hadTauSelections_numerator'  : self.hadTau_selections_numerator,
+              'selEventsFileName_output'    : rleOutputFile_path,
               'absEtaBins'                  : self.absEtaBins,
               'decayModes'                  : self.decayModes,
               'central_or_shift'            : central_or_shift,
-              'useObjectMultiplicity'       : self.era in [ '2018' ],
               'apply_hlt_filter'            : self.hlt_filter,
             }
             self.createCfg_analyze(self.jobOptions_analyze[key_analyze_job], sample_info)
@@ -400,12 +406,12 @@ class analyzeConfig_jetToTauFakeRate(analyzeConfig):
           }
           self.createCfg_makePlots(self.jobOptions_make_plots[key_makePlots_job])
 
+    self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_%s.py" % self.channel)
+    self.sbatchFile_comp_jetToTauFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_comp_jetToTauFakeRate.py")
     if self.is_sbatch:
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_analyze)
-      self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_%s.py" % self.channel)
       self.createScript_sbatch_analyze(self.executable_analyze, self.sbatchFile_analyze, self.jobOptions_analyze)
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_comp_jetToTauFakeRate)
-      self.sbatchFile_comp_jetToTauFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_comp_jetToTauFakeRate.py")
       self.createScript_sbatch(self.executable_comp_jetToTauFakeRate, self.sbatchFile_comp_jetToTauFakeRate, self.jobOptions_comp_jetToTauFakeRate)
 
     lines_makefile = []

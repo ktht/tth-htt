@@ -7,10 +7,8 @@ import jinja2
 import codecs
 
 jinja_template_dir = os.path.join(
-  os.getenv('CMSSW_BASE'), 'src', 'tthAnalysis', 'HiggsToTauTau', 'python', 'templates'
+  os.getenv('CMSSW_BASE'), 'src', 'tthAnalysis', 'HiggsToTauTau', 'python', 'templates', 'LeptonFakeRate'
 )
-DKEY_COMBINE_OUTPUT="combine_output"
-
 jinja2.filters.FILTERS['os.path.basename'] = os.path.basename
 
 def getBinName(label, minValue, maxValue):
@@ -158,6 +156,7 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
         dry_run           = False,
         isDebug           = False,
         use_home          = False,
+        submission_cmd    = None,
       ):
     analyzeConfig.__init__(self,
       configDir             = configDir,
@@ -183,11 +182,12 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
       isDebug               = isDebug,
       use_home              = use_home,
       lep_mva_wp            = lep_mva_wp,
+      submission_cmd        = submission_cmd,
     )
 
     self.cmssw_base_dir_combine = cmssw_base_dir_combine
-    if not os.path.isdir(os.path.join(cmssw_base_dir_combine, 'src', 'CombineHarvester')) or \
-       not os.path.isdir(os.path.join(cmssw_base_dir_combine, 'src', 'HiggsAnalysis', 'CombinedLimit')):
+    if not os.path.isdir(os.path.join(self.cmssw_base_dir_combine, 'src', 'CombineHarvester')) or \
+       not os.path.isdir(os.path.join(self.cmssw_base_dir_combine, 'src', 'HiggsAnalysis', 'CombinedLimit')):
       raise ValueError('CMSSW path for combine not valid: %s' % self.cmssw_base_dir_combine)
 
     self.use_QCD_fromMC = use_QCD_fromMC
@@ -342,19 +342,15 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
     create_cfg(self.cfgFile_prep_dcard, jobOptions['cfgFile_modified'], lines)
 
   def addToMakefile_backgrounds_from_data(self, lines_makefile):
-    ## --- OLD LINES -- ##
-    #self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_sum", "phony_hadd_stage1", self.sbatchFile_addBackgrounds_sum, self.jobOptions_addBackgrounds)
-    #self.addToMakefile_hadd_stage1_5(lines_makefile, "phony_hadd_stage1_5", "phony_addBackgrounds_sum")
-    #self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_LeptonFakeRate", "phony_hadd_stage1_5", self.sbatchFile_addBackgrounds_LeptonFakeRate, self.jobOptions_addBackgrounds_LeptonFakeRate)
-    #self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_Convs_LeptonFakeRate", "phony_hadd_stage1_5", self.sbatchFile_addBackgrounds_Convs_LeptonFakeRate, self.jobOptions_addBackgrounds_Convs_LeptonFakeRate)
-    ## --- NEW LINES --- ##
-    self.addToMakefile_hadd_stage1_5(lines_makefile, "phony_hadd_stage1_5", "phony_hadd_stage1")
+    max_input_files_per_job = 10 if len(self.central_or_shifts) == 1 else 5
+    self.addToMakefile_hadd_stage1_5(lines_makefile, "phony_hadd_stage1_5", "phony_hadd_stage1", max_input_files_per_job)
     self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_sum", "phony_hadd_stage1_5", self.sbatchFile_addBackgrounds_sum, self.jobOptions_addBackgrounds_sum)
     self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_LeptonFakeRate", "phony_hadd_stage1_5", self.sbatchFile_addBackgrounds_LeptonFakeRate, self.jobOptions_addBackgrounds_LeptonFakeRate)
     self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_Convs_LeptonFakeRate", "phony_hadd_stage1_5", self.sbatchFile_addBackgrounds_Convs_LeptonFakeRate, self.jobOptions_addBackgrounds_Convs_LeptonFakeRate)
 
   def addToMakefile_backgrounds_from_MC(self, lines_makefile):
-    self.addToMakefile_hadd_stage1_5(lines_makefile, "phony_hadd_stage1_5", "phony_addBackgrounds_sum")
+    max_input_files_per_job = 10 if len(self.central_or_shifts) == 1 else 5
+    self.addToMakefile_hadd_stage1_5(lines_makefile, "phony_hadd_stage1_5", "phony_addBackgrounds_sum", max_input_files_per_job)
     self.addToMakefile_addBackgrounds(lines_makefile, "phony_addBackgrounds_Convs_LeptonFakeRate", "phony_hadd_stage1_5", self.sbatchFile_addBackgrounds_Convs_LeptonFakeRate, self.jobOptions_addBackgrounds_Convs_LeptonFakeRate)
 
   def addToMakefile_combine(self, lines_makefile):
@@ -366,19 +362,10 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
     self.filesToClean.append(jobOptions['outputFile'])
 
   def addToMakefile_comp_LeptonFakeRate(self, lines_makefile):
-    if self.is_sbatch:
-      lines_makefile.append("sbatch_comp_LeptonFakeRate: %s" % " ".join([ " ".join(jobOptions['inputFile']) for jobOptions in self.jobOptions_comp_LeptonFakeRate.values() ]))
-      lines_makefile.append("\t%s %s" % ("python", self.sbatchFile_comp_LeptonFakeRate))
-      lines_makefile.append("")
     for jobOptions in self.jobOptions_comp_LeptonFakeRate.values():
-      if self.is_makefile:
-        lines_makefile.append("%s: %s" % (jobOptions['outputFile'], " ".join(jobOptions['inputFile'])))
-        lines_makefile.append("\t%s %s" % (self.executable_comp_LeptonFakeRate, jobOptions['cfgFile_modified']))
-        lines_makefile.append("")
-      elif self.is_sbatch:
-        lines_makefile.append("%s: %s" % (jobOptions['outputFile'], "sbatch_comp_LeptonFakeRate"))
-        lines_makefile.append("\t%s" % ":") # CV: null command
-        lines_makefile.append("")
+      lines_makefile.append("%s: %s" % (jobOptions['outputFile'], " ".join(jobOptions['inputFile'])))
+      lines_makefile.append("\t%s %s" % (self.executable_comp_LeptonFakeRate, jobOptions['cfgFile_modified']))
+      lines_makefile.append("")
       self.filesToClean.append(jobOptions['outputFile'])
 
   def create(self):
@@ -410,10 +397,10 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
             if dir_type in [ DKEY_CFGS, DKEY_LOGS ]:
               self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel, process_name_or_dummy, central_or_shift_or_dummy)
             else:
-              self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel, process_name_or_dummy, central_or_shift_or_dummy)
+              self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel, process_name_or_dummy)
     for subdirectory in [ "addBackgrounds", "prepareDatacards" ]:
       key_dir = getKey(subdirectory)
-      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_ROOT, DKEY_DCRD, DKEY_PLOT ]:
+      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
         initDict(self.dirs, [ key_dir, dir_type ])
         if dir_type in [ DKEY_CFGS, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
           self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel, subdirectory)
@@ -514,7 +501,6 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
             'triggers_e_cfg'           : "leptonFR_triggers['{}']['{}']".format(self.era, 'e'),
             'lep_mva_cut_e'            : float(self.lep_mva_cut_e),
             'lep_mva_cut_mu'           : float(self.lep_mva_cut_mu),
-            'useObjectMultiplicity'    : True,
           }
           self.createCfg_analyze(self.jobOptions_analyze[key_analyze_job], sample_info)
 
@@ -700,14 +686,13 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
         systematic_name = systematic.replace('Up', '').replace('Down', '')
         if systematic_name not in systematics_leptonFR:
           systematics_leptonFR.append(systematic_name)
-      if self.use_QCD_fromMC:
-        setup_dcards_template_file = os.path.join(jinja_template_dir, 'setupDatacards_LeptonFakeRate_fakes_from_mc.py.template')
-      else:
-        setup_dcards_template_file = os.path.join(jinja_template_dir, 'setupDatacards_LeptonFakeRate_fakes_from_data.py.template')
-      setup_dcards_template = open(setup_dcards_template_file, 'r').read()
+      setup_dcards_template_file = os.path.join(jinja_template_dir, 'setupDatacards_LeptonFakeRate.py.template')
+      with open(setup_dcards_template_file, 'r') as setup_dcards_template_file_ptr:
+        setup_dcards_template = setup_dcards_template_file_ptr.read()
       setup_dcards_script = jinja2.Template(setup_dcards_template).render(
         leptons           = lepton_bins_merged,
         central_or_shifts = systematics_leptonFR,
+        signal_process    = "QCD" if self.use_QCD_fromMC else "data_fakes",
       )
       setup_dcards_script_path = os.path.join(self.dirs[DKEY_SCRIPTS], 'setupDatacards_LeptonFakeRate.py')
       logging.debug("writing setupDatacards_LeptonFakeRate script file = '%s'" % setup_dcards_script_path)
@@ -726,11 +711,9 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
 
       # Create run_postFit.sh script from the template
       combine_output_dir = os.path.join(self.dirs[DKEY_COMBINE_OUTPUT], 'output')
-      if self.use_QCD_fromMC:
-        postfit_template_file = os.path.join(jinja_template_dir, 'run_postFit_fakes_from_mc.sh.template')
-      else:
-        postfit_template_file = os.path.join(jinja_template_dir, 'run_postFit_fakes_from_data.sh.template')
-      postfit_template = open(postfit_template_file, 'r').read()
+      postfit_template_file = os.path.join(jinja_template_dir, 'run_postFit.sh.template')
+      with open(postfit_template_file, 'r') as postfit_template_file_ptr:
+        postfit_template = postfit_template_file_ptr.read()
       for lepton in ['electron', 'muon']:
         for selection in ['fakeable', 'tight']:
           is_num = selection == 'tight'
@@ -758,6 +741,7 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
               denominator_output_dir = os.path.join(combine_output_dir, 'mlfit_LeptonFakeRate_%s' % self.denominator_histogram),
               selection              = selection,
               lepton_letter          = 'e' if lepton == 'electron' else 'mu',
+              grep_value             = "QCD" if self.use_QCD_fromMC else "data_fakes",
             )
             postfit_script_path = os.path.join(
               self.dirs[DKEY_SCRIPTS],
@@ -818,18 +802,18 @@ class analyzeConfig_LeptonFakeRate(analyzeConfig):
       self.createCfg_comp_LeptonFakeRate(self.jobOptions_comp_LeptonFakeRate[key_comp_LeptonFakeRate])
       self.targets.append(self.jobOptions_comp_LeptonFakeRate[key_comp_LeptonFakeRate]['outputFile'])
 
+    self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_LeptonFakeRate.py")
+    self.sbatchFile_addBackgrounds_sum = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_sum_LeptonFakeRate.py")
+    self.sbatchFile_addBackgrounds_LeptonFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_LeptonFakeRate.py")
+    self.sbatchFile_addBackgrounds_Convs_LeptonFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_Convs_LeptonFakeRate.py")
+    self.sbatchFile_comp_LeptonFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_comp_LeptonFakeRate.py")
     if self.is_sbatch:
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_analyze)
-      self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_LeptonFakeRate.py")
       self.createScript_sbatch_analyze(self.executable_analyze, self.sbatchFile_analyze, self.jobOptions_analyze)
-      self.sbatchFile_addBackgrounds_sum = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_sum_LeptonFakeRate.py")
       self.createScript_sbatch(self.executable_addBackgrounds_recursively, self.sbatchFile_addBackgrounds_sum, self.jobOptions_addBackgrounds_sum)
-      self.sbatchFile_addBackgrounds_LeptonFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_LeptonFakeRate.py")
       self.createScript_sbatch(self.executable_addBackgrounds_LeptonFakeRate, self.sbatchFile_addBackgrounds_LeptonFakeRate, self.jobOptions_addBackgrounds_LeptonFakeRate)
-      self.sbatchFile_addBackgrounds_Convs_LeptonFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_Convs_LeptonFakeRate.py")
       self.createScript_sbatch(self.executable_addBackgrounds_LeptonFakeRate, self.sbatchFile_addBackgrounds_Convs_LeptonFakeRate, self.jobOptions_addBackgrounds_Convs_LeptonFakeRate)
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_comp_LeptonFakeRate)
-      self.sbatchFile_comp_LeptonFakeRate = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_comp_LeptonFakeRate.py")
       self.createScript_sbatch(self.executable_comp_LeptonFakeRate, self.sbatchFile_comp_LeptonFakeRate, self.jobOptions_comp_LeptonFakeRate)
 
     lines_makefile = []

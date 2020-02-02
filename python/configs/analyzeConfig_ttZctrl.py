@@ -66,6 +66,7 @@ class analyzeConfig_ttZctrl(analyzeConfig):
         do_sync                   = False,
         rle_select                = '',
         use_nonnominal            = False,
+        submission_cmd            = None,
       ):
     analyzeConfig.__init__(self,
       configDir                 = configDir,
@@ -84,7 +85,7 @@ class analyzeConfig_ttZctrl(analyzeConfig):
       running_method            = running_method,
       num_parallel_jobs         = num_parallel_jobs,
       histograms_to_fit         = histograms_to_fit,
-      triggers                  = [ '1e', '1mu', '2e', '2mu', '1e1mu' ],
+      triggers                  = [ '1e', '1mu', '2e', '2mu', '1e1mu', '3e', '3mu', '1e2mu', '2e1mu' ],
       lep_mva_wp                = lep_mva_wp,
       executable_prep_dcard     = executable_prep_dcard,
       executable_add_syst_dcard = executable_add_syst_dcard,
@@ -93,6 +94,7 @@ class analyzeConfig_ttZctrl(analyzeConfig):
       isDebug                   = isDebug,
       use_home                  = use_home,
       do_sync                   = do_sync,
+      submission_cmd            = submission_cmd,
     )
 
     self.lepton_selections = [ "Tight", "Fakeable" ]
@@ -213,23 +215,27 @@ class analyzeConfig_ttZctrl(analyzeConfig):
                 continue
 
               key_dir = getKey(process_name_or_dummy, lepton_selection_and_frWeight, central_or_shift_or_dummy)
-              for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_ROOT, DKEY_RLES, DKEY_SYNC ]:
+              for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_RLES, DKEY_SYNC ]:
+                if dir_type == DKEY_SYNC and not self.do_sync:
+                  continue
                 initDict(self.dirs, [ key_dir, dir_type ])
                 if dir_type in [ DKEY_CFGS, DKEY_LOGS ]:
                   self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel,
                     "_".join([ lepton_selection_and_frWeight ]), process_name_or_dummy, central_or_shift_or_dummy)
                 else:
                   self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel,
-                    "_".join([ lepton_selection_and_frWeight ]), process_name_or_dummy, central_or_shift_or_dummy)
+                    "_".join([ lepton_selection_and_frWeight ]), process_name_or_dummy)
     for subdirectory in [ "addBackgrounds", "addBackgroundLeptonFakes", "prepareDatacards", "addSystFakeRates", "makePlots" ]:
       key_dir = getKey(subdirectory)
-      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_ROOT, DKEY_DCRD, DKEY_PLOT ]:
+      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
         initDict(self.dirs, [ key_dir, dir_type ])
         if dir_type in [ DKEY_CFGS, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
           self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel, subdirectory)
         else:
           self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel, subdirectory)
     for dir_type in [ DKEY_CFGS, DKEY_SCRIPTS, DKEY_HIST, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT, DKEY_HADD_RT, DKEY_SYNC ]:
+      if dir_type == DKEY_SYNC and not self.do_sync:
+        continue
       initDict(self.dirs, [ dir_type ])
       if dir_type in [ DKEY_CFGS, DKEY_SCRIPTS, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT, DKEY_HADD_RT ]:
         self.dirs[dir_type] = os.path.join(self.configDir, dir_type, self.channel)
@@ -382,7 +388,6 @@ class analyzeConfig_ttZctrl(analyzeConfig):
                 'lep_mva_cut_e'            : float(self.lep_mva_cut_e),
                 'lep_mva_cut_mu'           : float(self.lep_mva_cut_mu),
                 'syncGenMatch'             : syncGenMatch,
-                'useObjectMultiplicity'    : True,
               }
               self.createCfg_analyze(self.jobOptions_analyze[key_analyze_job], sample_info, lepton_selection)
 
@@ -530,7 +535,7 @@ class analyzeConfig_ttZctrl(analyzeConfig):
         sample_categories.extend(self.nonfake_backgrounds)
         sample_categories.extend(self.ttHProcs)
         processes_input = []
-        for sample_category in sample_categories:
+        for sample_category in self.convs_backgrounds:
           processes_input.append("%s_Convs" % sample_category)
         self.jobOptions_addBackgrounds_sum[key_addBackgrounds_job_Convs] = {
           'inputFile' : self.outputFile_hadd_stage1_5[key_hadd_stage1_5_job],
@@ -655,17 +660,17 @@ class analyzeConfig_ttZctrl(analyzeConfig):
     }
     self.createCfg_makePlots(self.jobOptions_make_plots[key_makePlots_job])
 
+    self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_%s.py" % self.channel)
+    self.sbatchFile_addBackgrounds = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_%s.py" % self.channel)
+    self.sbatchFile_addBackgrounds_sum = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_sum_%s.py" % self.channel)
+    self.sbatchFile_addFakes = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addFakes_%s.py" % self.channel)
     if self.is_sbatch:
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_analyze)
-      self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_%s.py" % self.channel)
       self.createScript_sbatch_analyze(self.executable_analyze, self.sbatchFile_analyze, self.jobOptions_analyze)
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_addBackgrounds)
-      self.sbatchFile_addBackgrounds = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_%s.py" % self.channel)
       self.createScript_sbatch(self.executable_addBackgrounds, self.sbatchFile_addBackgrounds, self.jobOptions_addBackgrounds)
-      self.sbatchFile_addBackgrounds_sum = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_sum_%s.py" % self.channel)
       self.createScript_sbatch(self.executable_addBackgrounds, self.sbatchFile_addBackgrounds_sum, self.jobOptions_addBackgrounds_sum)
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_addFakes)
-      self.sbatchFile_addFakes = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addFakes_%s.py" % self.channel)
       self.createScript_sbatch(self.executable_addFakes, self.sbatchFile_addFakes, self.jobOptions_addFakes)
 
     logging.info("Creating Makefile")

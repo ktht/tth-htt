@@ -167,6 +167,12 @@ int main(int argc, char* argv[])
     eventWeightManager->set_central_or_shift(central_or_shift);
   }
 
+  edm::ParameterSet triggerWhiteList;
+  if(! isMC)
+  {
+    triggerWhiteList = cfg_analyze.getParameter<edm::ParameterSet>("triggerWhiteList");
+  }
+
   checkOptionValidity(central_or_shift, isMC);
   const int jetPt_option = getJet_option (central_or_shift, isMC);
   const int met_option   = getMET_option (central_or_shift, isMC);
@@ -729,8 +735,8 @@ int main(int argc, char* argv[])
       }
     }
 
-    bool isTriggered_1mu = hltPaths_isTriggered(triggers_1mu);
-    bool isTriggered_2mu = hltPaths_isTriggered(triggers_2mu);
+    bool isTriggered_1mu = hltPaths_isTriggered(triggers_1mu, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_2mu = hltPaths_isTriggered(triggers_2mu, triggerWhiteList, eventInfo, isMC);
     
     bool selTrigger_1mu = use_triggers_1mu && isTriggered_1mu;
     bool selTrigger_2mu = use_triggers_2mu && isTriggered_2mu;
@@ -739,7 +745,6 @@ int main(int argc, char* argv[])
 	        std::cout << "event FAILS trigger selection." << std::endl; 
 	        std::cout << " (selTrigger_1mu = " << isTriggered_1mu 
 			  << ", selTrigger_2mu = " << isTriggered_2mu << ")" << std::endl;
-			    //std::cout << hltPaths_isTriggered(triggers_1mu) << " " << isMC << " " << hltPaths_isTriggered(triggers_2mu) << " " << use_triggers_1mu << " " << use_triggers_2mu << std::endl;			 
         }
         fail_counter->Fill("Trigger", evtWeightRecorder.get(central_or_shift));
         continue;
@@ -912,8 +917,8 @@ int main(int argc, char* argv[])
       evtWeightRecorder.record_btagWeight(selJets);
 
       dataToMCcorrectionInterface->setLeptons(
-        preselLepton_lead_type, preselLepton_lead->pt(), preselLepton_lead->eta(), 
-        preselLepton_sublead_type, preselLepton_sublead->pt(), preselLepton_sublead->eta()
+        preselLepton_lead_type, preselLepton_lead->pt(), preselLepton_lead->cone_pt(), preselLepton_lead->eta(),
+        preselLepton_sublead_type, preselLepton_sublead->pt(), preselLepton_sublead->cone_pt(), preselLepton_sublead->eta()
       );
 
 //--- apply data/MC corrections for trigger efficiency,
@@ -992,8 +997,8 @@ int main(int argc, char* argv[])
     
     double pt0, pt1;
     //std::cout << "Before " << selLepton_lead->pt() << ", " << selLepton_sublead->pt() << "   " << central_or_shift << std::endl;
-    pt0 = selLepton_lead->cone_pt();
-    pt1 = selLepton_sublead->cone_pt();
+    pt0 = selLepton_lead->pt();
+    pt1 = selLepton_sublead->pt();
     if(muon_option == kMuon_ESBarrel1Up)
     {
       if (etaL0 < 0.9) pt0 *= 1.02;

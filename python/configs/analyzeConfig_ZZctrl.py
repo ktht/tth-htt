@@ -70,6 +70,7 @@ class analyzeConfig_ZZctrl(analyzeConfig):
         use_nonnominal            = False,
         hlt_filter                = False,
         use_home                  = False,
+        submission_cmd            = None,
       ):
     analyzeConfig.__init__(self,
       configDir                 = configDir,
@@ -96,6 +97,7 @@ class analyzeConfig_ZZctrl(analyzeConfig):
       dry_run                   = dry_run,
       isDebug                   = isDebug,
       use_home                  = use_home,
+      submission_cmd            = submission_cmd,
     )
 
     self.lepton_selections = [ "Tight", "Fakeable" ]
@@ -225,23 +227,27 @@ class analyzeConfig_ZZctrl(analyzeConfig):
                   continue
 
                 key_dir = getKey(process_name_or_dummy, lepton_selection_and_frWeight, chargeSumSelection, central_or_shift_or_dummy)
-                for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_ROOT, DKEY_RLES, DKEY_SYNC ]:
+                for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_RLES, DKEY_SYNC ]:
+                  if dir_type == DKEY_SYNC and not self.do_sync:
+                    continue
                   initDict(self.dirs, [ key_dir, dir_type ])
                   if dir_type in [ DKEY_CFGS, DKEY_LOGS ]:
                     self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel,
                       "_".join([ lepton_selection_and_frWeight, chargeSumSelection ]), process_name_or_dummy, central_or_shift_or_dummy)
                   else:
                     self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel,
-                      "_".join([ lepton_selection_and_frWeight, chargeSumSelection ]), process_name_or_dummy, central_or_shift_or_dummy)
+                      "_".join([ lepton_selection_and_frWeight, chargeSumSelection ]), process_name_or_dummy)
     for subdirectory in [ "addBackgrounds", "addBackgroundLeptonFakes", "prepareDatacards", "addSystFakeRates", "makePlots" ]:
       key_dir = getKey(subdirectory)
-      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_ROOT, DKEY_DCRD, DKEY_PLOT ]:
+      for dir_type in [ DKEY_CFGS, DKEY_HIST, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
         initDict(self.dirs, [ key_dir, dir_type ])
         if dir_type in [ DKEY_CFGS, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT ]:
           self.dirs[key_dir][dir_type] = os.path.join(self.configDir, dir_type, self.channel, subdirectory)
         else:
           self.dirs[key_dir][dir_type] = os.path.join(self.outputDir, dir_type, self.channel, subdirectory)
     for dir_type in [ DKEY_CFGS, DKEY_SCRIPTS, DKEY_HIST, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT, DKEY_HADD_RT, DKEY_SYNC ]:
+      if dir_type == DKEY_SYNC and not self.do_sync:
+        continue
       initDict(self.dirs, [ dir_type ])
       if dir_type in [ DKEY_CFGS, DKEY_SCRIPTS, DKEY_LOGS, DKEY_DCRD, DKEY_PLOT, DKEY_HADD_RT ]:
         self.dirs[dir_type] = os.path.join(self.configDir, dir_type, self.channel)
@@ -343,14 +349,6 @@ class analyzeConfig_ZZctrl(analyzeConfig):
                 if len(ntupleFiles) == 0:
                   logging.warning("No input ntuples for %s --> skipping job !!" % (key_analyze_job))
                   continue
-                rootOutputFile = ""
-                if self.select_root_output:
-                  rootOutputFile = os.path.join(self.dirs[key_dir][DKEY_ROOT], "out_%s_%s_%s_%s_%s_%i.root" % \
-                    (self.channel, process_name, lepton_selection_and_frWeight, chargeSumSelection, central_or_shift, jobId))
-                  key_file_woJobId = getKey(process_name, lepton_selection_and_frWeight, chargeSumSelection, central_or_shift)
-                  if key_file_woJobId not in self.rootOutputAux:
-                    self.rootOutputAux[key_file_woJobId] = [ re.sub('_\d+\.root', '.root', rootOutputFile),
-                                                             re.sub('\d+\.root', '*.root', rootOutputFile) ]
 
                 syncOutput = ''
                 syncTree = ''
@@ -394,7 +392,6 @@ class analyzeConfig_ZZctrl(analyzeConfig):
                   'histogramFile'            : histogramFile_path,
                   'logFile'                  : logFile_path,
                   'selEventsFileName_output' : rleOutputFile_path,
-                  'selEventsTFileName'       : rootOutputFile,
                   'electronSelection'        : electron_selection,
                   'muonSelection'            : muon_selection,
                   'apply_leptonGenMatching'  : self.apply_leptonGenMatching,
@@ -410,7 +407,6 @@ class analyzeConfig_ZZctrl(analyzeConfig):
                   'apply_hlt_filter'         : self.hlt_filter,
                   'syncGenMatch'             : syncGenMatch,
                   'useNonNominal'            : self.use_nonnominal,
-                  'useObjectMultiplicity'    : True,
                 }
                 self.createCfg_analyze(self.jobOptions_analyze[key_analyze_job], sample_info, lepton_selection)
 
@@ -560,7 +556,7 @@ class analyzeConfig_ZZctrl(analyzeConfig):
           sample_categories.extend(self.nonfake_backgrounds)
           sample_categories.extend(self.ttHProcs)
           processes_input = []
-          for sample_category in sample_categories:
+          for sample_category in self.convs_backgrounds:
             processes_input.append("%s_Convs" % sample_category)
           self.jobOptions_addBackgrounds_sum[key_addBackgrounds_job_Convs] = {
             'inputFile' : self.outputFile_hadd_stage1_5[key_hadd_stage1_5_job],
@@ -734,17 +730,17 @@ class analyzeConfig_ZZctrl(analyzeConfig):
       }
       self.createCfg_makePlots_mcClosure(self.jobOptions_make_plots[key_makePlots_job])
 
+    self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_%s.py" % self.channel)
+    self.sbatchFile_addBackgrounds = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_%s.py" % self.channel)
+    self.sbatchFile_addBackgrounds_sum = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_sum_%s.py" % self.channel)
+    self.sbatchFile_addFakes = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addFakes_%s.py" % self.channel)
     if self.is_sbatch:
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_analyze)
-      self.sbatchFile_analyze = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_analyze_%s.py" % self.channel)
       self.createScript_sbatch_analyze(self.executable_analyze, self.sbatchFile_analyze, self.jobOptions_analyze)
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_addBackgrounds)
-      self.sbatchFile_addBackgrounds = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_%s.py" % self.channel)
       self.createScript_sbatch(self.executable_addBackgrounds, self.sbatchFile_addBackgrounds, self.jobOptions_addBackgrounds)
-      self.sbatchFile_addBackgrounds_sum = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addBackgrounds_sum_%s.py" % self.channel)
       self.createScript_sbatch(self.executable_addBackgrounds, self.sbatchFile_addBackgrounds_sum, self.jobOptions_addBackgrounds_sum)
       logging.info("Creating script for submitting '%s' jobs to batch system" % self.executable_addFakes)
-      self.sbatchFile_addFakes = os.path.join(self.dirs[DKEY_SCRIPTS], "sbatch_addFakes_%s.py" % self.channel)
       self.createScript_sbatch(self.executable_addFakes, self.sbatchFile_addFakes, self.jobOptions_addFakes)
 
     logging.info("Creating Makefile")

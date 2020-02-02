@@ -24,34 +24,49 @@ prob_chargeMisId(int era,
   if(lepton_type == kElectron)
   {
     const double abs_lepton_eta = std::fabs(lepton_eta);
-    if(era == kEra_2016 || era == kEra_2017) // TODO: update charge flips for 2016 era
+    if(era == kEra_2016)
     {
       if(abs_lepton_eta >= 0. && abs_lepton_eta < 1.479)
       {
-        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 1.33671e-4;
-        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 2.24453e-4;
-        else if(lepton_pt >= 50.                  ) prob = 2.27798e-4;
+        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 5.82117e-4;
+        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 9.16626e-5;
+        else if(lepton_pt >= 50.                  ) prob = 1.53866e-4;
       }
       else if(abs_lepton_eta >= 1.479 && abs_lepton_eta < 2.5)
       {
-        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 1.98669e-4;
-        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 5.60447e-4;
-        else if(lepton_pt >= 50.                  ) prob = 1.38682e-3;
+        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 6.04459e-4;
+        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 1.02072e-3;
+        else if(lepton_pt >= 50.                  ) prob = 1.61979e-3;
+      }
+    }
+    else if(era == kEra_2017)
+    {
+      if(abs_lepton_eta >= 0. && abs_lepton_eta < 1.479)
+      {
+        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 1.29248e-4;
+        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 5.29988e-5;
+        else if(lepton_pt >= 50.                  ) prob = 1.11898e-4;
+      }
+      else if(abs_lepton_eta >= 1.479 && abs_lepton_eta < 2.5)
+      {
+        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 4.08034e-4;
+        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 5.00129e-4;
+        else if(lepton_pt >= 50.                  ) prob = 8.85938e-4;
       }
     }
     else if(era == kEra_2018)
     {
       if(abs_lepton_eta >= 0. && abs_lepton_eta < 1.479)
       {
-        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 5.92633e-5;
-        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 5.76087e-5;
-        else if(lepton_pt >= 50.                  ) prob = 9.09281e-5;
+        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 3.50000e-5;
+        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 6.09854e-5;
+        else if(lepton_pt >= 50.                  ) prob = 2.99421e-5;
       }
       else if(abs_lepton_eta >= 1.479 && abs_lepton_eta < 2.5)
       {
-        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 4.90762e-4;
-        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 4.92732e-4;
-        else if(lepton_pt >= 50.                  ) prob = 9.15995e-4;
+        if     (lepton_pt >= 10. && lepton_pt < 25) prob = 4.49484e-4;
+        else if(lepton_pt >= 25. && lepton_pt < 50) prob = 5.07696e-4;
+        else if(lepton_pt >= 50.                  ) prob = 9.50909e-4;
       }
     }
   }

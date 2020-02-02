@@ -253,7 +253,6 @@ comp_Smin(const Particle::LorentzVector & visP4,
   return Smin;
 }
 
-
 std::vector<const RecoLepton *>
 mergeLeptonCollectionsNoSort(const std::vector<const RecoElectron *> & electrons,
                              const std::vector<const RecoMuon *> & muons)
@@ -463,7 +462,7 @@ massL(const std::vector<const RecoLepton *> & Leptons)
     for(auto lepton2_it = lepton1_it + 1; lepton2_it != Leptons.end(); ++lepton2_it)
     {
       const RecoLepton * lepton2 = *lepton2_it;
-      const double mass = (lepton1->p4() + lepton2->p4()).mass();
+      const double mass = (lepton1->cone_p4() + lepton2->cone_p4()).mass();
       if(mass < massFO)
       {
         massFO = mass;
@@ -591,6 +590,11 @@ get_key_hist(const EventInfo & eventInfo,
     int VH_pdgID = 0;
     int count_Vs = 0;
     std::string decayModeStrTest = eventInfo.getDecayModeString();
+    if(decayModeStrTest.empty())
+    {
+      std::cout << "Found rare decay mode: " << eventInfo.genHiggsDecayMode << '\n';
+      return "";
+    }
     if ( decayModeStrTest == "hzg" || decayModeStrTest == "hmm")
     {
       decayModeStrTest = "hzz";// for definitivess, that should be very rare
@@ -605,9 +609,11 @@ get_key_hist(const EventInfo & eventInfo,
     }
     if(count_Vs != 1)
     {
-        std::cout<< "More than one gen V in VH, or not one gen V in VH or a weird decay mode "
-        << count_Vs << " " << decayModeStrTest << "\n";
-      ; // this case is extremelly rare, we can affort
+        std::cout
+          << "Invalid number of generator level vector bosons found: "
+          << count_Vs << " for decay mode " << decayModeStrTest << '\n'
+        ; // rarely happens, can afford to ignore it
+        return "";
     }
     if(VH_pdgID == 23)
     {
@@ -683,4 +689,15 @@ get_prefix(const std::string & process_string,
     decayMode_and_genMatch = process_string + "_";
   }
   return decayMode_and_genMatch;
+}
+
+std::vector<const RecoJetBase*>
+convert_to_RecoJetBase(const std::vector<const RecoJet*>& jets_derived)
+{
+  std::vector<const RecoJetBase*> jets_base;
+  for ( std::vector<const RecoJet*>::const_iterator jet = jets_derived.begin(); jet != jets_derived.end(); ++jet )
+  {
+    jets_base.push_back(*jet);
+  }
+  return jets_base;
 }

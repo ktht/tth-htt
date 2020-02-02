@@ -374,6 +374,12 @@ int main(int argc, char* argv[])
     eventWeightManager->set_central_or_shift(central_or_shift);
   }
 
+  edm::ParameterSet triggerWhiteList;
+  if(! isMC)
+  {
+    triggerWhiteList = cfg_analyze.getParameter<edm::ParameterSet>("triggerWhiteList");
+  }
+
   bool isDEBUG = cfg_analyze.getParameter<bool>("isDEBUG");
   if ( isDEBUG ) std::cout << "Warning: DEBUG mode enabled -> trigger selection will not be applied for data !!" << std::endl;
 
@@ -426,6 +432,8 @@ int main(int argc, char* argv[])
   bool jetCleaningByIndex = cfg_analyze.getParameter<bool>("jetCleaningByIndex");
   bool redoGenMatching = cfg_analyze.getParameter<bool>("redoGenMatching");
   bool genMatchingByIndex = cfg_analyze.getParameter<bool>("genMatchingByIndex");
+
+  std::string selEventsFileName_output = cfg_analyze.getParameter<std::string>("selEventsFileName_output");
 
   fwlite::InputSource inputFiles(cfg);
   int maxEvents = inputFiles.maxEvents();
@@ -568,6 +576,9 @@ int main(int argc, char* argv[])
     lheInfoReader = new LHEInfoReader(hasLHE);
     inputTree->registerReader(lheInfoReader);
   }
+
+//--- open output file containing run:lumi:event numbers of events passing final event selection criteria
+  std::ostream* selEventsFile = new std::ofstream(selEventsFileName_output.data(), std::ios::out);
 
   ElectronHistManager selElectronHistManager(makeHistManager_cfg(process_string, 
     Form("jetToTauFakeRate_%s/electrons", chargeSelection_string.data()), era_string, central_or_shift, "minimalHistograms"));
@@ -771,9 +782,9 @@ int main(int argc, char* argv[])
       }
     }
 
-    bool isTriggered_1e = hltPaths_isTriggered(triggers_1e);
-    bool isTriggered_1mu = hltPaths_isTriggered(triggers_1mu);
-    bool isTriggered_1e1mu = hltPaths_isTriggered(triggers_1e1mu);
+    bool isTriggered_1e = hltPaths_isTriggered(triggers_1e, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_1mu = hltPaths_isTriggered(triggers_1mu, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_1e1mu = hltPaths_isTriggered(triggers_1e1mu, triggerWhiteList, eventInfo, isMC);
 
     bool selTrigger_1e = use_triggers_1e && isTriggered_1e;
     bool selTrigger_1mu = use_triggers_1mu && isTriggered_1mu;
@@ -793,7 +804,7 @@ int main(int argc, char* argv[])
         continue;
       }
     }
-    cutFlowTable.update("trigger");
+    cutFlowTable.update("trigger", evtWeightRecorder.get(central_or_shift));
 
     if ( (selTrigger_1mu   && !apply_offline_e_trigger_cuts_1mu)   ||
          (selTrigger_1e1mu && !apply_offline_e_trigger_cuts_1e1mu) ||
@@ -932,7 +943,7 @@ int main(int argc, char* argv[])
     if ( !(preselLeptons.size() >= 2) ) {
       continue;
     }
-    cutFlowTable.update(">= 2 presel leptons");
+    cutFlowTable.update(">= 2 presel leptons", evtWeightRecorder.get(central_or_shift));
     const RecoLepton* preselLepton_lead = preselLeptons[0];
     int preselLepton_lead_type = getLeptonType(preselLepton_lead->pdgId());
     const RecoLepton* preselLepton_sublead = preselLeptons[1];
@@ -944,7 +955,7 @@ int main(int argc, char* argv[])
            (                               preselMuons.size() >= 2 &&  selTrigger_1mu                                      )) ) {
       continue;
     } 
-    cutFlowTable.update("presel lepton trigger match");
+    cutFlowTable.update("presel lepton trigger match", evtWeightRecorder.get(central_or_shift));
     
 //--- compute MHT and linear MET discriminant (met_LD)
     const RecoMEt met = metReader->read();
@@ -960,8 +971,8 @@ int main(int argc, char* argv[])
       evtWeightRecorder.record_btagWeight(selJets);
 
       dataToMCcorrectionInterface->setLeptons(
-        preselLepton_lead_type, preselLepton_lead->pt(), preselLepton_lead->eta(), 
-        preselLepton_sublead_type, preselLepton_sublead->pt(), preselLepton_sublead->eta()
+        preselLepton_lead_type, preselLepton_lead->pt(), preselLepton_lead->cone_pt(), preselLepton_lead->eta(),
+        preselLepton_sublead_type, preselLepton_sublead->pt(), preselLepton_sublead->cone_pt(), preselLepton_sublead->eta()
       );
 
 //--- apply data/MC corrections for trigger efficiency,
@@ -1005,8 +1016,8 @@ int main(int argc, char* argv[])
       assert(selJets_sortedByBtag.size() >= 2);
       m_bb = (selJets_sortedByBtag[0]->p4() + selJets_sortedByBtag[1]->p4()).mass();
     }
-    double mT_e = ( selLepton_e ) ? comp_MT_met_lep1(*selLepton_e, met.pt(), met.phi()) : -1.;
-    double mT_mu = ( selLepton_e ) ? comp_MT_met_lep1(*selLepton_mu, met.pt(), met.phi()) : -1.;
+    double mT_e = ( selLepton_e ) ? comp_MT_met(selLepton_e, met.pt(), met.phi()) : -1.;
+    double mT_mu = ( selLepton_e ) ? comp_MT_met(selLepton_mu, met.pt(), met.phi()) : -1.;
 
     // require that trigger paths match event category (with event category based on selLeptons)
     if ( !((fakeableElectrons.size() >= 2 &&                               selTrigger_1e                                       ) ||
@@ -1050,7 +1061,7 @@ int main(int argc, char* argv[])
 
     const double minPt_lead = 25.;
     const double minPt_sublead = selLepton_sublead->is_electron() ? 15. : 10.;
-    if ( !(selLepton_lead->cone_pt() > minPt_lead && selLepton_sublead->cone_pt() > minPt_sublead) ) {
+    if ( !(selLepton_lead->pt() > minPt_lead && selLepton_sublead->pt() > minPt_sublead) ) {
       continue;
     }
     cutFlowTable.update("lead lepton pT > 25 GeV && sublead lepton pT > 15(e)/10(mu) GeV", evtWeightRecorder.get(central_or_shift));
@@ -1206,6 +1217,8 @@ int main(int argc, char* argv[])
       }
     }
 
+    (*selEventsFile) << eventInfo.str() << '\n';
+
     ++selectedEntries;
     selectedEntries_weighted += evtWeight;
     histogram_selectedEntries->Fill(0.);
@@ -1232,6 +1245,8 @@ int main(int argc, char* argv[])
 
 //--- memory clean-up
   delete dataToMCcorrectionInterface;
+
+  delete selEventsFile;
 
   delete muonReader;
   delete electronReader;

@@ -28,6 +28,7 @@ class addMEMConfig_2lss_1tau(addMEMConfig):
         use_nonnominal,
         use_home,
         rle_filter_file,
+        submission_cmd = None,
         pool_id = '',
       ):
     addMEMConfig.__init__(self,
@@ -52,6 +53,7 @@ class addMEMConfig_2lss_1tau(addMEMConfig):
       use_home                 = use_home,
       channel                  = "2lss_1tau",
       rle_filter_file          = rle_filter_file,
+      submission_cmd           = submission_cmd,
       pool_id                  = pool_id,
     )
 
@@ -66,7 +68,7 @@ class addMEMConfig_2lss_1tau(addMEMConfig):
     self.isDebug = isDebug
     self.central_or_shift = central_or_shift
 
-  def createCfg_addMEM(self, inputFiles, startRange, endRange, outputFile, era, isMC, cfgFile_modified, whitelist = []):
+  def createCfg_addMEM(self, inputFiles, startRange, endRange, outputFile, era, process, isMC, cfgFile_modified, whitelist = []):
     """Create python configuration file for the addMEM_2lss_1tau executable (MEM code)
 
     Args:

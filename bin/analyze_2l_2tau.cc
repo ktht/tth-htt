@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
   const bool isMC_H  = process_string == "ggH" || process_string == "qqH" || process_string == "TTWH" || process_string == "TTZH";
   const bool isMC_HH = process_string == "HH";
   const bool isMC_signal = process_string == "ttH" || process_string == "ttH_ctcvcp";
-  const bool isSignal = isMC_signal || isMC_tH || isMC_VH || isMC_HH;
+  const bool isSignal = isMC_signal || isMC_tH || isMC_VH || isMC_HH || isMC_H;
 
   std::string histogramDir = cfg_analyze.getParameter<std::string>("histogramDir");
   bool isMCClosure_e = histogramDir.find("mcClosure_e") != std::string::npos;
@@ -277,6 +277,12 @@ int main(int argc, char* argv[])
   else
   {
     central_or_shifts_local = { central_or_shift_main };
+  }
+
+  edm::ParameterSet triggerWhiteList;
+  if(! isMC)
+  {
+    triggerWhiteList = cfg_analyze.getParameter<edm::ParameterSet>("triggerWhiteList");
   }
 
   const edm::ParameterSet syncNtuple_cfg = cfg_analyze.getParameter<edm::ParameterSet>("syncNtuple");
@@ -801,7 +807,7 @@ int main(int argc, char* argv[])
   int selectedEntries = 0;
   double selectedEntries_weighted = 0.;
   std::map<std::string, int> selectedEntries_byGenMatchType;             // key = process_and_genMatch
-  std::map<std::string, double> selectedEntries_weighted_byGenMatchType; // key = process_and_genMatch
+  std::map<std::string, std::map<std::string, double>> selectedEntries_weighted_byGenMatchType; // keys = central_or_shift, process_and_genMatch
   TH1* histogram_analyzedEntries = fs.make<TH1D>("analyzedEntries", "analyzedEntries", 1, -0.5, +0.5);
   TH1* histogram_selectedEntries = fs.make<TH1D>("selectedEntries", "selectedEntries", 1, -0.5, +0.5);
   cutFlowTableType cutFlowTable;
@@ -832,6 +838,7 @@ int main(int argc, char* argv[])
   };
   CutFlowTableHistManager * cutFlowHistManager = new CutFlowTableHistManager(cutFlowTableCfg, cuts);
   cutFlowHistManager->bookHistograms(fs);
+  bool isDebugTF = false;
   while ( inputTree->hasNextEvent() && (! run_lumi_eventSelector || (run_lumi_eventSelector && ! run_lumi_eventSelector -> areWeDone())) ) {
     if(inputTree -> canReport(reportEvery))
     {
@@ -843,6 +850,7 @@ int main(int argc, char* argv[])
     }
     ++analyzedEntries;
     histogram_analyzedEntries->Fill(0.);
+    //if(eventInfo.event != 2481230) continue;
 
     if ( isDEBUG ) {
       std::cout << "event #" << inputTree -> getCurrentMaxEventIdx() << ' ' << eventInfo << '\n';
@@ -942,11 +950,11 @@ int main(int argc, char* argv[])
       }
     }
 
-    bool isTriggered_1e = hltPaths_isTriggered(triggers_1e);
-    bool isTriggered_2e = hltPaths_isTriggered(triggers_2e);
-    bool isTriggered_1mu = hltPaths_isTriggered(triggers_1mu);
-    bool isTriggered_2mu = hltPaths_isTriggered(triggers_2mu);
-    bool isTriggered_1e1mu = hltPaths_isTriggered(triggers_1e1mu);
+    bool isTriggered_1e = hltPaths_isTriggered(triggers_1e, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_2e = hltPaths_isTriggered(triggers_2e, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_1mu = hltPaths_isTriggered(triggers_1mu, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_2mu = hltPaths_isTriggered(triggers_2mu, triggerWhiteList, eventInfo, isMC);
+    bool isTriggered_1e1mu = hltPaths_isTriggered(triggers_1e1mu, triggerWhiteList, eventInfo, isMC);
 
     bool selTrigger_1e = use_triggers_1e && isTriggered_1e;
     bool selTrigger_2e = use_triggers_2e && isTriggered_2e;
@@ -1263,8 +1271,8 @@ int main(int argc, char* argv[])
       }
       continue;
     }
-    cutFlowTable.update(">= 2 sel leptons", 1.);
-    cutFlowHistManager->fillHistograms(">= 2 sel leptons", 1.);
+    cutFlowTable.update(">= 2 sel leptons", evtWeightRecorder.get(central_or_shift_main));
+    cutFlowHistManager->fillHistograms(">= 2 sel leptons", evtWeightRecorder.get(central_or_shift_main));
     const RecoLepton* selLepton_lead = selLeptons[0];
     int selLepton_lead_type = getLeptonType(selLepton_lead->pdgId());
     const RecoLepton* selLepton_sublead = selLeptons[1];
@@ -1319,8 +1327,8 @@ int main(int argc, char* argv[])
       evtWeightRecorder.record_btagWeight(selJets);
 
       dataToMCcorrectionInterface->setLeptons(
-        selLepton_lead_type, selLepton_lead->pt(), selLepton_lead->eta(),
-        selLepton_sublead_type, selLepton_sublead->pt(), selLepton_sublead->eta()
+        selLepton_lead_type, selLepton_lead->pt(), selLepton_lead->cone_pt(), selLepton_lead->eta(),
+        selLepton_sublead_type, selLepton_sublead->pt(), selLepton_sublead->cone_pt(), selLepton_sublead->eta()
       );
 
 //--- apply data/MC corrections for trigger efficiency
@@ -1545,7 +1553,7 @@ int main(int argc, char* argv[])
     cutFlowTable.update("signal region veto", evtWeightRecorder.get(central_or_shift_main));
     cutFlowHistManager->fillHistograms("signal region veto", evtWeightRecorder.get(central_or_shift_main));
 
-    std::vector<double> WeightBM; // weights to do histograms for BMs 
+    std::vector<double> WeightBM; // weights to do histograms for BMs
     std::map<std::string, double> Weight_ktScan; // weights to do histograms for BMs
     double HHWeight = 1.0; // X: for the SM point -- the point explicited on this code
 
@@ -1587,20 +1595,20 @@ int main(int argc, char* argv[])
     const double cosThetaS_hadTau = comp_cosThetaStar(selHadTau_lead->p4(), selHadTau_sublead->p4());
     const double tau1_pt          = selHadTau_lead->pt();
     const double tau2_pt          = selHadTau_sublead->pt();
-    const double mindr_lep1_jet   = std::min(10., comp_mindr_lep1_jet(*selLepton_lead, selJets));
-    const double mindr_lep2_jet   = std::min(10., comp_mindr_lep2_jet(*selLepton_sublead, selJets));
-    const double mT_lep1          = comp_MT_met_lep1(*selLepton_lead,    met.pt(), met.phi());
-    const double mT_lep2          = comp_MT_met_lep2(*selLepton_sublead, met.pt(), met.phi());
-    const double mindr_tau1_jet   = comp_mindr_hadTau1_jet(*selHadTau_lead,    selJets);
-    const double mindr_tau2_jet   = comp_mindr_hadTau2_jet(*selHadTau_sublead, selJets);
+    const double mindr_lep1_jet   = std::min(10., comp_mindr_jet(*selLepton_lead, selJets));
+    const double mindr_lep2_jet   = std::min(10., comp_mindr_jet(*selLepton_sublead, selJets));
+    const double mT_lep1          = comp_MT_met(selLepton_lead,    met.pt(), met.phi());
+    const double mT_lep2          = comp_MT_met(selLepton_sublead, met.pt(), met.phi());
+    const double mindr_tau1_jet   = comp_mindr_jet(*selHadTau_lead,    selJets);
+    const double mindr_tau2_jet   = comp_mindr_jet(*selHadTau_sublead, selJets);
     const double dr_lep1_tau1     = deltaR(selLepton_lead->p4(),    selHadTau_lead->p4());
     const double dr_lep2_tau1     = deltaR(selLepton_sublead->p4(), selHadTau_lead->p4());
     const double dr_lep1_tau2     = deltaR(selLepton_lead->p4(),    selHadTau_sublead->p4());
     const double dr_lep2_tau2     = deltaR(selLepton_sublead->p4(), selHadTau_sublead->p4());
     const double max_dr_lep_tau   = std::max({ dr_lep2_tau1, dr_lep2_tau2, dr_lep1_tau1, dr_lep1_tau2 });
     const double min_dr_lep_tau   = std::min({ dr_lep2_tau1, dr_lep2_tau2, dr_lep1_tau1, dr_lep1_tau2 });
-    const double lep1_conePt      = comp_lep1_conePt(*selLepton_lead);
-    const double lep2_conePt      = comp_lep2_conePt(*selLepton_sublead);
+    const double lep1_conePt      = comp_lep_conePt(*selLepton_lead);
+    const double lep2_conePt      = comp_lep_conePt(*selLepton_sublead);
     const double dr_taus          = deltaR(selHadTau_lead->p4(), selHadTau_sublead->p4());
     const double dr_leps          = deltaR(selLepton_lead->p4(), selLepton_sublead->p4());
     const double min_dr_lep_jet   = std::min({ 10., mindr_lep1_jet, mindr_lep2_jet });
@@ -1621,6 +1629,15 @@ int main(int argc, char* argv[])
       {"met_LD",           met_LD}
     };
     const double mva_2l_2tau = mva_2l_2tau_comp(mvaInputsValues);
+    if ( isDebugTF ) {
+      std::cout << "event " << eventInfo.str() << "\n";
+      std::cout << "variables ";
+      for (auto elem : mvaInputsValues) std::cout << elem.first << " " << elem.second << "\n";
+      std::cout << std::endl;
+      std::cout << "result  " << mva_2l_2tau;
+      std::cout << std::endl;
+      std::cout << std::endl;
+    }
 
 //--- retrieve gen-matching flags
     std::vector<const GenMatchEntry*> genMatches = genMatchInterface.getGenMatch(selLeptons, selHadTaus);
@@ -1884,8 +1901,8 @@ int main(int argc, char* argv[])
       const double mbb             = selBJets_medium.size() > 1 ? (selBJets_medium[0]->p4() + selBJets_medium[1]->p4()).mass() : -1.;
       const double mbb_loose       = selBJets_loose.size() > 1 ? (selBJets_loose[0]->p4() + selBJets_loose[1]->p4()).mass() : -1.;
       const double min_dr_tau_jet  = std::min(mindr_tau1_jet, mindr_tau2_jet);
-      const double mTauTauVis1_sel = (selHadTau_lead->p4() + selLepton_lead->p4()).mass();
-      const double mTauTauVis2_sel = (selHadTau_lead->p4() + selLepton_sublead->p4()).mass();
+      const double mTauTauVis1_sel = (selHadTau_lead->p4() + selLepton_lead->cone_p4()).mass();
+      const double mTauTauVis2_sel = (selHadTau_lead->p4() + selLepton_sublead->cone_p4()).mass();
       const double max_lep_eta     = std::max(selLepton_lead->absEta(), selLepton_sublead->absEta());
       const int nLightJet          = selJets.size() - selBJets_loose.size() + selJetsForward.size();
 
@@ -1945,16 +1962,10 @@ int main(int argc, char* argv[])
       snm->read(mbb_loose,                              FloatVariableType::mbb_loose);
 
       snm->read(cosThetaS_hadTau,                       FloatVariableType::cosThetaS_hadTau);
+      snm->read(mva_2l_2tau,                            FloatVariableType::mvaOutput_2l_2tau);
       // HTT not filled
       // HadTop_pt not filled
       // Hj_tagger not filled
-
-      //snm->read(mvaOutput_plainKin_ttV,                 FloatVariableType::mvaOutput_plainKin_ttV);
-      //snm->read(mvaOutput_plainKin_tt,                  FloatVariableType::mvaOutput_plainKin_tt);
-      //snm->read(mvaOutput_plainKin_1B_VT,               FloatVariableType::mvaOutput_plainKin_1B_VT);
-      // mvaOutput_HTT_SUM_VT not filled
-
-      //snm->read(mvaOutput_plainKin_SUM_VT,              FloatVariableType::mvaOutput_plainKin_SUM_VT);
 
       // mvaOutput_2lss_ttV not filled
       // mvaOutput_2lss_tt not filled
@@ -2004,7 +2015,10 @@ int main(int argc, char* argv[])
     process_and_genMatch += "&";
     process_and_genMatch += selHadTau_genMatch.name_;
     ++selectedEntries_byGenMatchType[process_and_genMatch];
-    selectedEntries_weighted_byGenMatchType[process_and_genMatch] += evtWeightRecorder.get(central_or_shift_main);
+    for(const std::string & central_or_shift: central_or_shifts_local)
+    {
+      selectedEntries_weighted_byGenMatchType[central_or_shift][process_and_genMatch] += evtWeightRecorder.get(central_or_shift);
+    }
     histogram_selectedEntries->Fill(0.);
     if(isDEBUG)
     {
@@ -2040,7 +2054,7 @@ int main(int argc, char* argv[])
         process_and_genMatch += "&";
         process_and_genMatch += hadTauGenMatch_definition.name_;
         std::cout << " " << process_and_genMatch << " = " << selectedEntries_byGenMatchType[process_and_genMatch]
-		  << " (weighted = " << selectedEntries_weighted_byGenMatchType[process_and_genMatch] << ")" << std::endl;
+                  << " (weighted = " << selectedEntries_weighted_byGenMatchType[central_or_shift][process_and_genMatch] << ")\n";
       }
     }
   }

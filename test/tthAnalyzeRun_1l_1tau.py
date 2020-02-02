@@ -111,21 +111,16 @@ elif mode == "sync":
 else:
   raise ValueError("Invalid mode: %s" % mode)
 
-evtCategories = None
-if mode == "default" and len(central_or_shifts) <= 1:
-  evtCategories = [
-    "1l_1tau" , "1l_1tau_OS", "1l_1tau_SS", "1l_1tau_OS_wChargeFlipWeights"
-  ]
-else:
-  evtCategories = [
-    "1l_1tau" , "1l_1tau_OS", "1l_1tau_SS", "1l_1tau_OS_wChargeFlipWeights"
-  ]
+evtCategories = [
+  "1l_1tau" , "1l_1tau_OS", "1l_1tau_SS", "1l_1tau_OS_wChargeFlipWeights"
+]
 
 for sample_name, sample_info in samples.items():
   if sample_name == 'sum_events':
     continue
   if re.match("/DY(\d)?Jets", sample_name):
     sample_info["sample_category"] = "DY"
+    sample_info["use_it"] = mode == "default" and "amcatnloFXFX" in sample_name
   elif sample_name.startswith('/TTJets'):
     sample_info["use_it"] = mode == "forBDTtraining"
     sample_info["sample_category"] = "TT"
@@ -192,6 +187,7 @@ if __name__ == '__main__':
     use_nonnominal                        = use_nonnominal,
     hlt_filter                            = hlt_filter,
     use_home                              = use_home,
+    submission_cmd                        = sys.argv,
   )
 
   if mode == "forBDTtraining" :

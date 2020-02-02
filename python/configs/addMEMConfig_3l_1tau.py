@@ -26,6 +26,7 @@ class addMEMConfig_3l_1tau(addMEMConfig):
         dry_run,
         use_nonnominal,
         use_home,
+        submission_cmd = None,
         pool_id = '',
       ):
     addMEMConfig.__init__(self,
@@ -49,6 +50,7 @@ class addMEMConfig_3l_1tau(addMEMConfig):
       use_nonnominal           = use_nonnominal,
       use_home                 = use_home,
       channel                  = "3l_1tau",
+      submission_cmd           = submission_cmd,
       pool_id                  = pool_id,
     )
 
@@ -63,7 +65,7 @@ class addMEMConfig_3l_1tau(addMEMConfig):
     self.isDebug = isDebug
     self.central_or_shift = central_or_shift
 
-  def createCfg_addMEM(self, inputFiles, startRange, endRange, outputFile, era, isMC, cfgFile_modified):
+  def createCfg_addMEM(self, inputFiles, startRange, endRange, outputFile, era, process, isMC, cfgFile_modified):
     """Create python configuration file for the addMEM_3l_1tau executable (MEM code)
 
     Args:

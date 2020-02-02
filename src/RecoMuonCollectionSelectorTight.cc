@@ -11,6 +11,7 @@ RecoMuonSelectorTight::RecoMuonSelectorTight(int era,
   , set_selection_flags_(set_selection_flags)
   , debug_(debug)
   , min_pt_(5.) // L
+  , min_cone_pt_(10.) // F
   , max_absEta_(2.4) // F
   , max_dxy_(0.05) // F
   , max_dz_(0.1) // F
@@ -34,6 +35,14 @@ RecoMuonSelectorTight::operator()(const RecoMuon & muon) const
     std::cout << get_human_line(this, __func__) << ":\n muon: " << muon << '\n';
   }
 
+  if(muon.cone_pt() < min_cone_pt_)
+  {
+    if(debug_)
+    {
+      std::cout << "FAILS cone pT = " << muon.cone_pt() << " >= " << min_cone_pt_ << " tight cut\n";
+    }
+    return false;
+  }
   if(muon.pt() < min_pt_)
   {
     if(debug_)
@@ -123,13 +132,38 @@ RecoMuonSelectorTight::operator()(const RecoMuon & muon) const
   return true;
 }
 
+void
+RecoMuonSelectorTight::set_min_pt(double min_pt)
+{
+  min_pt_ = min_pt;
+}
+
+void
+RecoMuonSelectorTight::set_max_absEta(double max_absEta)
+{
+  max_absEta_ = max_absEta;
+}
+
 void RecoMuonSelectorTight::set_min_mvaTTH(double min_mvaTTH)
 {
   std::cout << "setting cut on prompt-lepton MVA for tight muons: " << min_mvaTTH << '\n';
   min_mvaTTH_ = min_mvaTTH;
 }
+
+double
+RecoMuonSelectorTight::get_min_pt() const
+{
+  return min_pt_;
+}
+
+double
+RecoMuonSelectorTight::get_max_absEta() const
+{
+  return max_absEta_;
+}
  
-double RecoMuonSelectorTight::get_min_mvaTTH() const
+double 
+RecoMuonSelectorTight::get_min_mvaTTH() const
 {
   return min_mvaTTH_;
 }

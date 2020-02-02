@@ -1,7 +1,7 @@
 
-from tthAnalysis.HiggsToTauTau.jobTools import generate_file_ids, generate_input_list
+from tthAnalysis.HiggsToTauTau.jobTools import generate_file_ids, generate_input_list, logging
 
-import math
+import re
 
 def initDict(dictionary, keys):
     """Auxiliary function to initialize dictionary for access with multiple keys
@@ -79,8 +79,44 @@ def initializeInputFileIds(sample_info, max_files_per_job):
     return ( inputFileIds, secondary_files, primary_store, secondary_store )
 
 def generateInputFileList(sample_info, max_units_per_job, by_file = True):
+    if type(max_units_per_job) == int:
+        max_files_per_job_int = max_units_per_job
+    else:
+        assert(not by_file)
+        assert(type(max_units_per_job) == str)
+        max_files_per_job_default = -1
+        max_files_per_job_by_cat = {}
+        max_files_per_job_by_sample = {}
+        max_files_per_job_split = max_units_per_job.split(',')
+        for max_files_per_job_setting in max_files_per_job_split:
+            max_files_per_job_setting_split = max_files_per_job_setting.split(':')
+            if len(max_files_per_job_setting_split) == 1:
+                assert(max_files_per_job_default < 0)
+                max_files_per_job_default = int(max_files_per_job_setting_split[0])
+            elif len(max_files_per_job_setting_split) == 3:
+                max_files_per_job_type = max_files_per_job_setting_split[0]
+                max_files_per_job_key = max_files_per_job_setting_split[1]
+                max_files_per_job_value = int(max_files_per_job_setting_split[2])
+                if max_files_per_job_type == 'cat':
+                    assert(max_files_per_job_key not in max_files_per_job_by_cat)
+                    max_files_per_job_by_cat[max_files_per_job_key] = max_files_per_job_value
+                elif max_files_per_job_type == 'name':
+                    assert(max_files_per_job_key not in max_files_per_job_by_sample)
+                    max_files_per_job_by_sample[max_files_per_job_key] = max_files_per_job_value
+                else:
+                    raise RuntimeError("Invalid key '%s' in option: %s" % (max_files_per_job_type, max_units_per_job))
+            else:
+                raise RuntimeError("Invalid option: %s" % max_units_per_job)
+        max_files_per_job_int = max_files_per_job_default
+        for cat, value in max_files_per_job_by_cat.items():
+            if re.match(cat, sample_info['sample_category']):
+                max_files_per_job_int = value
+        for name, value in max_files_per_job_by_sample.items():
+            if re.match(name, sample_info['process_name_specific']):
+                max_files_per_job_int = value
+    assert(max_files_per_job_int > 0)
     inputFileList = {}
-    max_files_per_job = max_units_per_job if by_file else -1
+    max_files_per_job = max_files_per_job_int if by_file else -1
     max_events_per_job = max_units_per_job if not by_file else -1
     if sample_info['parent'].endswith(('/MINIAOD', '/MINIAODSIM')):
         if by_file:
@@ -161,6 +197,31 @@ def is_dymc_normalization(dbs_name):
   return dbs_name.startswith('/DY')       and \
          'M-50' in dbs_name               and \
          'amcatnloFXFX' in dbs_name
+
+def check_sample_pairs(samples):
+    retValue = True
+    for sample_name_outer, sample_info_outer in samples.items():
+        if sample_name_outer == "sum_events":
+            continue
+        for sample_name_inner, sample_info_inner in samples.items():
+            if sample_name_inner == "sum_events":
+                continue
+            if (sample_name_inner.startswith('/TTTo')          and sample_name_outer.startswith('/TTJets')) or \
+               (sample_name_inner.startswith('/WGToLNuG_Tune') and sample_name_outer.startswith('/WGToLNuG_01J')) or \
+               (sample_name_inner.startswith('/WWTo1L1Nu2Q')   and sample_name_outer.startswith('/WWToLNuQQ')) or \
+               (sample_name_inner.startswith('/TTWJetsToLNu')  and sample_name_outer.startswith('/ttWJets')) or \
+               (sample_name_inner.startswith('/TTZToLL')       and sample_name_outer.startswith('/ttZJets')) or \
+               (sample_name_inner.startswith('/TTJets_Tune')   and sample_name_outer.startswith(('/TTJets_DiLept', '/TTJets_SingleLeptFromT'))) or \
+               (sample_name_inner.startswith('/DY') and 'M-50' in sample_name_inner and 'amcatnloFXFX'     in sample_name_inner and
+                sample_name_outer.startswith('/DY') and 'M-50' in sample_name_outer and 'amcatnloFXFX' not in sample_name_outer) or \
+               (sample_name_inner.startswith('/WZTo3LNu')    and 'amcatnloFXFX'     in sample_name_inner and
+                sample_name_outer.startswith('/WZTo3LNu')    and 'amcatnloFXFX' not in sample_name_outer) or \
+               (sample_name_inner.startswith('/WZTo3LNu') and 'Jets_MLL'     in sample_name_inner and # no stitching weights, yet
+                sample_name_outer.startswith('/WZTo3LNu') and 'Jets_MLL' not in sample_name_outer):
+                if sample_info_outer["use_it"] and sample_info_inner["use_it"]:
+                    retValue = False
+                    logging.error("Samples {} and {} enabled simultaneously".format(sample_name_outer, sample_name_inner))
+    return retValue
 
 def split_stitched(samples_to_stitch, startstring):
     assert(startstring in [ 'DY', 'W' ])

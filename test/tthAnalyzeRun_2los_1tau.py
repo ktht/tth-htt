@@ -152,9 +152,6 @@ if __name__ == '__main__':
       "EventCounter"                              : {},
       "mTauTauVis"                                : {},
       "mvaOutput_legacy"                          : {},
-      "mvaOutput_legacy_2"                          : {},
-      "mvaOutput_legacy_3"                          : {},
-      "mvaOutput_legacy_4"                          : {},
     },
     select_rle_output         = True,
     dry_run                   = dry_run,
@@ -164,6 +161,7 @@ if __name__ == '__main__':
     use_nonnominal            = use_nonnominal,
     hlt_filter                = hlt_filter,
     use_home                  = use_home,
+    submission_cmd            = sys.argv,
   )
 
   if mode.find("forBDTtraining") != -1:
