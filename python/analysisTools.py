@@ -82,7 +82,6 @@ def generateInputFileList(sample_info, max_units_per_job, by_file = True):
     if type(max_units_per_job) == int:
         max_files_per_job_int = max_units_per_job
     else:
-        assert(not by_file)
         assert(type(max_units_per_job) == str)
         max_files_per_job_default = -1
         max_files_per_job_by_cat = {}
