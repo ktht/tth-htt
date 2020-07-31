@@ -1,15 +1,13 @@
 #ifndef tthAnalysis_HiggsToTauTau_XGBInterface_h
 #define tthAnalysis_HiggsToTauTau_XGBInterface_h
 
-#include <Python.h> // PyObject
-#include <vector> // std::vector<>
-#include <string> // std::string
-#include <map> // std::map<,>
 
+#include "tthAnalysis/HiggsToTauTau/interface/MLPythonInterface.h" // MLPythonInterface
 // forward declarations
 class MVAInputVarTransformer;
 
 class XGBInterface
+: public MLPythonInterface
 {
 public:
   XGBInterface(const std::string & mvaFileName,
